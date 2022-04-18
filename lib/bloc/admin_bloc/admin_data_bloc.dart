@@ -100,7 +100,7 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
       showToast(err.message, type: ToastType.error);
       showToast("Make sure you connect to device wifi and try again",
           type: ToastType.error);
-    } catch (err) {}
+    }
   }
 
   Future<void> _signOutHandler(SignOutEvent event, Emitter emit) async {

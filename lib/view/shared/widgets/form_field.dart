@@ -12,9 +12,11 @@ class DefaultFormField extends StatelessWidget {
       this.validator,
       this.keyboardType,
       this.suffix,
+      this.border = false,
       Key? key})
       : super(key: key);
 
+  bool border;
   TextEditingController controller;
   String? fillHint;
   String title;
@@ -32,6 +34,13 @@ class DefaultFormField extends StatelessWidget {
       keyboardType: keyboardType,
       validator: validator,
       decoration: InputDecoration(
+        enabledBorder: border
+            ? OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: ColorManager.darkGrey.withOpacity(0.4), width: 2.0),
+                borderRadius: BorderRadius.circular(10),
+              )
+            : null,
         suffixIcon: suffix,
         prefixIcon: Icon(
           prefix,

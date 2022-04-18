@@ -18,7 +18,7 @@ class MainConfigWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         right: 20.0,
         left: 20.0,
       ),

@@ -6,7 +6,7 @@ import '../../../resources/color_manager.dart';
 
 class NumericField extends StatelessWidget {
   final TextEditingController controller;
-  NumericField(this.controller);
+  const NumericField(this.controller, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +59,5 @@ class NumericField extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           )),
     );
-    ;
   }
 }

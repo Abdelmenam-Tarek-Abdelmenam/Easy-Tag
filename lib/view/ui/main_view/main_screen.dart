@@ -12,7 +12,6 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../shared/functions/navigation_functions.dart';
 import '../device_config/esp_config.dart';
-import '../group_screen/group_screen.dart';
 
 class MainScreen extends StatelessWidget {
   final RefreshController _refreshController =
@@ -65,7 +64,7 @@ class MainScreen extends StatelessWidget {
           color: Colors.white,
         ),
         onPressed: () {
-          navigateAndPush(context, AddGroup());
+          navigateAndPush(context, const AddGroupScreen());
           // cubit.addGroup(context);
         },
       ),

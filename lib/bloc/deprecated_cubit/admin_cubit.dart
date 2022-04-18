@@ -261,7 +261,7 @@ class AdminCubit extends Cubit<AdminCubitStates> {
     tableNameRows = [];
     tableNumberOfUnnamedColumns = 0;
     renameRowsName = [];
-    navigateAndPush(context, AddGroup());
+    navigateAndPush(context, const AddGroupScreen());
     emit(AddGroupState());
   }
 
