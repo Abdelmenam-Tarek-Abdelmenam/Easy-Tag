@@ -19,9 +19,9 @@ class MainConfigWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-          right: 20.0,
-          left: 20.0,
-          bottom: MediaQuery.of(context).viewInsets.bottom),
+        right: 20.0,
+        left: 20.0,
+      ),
       child: SizedBox(
         height: 400,
         child: defaultMainWidget(context),
@@ -144,7 +144,7 @@ class MainConfigWidget extends StatelessWidget {
                             builder: (context, state) => usedButton(
                                     (state is SendEspDataState) &&
                                             (state.status ==
-                                                AdminDataStatus.error)
+                                                AdminDataStatus.loading)
                                         ? const CircularProgressIndicator()
                                         : const Text(
                                             "Send",

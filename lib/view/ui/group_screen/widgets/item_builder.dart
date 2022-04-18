@@ -23,7 +23,12 @@ class GroupItemBuilder extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              color: Colors.orange,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    bottomLeft: Radius.circular(8)),
+                color: Colors.orange,
+              ),
               padding: const EdgeInsets.all(10),
               child: Text(
                 userIndex < 9 ? '0${userIndex + 1}' : '${userIndex + 1}',

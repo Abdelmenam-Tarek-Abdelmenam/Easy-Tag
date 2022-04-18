@@ -47,21 +47,25 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
 
   Future<void> _getGroupDataHandler(
       LoadGroupDataEvent event, Emitter emit) async {
-    LoadGroupDataState.fromOldState(
+    print("Start get group data");
+    emit(LoadGroupDataState.fromOldState(
         state, AdminDataStatus.loading, event.groupIndex,
-        force: event.force);
-    if (state.groupList[event.groupIndex].columnNames == null) {
+        force: event.force));
+    if (state.groupList[event.groupIndex].columnNames == null || event.force) {
       try {
         state.groupList[event.groupIndex] = await _webServices.getGroupData(
             event.groupIndex, state.groupList[event.groupIndex]);
-        LoadGroupDataState.fromOldState(
-            state, AdminDataStatus.loaded, event.groupIndex);
+        emit(LoadGroupDataState.fromOldState(
+            state, AdminDataStatus.loaded, event.groupIndex));
       } on DioErrors catch (err) {
         showToast(err.message, type: ToastType.error);
-        LoadGroupDataState.fromOldState(
+        emit(LoadGroupDataState.fromOldState(
             state, AdminDataStatus.error, event.groupIndex,
-            force: event.force);
+            force: event.force));
       }
+    } else {
+      emit(LoadGroupDataState.fromOldState(
+          state, AdminDataStatus.loaded, event.groupIndex));
     }
   }
 
@@ -92,10 +96,11 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
         showToast("Error happened ,make sure Your WIFI and pass is correct");
       }
     } on DioErrors catch (err) {
+      emit(SendEspDataState.fromOldState(state, AdminDataStatus.error));
       showToast(err.message, type: ToastType.error);
       showToast("Make sure you connect to device wifi and try again",
           type: ToastType.error);
-    }
+    } catch (err) {}
   }
 
   Future<void> _signOutHandler(SignOutEvent event, Emitter emit) async {

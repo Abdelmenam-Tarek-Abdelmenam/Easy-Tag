@@ -15,7 +15,6 @@ class UserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(loading);
     if (loading) {
       return const CardBox(
           child: SizedBox(
@@ -177,7 +176,7 @@ class UserCard extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Container(
             width: 50,
-            height: 180,
+            height: 150,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               color: Colors.orange,
@@ -186,8 +185,8 @@ class UserCard extends StatelessWidget {
               padding: const EdgeInsets.all(5.0),
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                  child: Image.asset(
-                    '${cardStudent.imgUrl}',
+                  child: Image.network(
+                    "https://cdn.pixabay.com/photo/2016/04/01/10/11/avatar-1299805__340.png",
                     errorBuilder: (
                       _,
                       __,

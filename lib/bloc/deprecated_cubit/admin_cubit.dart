@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 import '../../view/shared/functions/navigation_functions.dart';
 import '../../view/shared/widgets/toast_helper.dart';
 import '../../view/ui/user_screen.dart';
-import '../../view/ui/add_group.dart';
+import '../../view/ui/add_group/add_group.dart';
 import '../../view/ui/edit_user.dart';
 import '../../view/ui/main_view/main_screen.dart';
 import 'admin_states.dart';

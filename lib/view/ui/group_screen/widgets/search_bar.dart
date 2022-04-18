@@ -1,3 +1,4 @@
+import 'package:auto_id/view/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
@@ -11,11 +12,13 @@ class SearchBar extends StatelessWidget {
       decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(4))),
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+      margin: const EdgeInsets.symmetric(horizontal: 10),
       child: TypeAheadField<String>(
           textFieldConfiguration: TextFieldConfiguration(
             decoration: InputDecoration(
                 labelText: 'Search for Student',
+                border: OutlineInputBorder(
+                    borderSide: (BorderSide(color: ColorManager.mainOrange))),
                 labelStyle: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w300,

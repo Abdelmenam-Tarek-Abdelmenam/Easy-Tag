@@ -61,8 +61,9 @@ class WebServices {
     String url = _infoSheetLinkBase +
         "userName=$_id"
             "&group=$index";
+    print("start requset");
     String data = await _doRequest(url);
-    // TODO : Change return data type to 2d list
+    print("recieved $data");
     var list = data.split("!");
     details.studentNames = list[0].split(',');
     details.columnNames = list[1].split(',');

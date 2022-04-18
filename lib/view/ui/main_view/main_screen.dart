@@ -1,5 +1,6 @@
 import 'package:auto_id/bloc/admin_bloc/admin_data_bloc.dart';
 import 'package:auto_id/view/resources/styles_manager.dart';
+import '../add_group/add_group.dart';
 import 'package:auto_id/view/ui/main_view/widgets/group_list.dart';
 import 'package:auto_id/view/ui/main_view/widgets/user_card.dart';
 
@@ -64,6 +65,7 @@ class MainScreen extends StatelessWidget {
           color: Colors.white,
         ),
         onPressed: () {
+          navigateAndPush(context, AddGroup());
           // cubit.addGroup(context);
         },
       ),
@@ -74,46 +76,35 @@ class MainScreen extends StatelessWidget {
             context
                 .read<AdminDataBloc>()
                 .add(StartDataOperations(AdminDataBloc.admin));
+            _refreshController.refreshCompleted();
           },
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: BlocConsumer<AdminDataBloc, AdminDataStates>(
-                  buildWhen: (prev, next) => next is GetInitialDataState,
-                  listener: (context, state) {
-                    if (state.status != AdminDataStatus.loading &&
-                        _refreshController.isLoading &&
-                        state is GetInitialDataState) {
-                      _refreshController.refreshCompleted();
-                    } else if (state is LoadGroupDataState &&
-                        (state.status == AdminDataStatus.loading) &&
-                        (!state.force)) {
-                      navigateAndPush(context, GroupScreen(state.groupIndex));
-                    }
-                  },
-                  builder: (_, state) {
-                    bool myState = state is GetInitialDataState;
-                    if (myState && (state.status == AdminDataStatus.error)) {
-                      return emptyGroups();
-                    } else {
-                      return Column(
-                        children: [
-                          UserCard(
-                              (state).cardStudent,
-                              myState &&
-                                  (state.status == AdminDataStatus.loading)),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          GroupList(
-                              state.groupList,
-                              myState &&
-                                  (state.status == AdminDataStatus.loading)),
-                        ],
-                      );
-                    }
-                  }),
-            ),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: BlocBuilder<AdminDataBloc, AdminDataStates>(
+                buildWhen: (prev, next) => next is GetInitialDataState,
+                builder: (_, state) {
+                  bool myState = state is GetInitialDataState;
+                  if (myState && (state.status == AdminDataStatus.error)) {
+                    return emptyGroups();
+                  } else {
+                    return ListView(
+                      physics: const BouncingScrollPhysics(),
+                      children: [
+                        UserCard(
+                            (state).cardStudent,
+                            myState &&
+                                (state.status == AdminDataStatus.loading)),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        GroupList(
+                            state.groupList,
+                            myState &&
+                                (state.status == AdminDataStatus.loading)),
+                      ],
+                    );
+                  }
+                }),
           )),
     );
   }

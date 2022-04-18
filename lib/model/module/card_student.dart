@@ -1,10 +1,13 @@
 import 'package:equatable/equatable.dart';
 
+const String randomPhoto =
+    "https://cdn.pixabay.com/photo/2016/04/01/10/11/avatar-1299805__340.png";
+
 // ignore: must_be_immutable
 class CardStudent extends Equatable {
   String? name;
   String? id;
-  String? imgUrl;
+  late String imgUrl;
   StudentState state = StudentState.empty;
   int? groupIndex;
 
@@ -12,7 +15,7 @@ class CardStudent extends Equatable {
       {this.name,
       this.id,
       this.state = StudentState.empty,
-      this.imgUrl,
+      this.imgUrl = randomPhoto,
       this.groupIndex});
 
   static CardStudent empty = CardStudent(state: StudentState.empty);
@@ -68,8 +71,9 @@ class CardStudent extends Equatable {
 
   String _cvtImgLink(String old) {
     if (old.contains("drive.google.com")) {
-      return "https://drive.google.com/uc?export=view&id=" +
-          imgUrl!.split('/')[5];
+      return "https://drive.google.com/uc?export=view&id=" + old.split('/')[5];
+    } else if (!old.contains("http")) {
+      old = randomPhoto;
     }
     return old;
   }

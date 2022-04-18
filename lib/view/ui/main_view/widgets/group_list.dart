@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../resources/color_manager.dart';
+import '../../../shared/functions/navigation_functions.dart';
+import '../../group_screen/group_screen.dart';
 
 class GroupList extends StatelessWidget {
   final List<GroupDetails> groups;
@@ -46,6 +48,7 @@ class GroupList extends StatelessWidget {
               context
                   .read<AdminDataBloc>()
                   .add(LoadGroupDataEvent(index, false));
+              navigateAndPush(context, GroupScreen(index));
             },
             child: Column(
               children: [

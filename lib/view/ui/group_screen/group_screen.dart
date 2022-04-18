@@ -27,9 +27,6 @@ class GroupScreen extends StatelessWidget {
         if (state is LoadGroupDataState) {
           if (state.status == AdminDataStatus.error) {
             Navigator.of(context).pop();
-          } else if (state.status == AdminDataStatus.loaded &&
-              _refreshController.isLoading) {
-            _refreshController.refreshCompleted();
           }
         } else if (state is GetInitialDataState &&
             state.status == AdminDataStatus.loaded) {
@@ -56,7 +53,7 @@ class GroupScreen extends StatelessWidget {
                     onPressed: () {
                       customChoiceDialog(context,
                           title: "Warning",
-                          content: "Are you sure you want to delete user ",
+                          content: "Are you sure you want to delete The group ",
                           yesFunction: () {
                         context
                             .read<AdminDataBloc>()
@@ -81,10 +78,12 @@ class GroupScreen extends StatelessWidget {
                   context
                       .read<AdminDataBloc>()
                       .add(LoadGroupDataEvent(groupIndex, true));
+                  _refreshController.refreshCompleted();
                 },
-                child: Column(
+                child: ListView(
+                  physics: const BouncingScrollPhysics(),
                   children: [
-                    //! expanded
+                    const SizedBox(height: 10),
                     SearchBar(state.groupList[groupIndex].studentNames ?? []),
                     Container(
                         padding: const EdgeInsets.all(15),
@@ -92,6 +91,8 @@ class GroupScreen extends StatelessWidget {
                                 (state.status == AdminDataStatus.loading)
                             ? const Center(child: CircularProgressIndicator())
                             : ListView.separated(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
                                 itemCount:
                                     state.groupList[groupIndex].itemsLength,
                                 itemBuilder: (context, userIndex) {
@@ -105,7 +106,7 @@ class GroupScreen extends StatelessWidget {
                                   return const SizedBox(
                                     height: 10,
                                   );
-                                })),
+                                }))
                   ],
                 )));
       },

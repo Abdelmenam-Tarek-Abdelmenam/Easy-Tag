@@ -7,26 +7,19 @@ class SendConfigScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
-        }
-      },
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: ColorManager.whiteColor,
-          body: ListView(
-            physics: const BouncingScrollPhysics(),
-            children: [
-              topWidget(),
-              const SizedBox(
-                height: 40,
-              ),
-              MainConfigWidget()
-            ],
-          ),
+    return SafeArea(
+      child: Scaffold(
+        // resizeToAvoidBottomInset: true,
+        backgroundColor: ColorManager.whiteColor,
+        body: ListView(
+          physics: const BouncingScrollPhysics(),
+          children: [
+            topWidget(),
+            const SizedBox(
+              height: 40,
+            ),
+            MainConfigWidget()
+          ],
         ),
       ),
     );
