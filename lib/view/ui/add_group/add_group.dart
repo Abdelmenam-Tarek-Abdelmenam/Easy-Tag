@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_id/bloc/admin_bloc/admin_data_bloc.dart';
 import 'package:auto_id/view/resources/color_manager.dart';
 import 'package:auto_id/view/resources/styles_manager.dart';
 import 'package:auto_id/view/shared/functions/navigation_functions.dart';
@@ -8,6 +9,7 @@ import 'package:auto_id/view/ui/add_group/widgets/numeric_field.dart';
 import 'package:auto_id/view/ui/add_group/widgets/view_photo.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -68,20 +70,24 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
         }
       },
       child: Scaffold(
-          floatingActionButton: FloatingActionButton(
-            backgroundColor: ColorManager.darkGrey,
-            child: const Icon(
-              Icons.check,
-              size: 40,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              if (formKey.currentState!.validate()) {
-                print(createMap());
-                // context.read<AdminDataBloc>().add(AddGroupEvent());
-              }
-            },
-          ),
+          floatingActionButton: BlocConsumer<AdminDataBloc, AdminDataStates>(
+              listenWhen: (_, next) => true, // check next state
+              buildWhen: (_, next) => true, // check next state
+              listener: (context, state) {},
+              builder: (context, state) => FloatingActionButton(
+                    backgroundColor: ColorManager.darkGrey,
+                    child: const Icon(
+                      Icons.check,
+                      size: 40,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        print(createMap());
+                        // context.read<AdminDataBloc>().add(AddGroupEvent());
+                      }
+                    },
+                  )),
           appBar: AppBar(
             shape: StyLeManager.appBarShape,
             foregroundColor: Colors.white,
