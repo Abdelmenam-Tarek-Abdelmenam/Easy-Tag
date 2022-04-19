@@ -55,6 +55,9 @@ dependencies:
   # for images
   image_picker: ^0.8.4+4
   path_provider: ^2.0.8
+  photo_view: ^0.13.0
+  # for operation
+  intl: ^0.17.0
   permission_handler: ^8.2.4
 
 dev_dependencies:

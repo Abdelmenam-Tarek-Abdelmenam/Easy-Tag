@@ -1,15 +1,17 @@
 import 'dart:io';
 
-import 'package:auto_id/bloc/admin_bloc/admin_data_bloc.dart';
 import 'package:auto_id/view/resources/color_manager.dart';
 import 'package:auto_id/view/resources/styles_manager.dart';
+import 'package:auto_id/view/shared/functions/navigation_functions.dart';
+import 'package:auto_id/view/ui/add_group/models.dart';
 import 'package:auto_id/view/ui/add_group/widgets/numeric_field.dart';
+import 'package:auto_id/view/ui/add_group/widgets/view_photo.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../shared/widgets/form_field.dart';
@@ -44,111 +46,105 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
   var formKey = GlobalKey<FormState>();
   var sheetName = TextEditingController();
   var maxStudents = TextEditingController(text: "0");
+  var numberOfSessions = TextEditingController(text: "1");
   var priceController = TextEditingController(text: "1000");
   TextEditingController description = TextEditingController();
   TextEditingController offer = TextEditingController();
   String category = "Course";
+  String inPlace = "in place";
   String? link;
+  DateTime startDate = DateTime.now();
+  List<Instructor> instructors = [Instructor()];
 
-  int activeIndex = 0;
+  int activeStep = 0;
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AdminDataBloc, AdminDataStates>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        return GestureDetector(
-          onTap: () {
-            FocusScopeNode currentFocus = FocusScope.of(context);
-            if (!currentFocus.hasPrimaryFocus) {
-              currentFocus.unfocus();
-            }
-          },
-          child: Scaffold(
-              floatingActionButton: FloatingActionButton(
-                backgroundColor: ColorManager.darkGrey,
-                child: const Icon(
-                  Icons.check,
-                  size: 40,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  if (formKey.currentState!.validate()) {
-                    List<String> renameRowsName = [];
-                    for (int i = 0; i < neededColumns.length; i++) {
-                      if (neededColumns[i]) {
-                        renameRowsName.add(columnsNames[i]);
-                      }
-                    }
-                    // context.read<AdminDataBloc>().add(AddGroupEvent());
-                  }
-                },
-              ),
-              appBar: AppBar(
-                shape: StyLeManager.appBarShape,
-                foregroundColor: Colors.white,
-                title: const Text('Add Group'),
-              ),
-              body: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    IconStepper(
-                      lineDotRadius: 1,
-                      stepRadius: 20,
-                      enableNextPreviousButtons: false,
-                      activeStepColor: ColorManager.mainOrange,
-                      icons: const [
-                        Icon(Icons.table_rows_outlined),
-                        Icon(Icons.info_outline),
-                        Icon(Icons.add_box_outlined),
-                        Icon(Icons.person_add_alt),
-                      ],
-                      activeStep: activeIndex,
-                      onStepReached: (index) {
-                        setState(() {
-                          activeIndex = index;
-                        });
-                      },
-                    ),
-                    [
-                      firstStep(),
-                      secondStep(),
-                      thirdStep(),
-                      forthStep()
-                    ][activeIndex],
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          previousButton(),
-                          nextButton(),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              )),
-        );
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
       },
+      child: Scaffold(
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: ColorManager.darkGrey,
+            child: const Icon(
+              Icons.check,
+              size: 40,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              if (formKey.currentState!.validate()) {
+                print(createMap());
+                // context.read<AdminDataBloc>().add(AddGroupEvent());
+              }
+            },
+          ),
+          appBar: AppBar(
+            shape: StyLeManager.appBarShape,
+            foregroundColor: Colors.white,
+            title: const Text('Add Group'),
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(10),
+            child: ListView(
+              physics: const BouncingScrollPhysics(),
+              children: [
+                Form(
+                    key: formKey,
+                    child: DefaultFormField(
+                      border: true,
+                      controller: sheetName,
+                      title: "Group name",
+                      prefix: Icons.drive_file_rename_outline,
+                      validator: (val) =>
+                          val!.isEmpty ? "Name cannot be empty" : null,
+                    )),
+                IconStepper(
+                  lineDotRadius: 1,
+                  stepRadius: 20,
+                  enableNextPreviousButtons: false,
+                  activeStepColor: ColorManager.mainOrange,
+                  icons: const [
+                    Icon(Icons.table_rows_outlined),
+                    Icon(Icons.info_outline),
+                    Icon(Icons.add_box_outlined),
+                    Icon(Icons.person_add_alt),
+                  ],
+                  activeStep: activeStep,
+                  onStepReached: (index) {
+                    setState(() {
+                      activeStep = index;
+                    });
+                  },
+                ),
+                [
+                  firstStep(),
+                  secondStep(),
+                  thirdStep(),
+                  forthStep()
+                ][activeStep],
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      previousButton(),
+                      nextButton(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )),
     );
   }
 
   Widget firstStep() => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Form(
-              key: formKey,
-              child: DefaultFormField(
-                border: true,
-                controller: sheetName,
-                title: "Group name",
-                prefix: Icons.drive_file_rename_outline,
-                validator: (val) =>
-                    val!.isEmpty ? "Name cannot be empty" : null,
-              )),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
@@ -179,6 +175,27 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
                       fontWeight: FontWeight.bold)),
               SizedBox(width: 200, child: NumericField(priceController)),
             ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text("Number of sessions",
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: ColorManager.darkGrey,
+                      fontWeight: FontWeight.bold)),
+              SizedBox(width: 150, child: NumericField(numberOfSessions)),
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          startDateButton(),
+          const SizedBox(
+            height: 10,
           ),
           photoButton()
         ],
@@ -224,73 +241,137 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
                       fontSize: 18,
                       color: ColorManager.darkGrey,
                       fontWeight: FontWeight.bold)),
-              categoryMenu(),
+              categoryMenu(true),
             ],
           ),
           const SizedBox(
             height: 10,
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text("Attendance type",
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: ColorManager.darkGrey,
+                      fontWeight: FontWeight.bold)),
+              categoryMenu(false),
+            ],
+          ),
         ],
       );
 
   Widget forthStep() => Column(
-        children: const [],
+        children: [
+          const Text("Instructors",
+              style: TextStyle(
+                  fontSize: 20,
+                  color: ColorManager.darkGrey,
+                  fontWeight: FontWeight.bold)),
+          ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) => Stack(
+                    alignment: Alignment.topRight,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                width: 2,
+                                color: ColorManager.darkGrey.withOpacity(0.4)),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Column(
+                          children: [
+                            DefaultFormField(
+                                controller: instructors[index].nameController,
+                                title: "Instructor ${index + 1} name",
+                                prefix: Icons.person),
+                            const SizedBox(height: 10),
+                            DefaultFormField(
+                                controller: instructors[index].emailController,
+                                keyboardType: TextInputType.emailAddress,
+                                title: "Instructor ${index + 1} email",
+                                prefix: Icons.email_outlined)
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            setState(() {
+                              instructors.removeAt(index);
+                            });
+                          },
+                          icon: const Icon(
+                            Icons.cancel,
+                            color: Colors.red,
+                          ))
+                    ],
+                  ),
+              itemCount: instructors.length),
+          OutlinedButton.icon(
+            onPressed: () => setState(() {
+              instructors.add(Instructor());
+            }),
+            label: const Text("Add instructor"),
+            icon: const Icon(Icons.person_add_alt),
+          )
+        ],
       );
 
+  //********************************************************************************//
   Widget chooseColumnName() => Wrap(
       children: List.generate(
           columnsNames.length,
-          (index) => StatefulBuilder(
-                builder: (_, setState) {
-                  return Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: FilterChip(
-                      selected: neededColumns[index],
-                      label: Text(
-                        columnsNames[index],
-                      ),
-                      backgroundColor: Colors.transparent,
-                      shape: const StadiumBorder(side: BorderSide()),
-                      onSelected: (bool value) {
-                        if (index < 2) return;
-                        setState(() {
-                          neededColumns[index] = value;
-                        });
-                      },
-                    ),
-                  );
-                },
+          (index) => Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: FilterChip(
+                  selected: neededColumns[index],
+                  label: Text(
+                    columnsNames[index],
+                  ),
+                  backgroundColor: Colors.transparent,
+                  shape: const StadiumBorder(side: BorderSide()),
+                  onSelected: (bool value) {
+                    if (index < 2) return;
+                    setState(() {
+                      neededColumns[index] = value;
+                    });
+                  },
+                ),
               )));
 
-  Widget categoryMenu() => StatefulBuilder(
-      builder: (_, setState) => Container(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                border: Border.all(
-                    color: ColorManager.darkGrey.withOpacity(0.4), width: 2.0)),
-            child: DropdownButton<String>(
-              value: category,
-              elevation: 0,
-              items: <String>[
-                'Course',
-                'Event',
-                'Workshop',
-                'Competition',
-                'internship'
-              ].map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (val) {
-                setState(() {
-                  category = val!;
-                });
-              },
-            ),
-          ));
+  Widget categoryMenu(bool which) => Container(
+        width: 130,
+        padding: const EdgeInsets.symmetric(horizontal: 5),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            border: Border.all(
+                color: ColorManager.darkGrey.withOpacity(0.4), width: 2.0)),
+        child: DropdownButton<String>(
+          value: which ? category : inPlace,
+          elevation: 0,
+          items: (which
+                  ? ['Course', 'Event', 'Workshop', 'Competition', 'internship']
+                  : ["in place", "online", "hybrid"])
+              .map((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
+          onChanged: (val) {
+            setState(() {
+              if (which) {
+                category = val!;
+              } else {
+                inPlace = val!;
+              }
+            });
+          },
+        ),
+      );
 
   Widget descriptionController() => TextFormField(
         controller: description,
@@ -310,35 +391,52 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
       );
 
   bool photoLoading = false;
-  Widget photoButton() => StatefulBuilder(
-      builder: (_, setState) => SizedBox(
-            width: double.infinity,
-            child: OutlinedButton.icon(
-              onPressed: () async {
-                XFile? photo = await takePhoto(context);
-                if (photo != null) {
-                  setState(() {
-                    photoLoading = true;
-                  });
-                  link = await uploadFile(File(photo.path), "logs");
-                  setState(() {
-                    photoLoading = false;
-                  });
-                }
-              },
-              icon: photoLoading
-                  ? const CircularProgressIndicator()
-                  : Icon(link == null ? Icons.screenshot : Icons.check),
-              label: const Text("upload Poster"),
+  Widget photoButton() => SizedBox(
+        width: double.infinity,
+        child: Row(
+          // mainAxisAlignment: M,
+          children: [
+            Expanded(
+              child: OutlinedButton.icon(
+                onPressed: () async {
+                  XFile? photo = await takePhoto(context);
+                  if (photo != null) {
+                    setState(() {
+                      photoLoading = true;
+                    });
+                    link = await uploadFile(File(photo.path));
+                    setState(() {
+                      photoLoading = false;
+                    });
+                  }
+                },
+                icon: photoLoading
+                    ? const CircularProgressIndicator()
+                    : Icon(link == null ? Icons.screenshot : Icons.check),
+                label: const Text("upload Poster"),
+              ),
             ),
-          ));
+            Visibility(
+                visible: link != null,
+                child: Hero(
+                  tag: 'image',
+                  child: IconButton(
+                    icon: const Icon(Icons.remove_red_eye_outlined),
+                    onPressed: () {
+                      navigateAndPush(context, ViewPhoto(link!));
+                    },
+                  ),
+                ))
+          ],
+        ),
+      );
 
   Widget nextButton() {
     return ElevatedButton(
       onPressed: () {
-        if (activeIndex < 3) {
+        if (activeStep < 3) {
           setState(() {
-            activeIndex++;
+            activeStep++;
           });
         }
       },
@@ -349,13 +447,58 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
   Widget previousButton() {
     return ElevatedButton(
       onPressed: () {
-        if (activeIndex > 0) {
+        if (activeStep > 0) {
           setState(() {
-            activeIndex--;
+            activeStep--;
           });
         }
       },
       child: const Text('Previous'),
+    );
+  }
+
+  Widget startDateButton() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const Text(
+          'Start date',
+          style: TextStyle(
+              fontSize: 18,
+              color: ColorManager.darkGrey,
+              fontWeight: FontWeight.bold),
+        ),
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 600),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return ScaleTransition(scale: animation, child: child);
+          },
+          child: InkWell(
+            key: Key(startDate.toString()),
+            onTap: () async {
+              startDate = await _selectDate(context: context);
+              setState(() {});
+            },
+            child: Container(
+              width: 150,
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                  border: Border.all(
+                      width: 2, color: ColorManager.darkGrey.withOpacity(0.4)),
+                  borderRadius: BorderRadius.circular(10)),
+              child: Center(
+                child: Text(
+                  DateFormat('dd-MM-yyyy').format(startDate),
+                  style: const TextStyle(
+                      color: ColorManager.mainOrange,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          ),
+        )
+      ],
     );
   }
 
@@ -370,10 +513,10 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
     return null;
   }
 
-  Future<String> uploadFile(File file, String place) async {
+  Future<String> uploadFile(File file) async {
     FirebaseStorage storage = FirebaseStorage.instance;
     Reference ref =
-        storage.ref().child(place).child("file" + DateTime.now().toString());
+        storage.ref().child("Logos").child("file" + DateTime.now().toString());
     UploadTask uploadTask = ref.putFile(file);
 
     TaskSnapshot task = await uploadTask.catchError((err) {
@@ -381,5 +524,39 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
     });
     String link = await task.ref.getDownloadURL();
     return link;
+  }
+
+  Future<DateTime> _selectDate({required BuildContext context}) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: startDate,
+        firstDate: DateTime(DateTime.now().year, 1),
+        lastDate: DateTime(DateTime.now().year + 2, 12));
+    return picked ?? DateTime.now();
+  }
+
+  Map<String, dynamic> createMap() {
+    List<String> renameRowsName = [];
+    for (int i = 0; i < neededColumns.length; i++) {
+      if (neededColumns[i]) {
+        renameRowsName.add(columnsNames[i]);
+      }
+    }
+
+    return {
+      'columnNames': renameRowsName,
+      "name": sheetName.text,
+      "maxStudents": int.parse(maxStudents.text),
+      "numberOfSessions": int.parse(numberOfSessions.text),
+      "priceController": int.parse(priceController.text),
+      "description": description.text,
+      "offer": offer.text,
+      "category": category,
+      "inPlace": inPlace,
+      "logo": link,
+      "startDate": DateFormat('dd-MM-yyyy').format(startDate),
+      "instructorsNames": instructors.map((e) => e.name).toList(),
+      "instructorsEmails": instructors.map((e) => e.email).toList(),
+    };
   }
 }
