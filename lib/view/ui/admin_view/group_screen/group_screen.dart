@@ -1,15 +1,15 @@
 import 'package:auto_id/bloc/admin_bloc/admin_data_bloc.dart';
 import 'package:auto_id/view/resources/styles_manager.dart';
-import 'package:auto_id/view/ui/group_screen/widgets/item_builder.dart';
-import 'package:auto_id/view/ui/group_screen/widgets/search_bar.dart';
+import 'package:auto_id/view/ui/admin_view/group_screen/widgets/item_builder.dart';
+import 'package:auto_id/view/ui/admin_view/group_screen/widgets/search_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../../shared/functions/dialogs.dart';
+import '../../../shared/functions/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../shared/widgets/toast_helper.dart';
+import '../../../shared/widgets/toast_helper.dart';
 
 class GroupScreen extends StatelessWidget {
   final int groupIndex;

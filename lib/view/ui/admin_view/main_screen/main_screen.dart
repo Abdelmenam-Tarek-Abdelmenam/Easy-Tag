@@ -1,16 +1,16 @@
 import 'package:auto_id/bloc/admin_bloc/admin_data_bloc.dart';
 import 'package:auto_id/view/resources/styles_manager.dart';
 import '../add_group/add_group.dart';
-import 'package:auto_id/view/ui/main_view/widgets/group_list.dart';
-import 'package:auto_id/view/ui/main_view/widgets/user_card.dart';
+import 'package:auto_id/view/ui/admin_view/main_screen/widgets/group_list.dart';
+import 'package:auto_id/view/ui/admin_view/main_screen/widgets/user_card.dart';
 
-import 'package:auto_id/view/ui/start_screen/signing/login_screen.dart';
+import 'package:auto_id/view/ui/admin_view/start_screen/signing/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../../shared/functions/navigation_functions.dart';
+import '../../../shared/functions/navigation_functions.dart';
 import '../device_config/esp_config.dart';
 
 class MainScreen extends StatelessWidget {

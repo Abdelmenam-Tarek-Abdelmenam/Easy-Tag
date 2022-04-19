@@ -3,7 +3,7 @@ import 'package:auto_id/view/shared/widgets/form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../resources/color_manager.dart';
+import '../../../../resources/color_manager.dart';
 import '../../start_screen/signing/widgtes/clip_pathes.dart';
 
 // ignore: must_be_immutable

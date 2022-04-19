@@ -1,5 +1,5 @@
 import 'package:auto_id/view/resources/color_manager.dart';
-import 'package:auto_id/view/ui/device_config/widgets/main_widget.dart';
+import 'package:auto_id/view/ui/admin_view//device_config/widgets/main_widget.dart';
 import 'package:flutter/material.dart';
 
 class SendConfigScreen extends StatelessWidget {

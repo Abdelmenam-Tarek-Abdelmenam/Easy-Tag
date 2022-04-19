@@ -4,9 +4,9 @@ import 'package:auto_id/bloc/admin_bloc/admin_data_bloc.dart';
 import 'package:auto_id/view/resources/color_manager.dart';
 import 'package:auto_id/view/resources/styles_manager.dart';
 import 'package:auto_id/view/shared/functions/navigation_functions.dart';
-import 'package:auto_id/view/ui/add_group/models.dart';
-import 'package:auto_id/view/ui/add_group/widgets/numeric_field.dart';
-import 'package:auto_id/view/ui/add_group/widgets/view_photo.dart';
+import 'package:auto_id/view/ui/admin_view/add_group/models.dart';
+import 'package:auto_id/view/ui/admin_view/add_group/widgets/numeric_field.dart';
+import 'package:auto_id/view/ui/admin_view/add_group/widgets/view_photo.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,8 +16,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../shared/widgets/form_field.dart';
-import '../../shared/widgets/toast_helper.dart';
+import '../../../shared/widgets/form_field.dart';
+import '../../../shared/widgets/toast_helper.dart';
 
 List<String> columnsNames = const [
   "ID",
