@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../bloc/deprecated_cubit/admin_cubit.dart';
-import '../resources/color_manager.dart';
+import '../../../bloc/deprecated_cubit/admin_cubit.dart';
+import '../../resources/color_manager.dart';
 
 // TODO : replace with dropdown menu in add user screen
 class AddBottomSheet extends StatelessWidget {
@@ -72,7 +72,7 @@ class AddBottomSheet extends StatelessWidget {
                       borderRadius: BorderRadius.circular(18.0),
                       side: const BorderSide(color: Colors.orange)))),
           onPressed: () {
-            context.read<AdminCubit>().goToEditUser(index + 1, context);
+            // context.read<AdminCubit>().goToEditUser(index + 1, context);
           }),
     );
   }

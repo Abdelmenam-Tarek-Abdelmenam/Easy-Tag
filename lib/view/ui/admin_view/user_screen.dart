@@ -1,10 +1,9 @@
-import '../../view/shared/functions/dialogs.dart';
+import '../../../bloc/deprecated_cubit/admin_cubit.dart';
 import 'package:auto_id/view/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../bloc/deprecated_cubit/admin_cubit.dart';
-import '../../bloc/deprecated_cubit/admin_states.dart';
+import '../../shared/functions/dialogs.dart';
 import 'edit_user.dart';
 
 // ignore: must_be_immutable
@@ -19,9 +18,9 @@ class UserScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AdminCubit, AdminCubitStates>(
-      listener: (BuildContext context, AdminCubitStates state) {},
-      builder: (BuildContext context, AdminCubitStates state) {
+    return BlocConsumer<AdminCubit, int>(
+      listener: (BuildContext context, int state) {},
+      builder: (BuildContext context, int state) {
         AdminCubit cubit = AdminCubit.get(context);
 
         return Scaffold(
@@ -52,39 +51,33 @@ class UserScreen extends StatelessWidget {
               ),
               actions: [
                 IconButton(
-                  icon: state is DeletePersonLoading
-                      ? const CircularProgressIndicator(
-                          color: Colors.white,
-                        )
-                      : const Icon(Icons.restore_from_trash_outlined),
+                  icon: const Icon(Icons.restore_from_trash_outlined),
                   onPressed: () {
                     customChoiceDialog(context,
                         title: "Warning",
                         content: "Are you sure you want to delete user ",
                         yesFunction: () {
-                      cubit.deleteUser(userIndex + 2, groupIndex, context);
+                      // cubit.deleteUser(userIndex + 2, groupIndex, context);
                     });
                   },
                 )
               ]),
-          body: state is GetGroupPersonLoading
-              ? const Center(child: CircularProgressIndicator())
-              : Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListView.separated(
-                        itemCount: cubit.showedUserData.length + 1,
-                        itemBuilder: (context, index) {
-                          return inputBuilder(index - 1, context, cubit);
-                        },
-                        separatorBuilder: (context, index) {
-                          return const SizedBox(
-                            height: 15,
-                          );
-                        }),
-                  ),
-                ),
+          body: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListView.separated(
+                  itemCount: cubit.showedUserData.length + 1,
+                  itemBuilder: (context, index) {
+                    return inputBuilder(index - 1, context, cubit);
+                  },
+                  separatorBuilder: (context, index) {
+                    return const SizedBox(
+                      height: 15,
+                    );
+                  }),
+            ),
+          ),
         );
       },
     );

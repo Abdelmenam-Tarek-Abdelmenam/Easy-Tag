@@ -141,6 +141,7 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
     try {
       Map<String, dynamic> showedUserData =
           await _webServices.getUserData(userIndex, groupIndex);
+      print(showedUserData);
     } on DioErrors catch (err) {
       showToast(err.message, type: ToastType.error);
     }

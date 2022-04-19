@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
-import '../../bloc/deprecated_cubit/admin_cubit.dart';
-import '../../bloc/deprecated_cubit/admin_states.dart';
+import '../../../bloc/deprecated_cubit/admin_cubit.dart';
 
 // ignore: must_be_immutable
 class EditUserScreen extends StatelessWidget {
@@ -22,9 +21,9 @@ class EditUserScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AdminCubit, AdminCubitStates>(
-      listener: (BuildContext context, AdminCubitStates state) {},
-      builder: (BuildContext context, AdminCubitStates state) {
+    return BlocConsumer<AdminCubit, int>(
+      listener: (BuildContext context, int state) {},
+      builder: (BuildContext context, int state) {
         AdminCubit cubit = AdminCubit.get(context);
         if (dataHere && typeAheadController.text.isEmpty) {
           typeAheadController.text = cubit.showedUserData['Name'];
@@ -62,17 +61,11 @@ class EditUserScreen extends StatelessWidget {
               ),
             ),
             floatingActionButton: FloatingActionButton(
-                child: state is SendToEditLoading
-                    ? const Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                        ),
-                      )
-                    : const Icon(
-                        Icons.check,
-                        size: 35,
-                        color: Colors.white,
-                      ),
+                child: const Icon(
+                  Icons.check,
+                  size: 35,
+                  color: Colors.white,
+                ),
                 onPressed: () {
                   Map dataToSent = {};
                   for (int i = 0;
@@ -93,7 +86,7 @@ class EditUserScreen extends StatelessWidget {
                       }
                     }
                   }
-                  cubit.sendEditData(groupIndex, id, dataToSent, context);
+                  // cubit.sendEditData(groupIndex, id, dataToSent, context);
                 }),
             body: Padding(
               padding: const EdgeInsets.all(15),
@@ -113,11 +106,11 @@ class EditUserScreen extends StatelessWidget {
                         return sug;
                       },
                       onSuggestionSelected: (suggestion) {
-                        int userIndex = cubit.groups![groupIndex].studentNames!
-                            .indexOf(suggestion.toString());
-                        dataHere = true;
-                        typeAheadController.text = suggestion.toString();
-                        cubit.getUserData(groupIndex, userIndex);
+                        // int userIndex = cubit.groups![groupIndex].studentNames!
+                        //     .indexOf(suggestion.toString());
+                        // dataHere = true;
+                        // typeAheadController.text = suggestion.toString();
+                        // // cubit.getUserData(groupIndex, userIndex);
                       },
                       itemBuilder: (context, suggestion) {
                         return ListTile(
@@ -141,22 +134,19 @@ class EditUserScreen extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  state is GetGroupPersonLoading
-                      ? const Center(child: CircularProgressIndicator())
-                      : Expanded(
-                          child: ListView.separated(
-                              itemCount: cubit.groups?[groupIndex].columnNames
-                                      ?.length ??
-                                  0,
-                              itemBuilder: (context, index) {
-                                return inputBuilder(index, cubit, state);
-                              },
-                              separatorBuilder: (context, index) {
-                                return const SizedBox(
-                                  height: 15,
-                                );
-                              }),
-                        )
+                  Expanded(
+                    child: ListView.separated(
+                        itemCount:
+                            cubit.groups?[groupIndex].columnNames?.length ?? 0,
+                        itemBuilder: (context, index) {
+                          return inputBuilder(index, cubit, state);
+                        },
+                        separatorBuilder: (context, index) {
+                          return const SizedBox(
+                            height: 15,
+                          );
+                        }),
+                  )
                 ],
               ),
             ),
@@ -166,7 +156,7 @@ class EditUserScreen extends StatelessWidget {
     );
   }
 
-  Widget inputBuilder(int index, AdminCubit cubit, AdminCubitStates state) {
+  Widget inputBuilder(int index, AdminCubit cubit, int state) {
     if (editUserController.length <
         (cubit.groups?[groupIndex].columnNames?.length ?? 0)) {
       editUserController.add(TextEditingController());
@@ -182,12 +172,12 @@ class EditUserScreen extends StatelessWidget {
       return Container();
     }
 
-    if ((dataHere && dataWritten) || state is GetGroupPersonDone) {
+    if ((dataHere && dataWritten)) {
       editUserController[index].text =
           cubit.showedUserData.values.toList()[index];
       dataWritten = false;
       // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-      cubit.emit(GetGroupPersonError());
+      // cubit.emit(GetGroupPersonError());
     }
     return TextFormField(
         controller: editUserController[index],
