@@ -15,7 +15,7 @@ part 'admin_data_state.dart';
 
 class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
   AdminDataBloc() : super(GetInitialDataState.initial()) {
-    on<StartDataOperations>(_startGettingDataHandler);
+    on<StartAdminOperations>(_startGettingDataHandler);
     on<CardDataChangedEvents>(_cardDataChangesHandler);
     on<SendConfigurationEvent>(_sendEspConfigHandler);
     on<SignOutEvent>(_signOutHandler);
@@ -29,7 +29,7 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
 
   ///******************** Event handler functions **************************/
   Future<void> _startGettingDataHandler(
-      StartDataOperations event, Emitter emit) async {
+      StartAdminOperations event, Emitter emit) async {
     if (!event.currentUser.isEmpty) {
       emit(GetInitialDataState(
           status: AdminDataStatus.loading, cardStudent: CardStudent.empty));

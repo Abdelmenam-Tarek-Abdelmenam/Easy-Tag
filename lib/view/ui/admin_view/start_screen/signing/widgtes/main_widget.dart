@@ -98,7 +98,7 @@ class _MainLoginWidgetState extends State<MainLoginWidget> {
                 AppAdmin appAdmin = context.read<AuthStatusBloc>().user;
                 context
                     .read<AdminDataBloc>()
-                    .add(StartDataOperations(appAdmin));
+                    .add(StartAdminOperations(appAdmin));
               } else if (state.status == AuthStatus.successSignUp) {
                 setState(() {
                   isLogin = true;

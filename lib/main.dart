@@ -1,8 +1,9 @@
 import 'package:auto_id/bloc/admin_bloc/admin_data_bloc.dart';
+import 'package:auto_id/bloc/student_bloc/student_data_bloc.dart';
+import 'package:auto_id/view/ui/student_view/main_screen/main_screen.dart';
 
 import 'bloc/my_bloc_observer.dart';
 import 'model/module/app_admin.dart';
-import 'view/ui/admin_view/main_screen/main_screen.dart';
 import 'package:auto_id/view/resources/color_manager.dart';
 import 'package:auto_id/view/resources/string_manager.dart';
 import 'package:auto_id/view/ui/admin_view/start_screen/onboarding/on_boarding_screen.dart';
@@ -49,7 +50,15 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => AuthStatusBloc()),
         BlocProvider(create: (_) => AdminCubit()),
         BlocProvider(
-            create: (_) => AdminDataBloc()..add(StartDataOperations(user))),
+            create: (_) => AdminDataBloc()
+              ..add(
+                StartAdminOperations(user),
+              )),
+        BlocProvider(
+            create: (_) => StudentDataBloc()
+              ..add(
+                const StartStudentOperations(),
+              )),
       ],
       child: MaterialApp(
         title: StringManger.appName,
@@ -62,7 +71,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.orange,
           primaryColor: ColorManager.mainOrange,
         ),
-        home: user.isEmpty ? OnBoardingView() : MainScreen(),
+        home: user.isEmpty ? OnBoardingView() : StudentMainScreen(),
       ),
     );
   }

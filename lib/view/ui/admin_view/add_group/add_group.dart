@@ -1,9 +1,6 @@
 import 'dart:io';
 
-import 'package:auto_id/bloc/admin_bloc/admin_data_bloc.dart';
-import 'package:auto_id/view/resources/color_manager.dart';
-import 'package:auto_id/view/resources/styles_manager.dart';
-import 'package:auto_id/view/shared/functions/navigation_functions.dart';
+import 'package:auto_id/view/shared/widgets/form_field.dart';
 import 'package:auto_id/view/ui/admin_view/add_group/models.dart';
 import 'package:auto_id/view/ui/admin_view/add_group/widgets/numeric_field.dart';
 import 'package:auto_id/view/ui/admin_view/add_group/widgets/view_photo.dart';
@@ -16,7 +13,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../../shared/widgets/form_field.dart';
+import '../../../../bloc/admin_bloc/admin_data_bloc.dart';
+import '../../../resources/color_manager.dart';
+import '../../../resources/styles_manager.dart';
+import '../../../shared/functions/navigation_functions.dart';
 import '../../../shared/widgets/toast_helper.dart';
 
 List<String> columnsNames = const [
@@ -542,15 +542,15 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
   }
 
   Map<String, dynamic> createMap() {
-    List<String> renameRowsName = [];
-    for (int i = 0; i < neededColumns.length; i++) {
-      if (neededColumns[i]) {
-        renameRowsName.add(columnsNames[i]);
-      }
-    }
+    // List<String> renameRowsName = [];
+    // for (int i = 0; i < neededColumns.length; i++) {
+    //   if (neededColumns[i]) {
+    //     renameRowsName.add(columnsNames[i]);
+    //   }
+    // }
 
     return {
-      'columnNames': renameRowsName,
+      'columnNames': neededColumns,
       "name": sheetName.text,
       "maxStudents": int.parse(maxStudents.text),
       "numberOfSessions": int.parse(numberOfSessions.text),

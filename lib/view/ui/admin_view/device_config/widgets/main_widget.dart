@@ -1,9 +1,10 @@
-import 'package:auto_id/bloc/admin_bloc/admin_data_bloc.dart';
-import 'package:auto_id/view/shared/widgets/form_field.dart';
+// ignore: must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../bloc/admin_bloc/admin_data_bloc.dart';
 import '../../../../resources/color_manager.dart';
+import '../../../../shared/widgets/form_field.dart';
 import '../../start_screen/signing/widgtes/clip_pathes.dart';
 
 // ignore: must_be_immutable

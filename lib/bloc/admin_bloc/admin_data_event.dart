@@ -7,10 +7,10 @@ abstract class AdminDataEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class StartDataOperations extends AdminDataEvent {
+class StartAdminOperations extends AdminDataEvent {
   final AppAdmin currentUser;
 
-  const StartDataOperations(this.currentUser);
+  const StartAdminOperations(this.currentUser);
 }
 
 class CardDataChangedEvents extends AdminDataEvent {
