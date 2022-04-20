@@ -18,7 +18,7 @@ class SearchBar extends StatelessWidget {
             decoration: InputDecoration(
                 labelText: 'Search for Student',
                 border: const OutlineInputBorder(
-                    borderSide: (BorderSide(color: ColorManager.mainOrange))),
+                    borderSide: (BorderSide(color: ColorManager.mainBlue))),
                 labelStyle: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w300,

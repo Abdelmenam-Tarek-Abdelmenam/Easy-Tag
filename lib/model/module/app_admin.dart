@@ -22,4 +22,5 @@ class AppAdmin {
 
   static AppAdmin empty = AppAdmin(id: '');
   bool get isEmpty => id == '';
+  bool get isAdmin => id == 'jCekYTPEXmMD7XJWlJdPPtrLBED2';
 }

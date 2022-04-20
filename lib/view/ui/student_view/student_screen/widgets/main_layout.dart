@@ -56,7 +56,7 @@ class UserScreenLayout extends StatelessWidget {
                     "View aLL >>",
                     style: TextStyle(
                         fontSize: 14,
-                        color: ColorManager.mainOrange,
+                        color: ColorManager.mainBlue,
                         fontWeight: FontWeight.bold),
                   ),
                 )
@@ -69,7 +69,7 @@ class UserScreenLayout extends StatelessWidget {
               width: 350,
               height: 200,
               decoration: const BoxDecoration(
-                  color: ColorManager.mainOrange,
+                  color: ColorManager.mainBlue,
                   borderRadius: BorderRadius.all(Radius.circular(15))),
               child: Shimmer.fromColors(
                   baseColor: Colors.grey,
@@ -79,7 +79,7 @@ class UserScreenLayout extends StatelessWidget {
           ],
         );
       } else {
-        if (5 == 6) {
+        if (true) {
           return Column(
             children: [
               Row(
@@ -100,7 +100,7 @@ class UserScreenLayout extends StatelessWidget {
                       "View aLL >>",
                       style: TextStyle(
                           fontSize: 14,
-                          color: ColorManager.mainOrange,
+                          color: ColorManager.mainBlue,
                           fontWeight: FontWeight.bold),
                     ),
                   )
@@ -110,21 +110,21 @@ class UserScreenLayout extends StatelessWidget {
                 width: 350,
                 height: 200,
                 decoration: const BoxDecoration(
-                    color: ColorManager.mainOrange,
+                    color: ColorManager.mainBlue,
                     borderRadius: BorderRadius.all(Radius.circular(15))),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
                     Icon(
                       Icons.pending_actions,
-                      color: ColorManager.lightGrey,
+                      color: ColorManager.whiteColor,
                       size: 50,
                     ),
                     SizedBox(
                       height: 10,
                     ),
                     Text("No courses yet",
-                        style: TextStyle(color: ColorManager.lightGrey))
+                        style: TextStyle(color: ColorManager.whiteColor))
                   ],
                 ),
               ),
@@ -151,7 +151,7 @@ class UserScreenLayout extends StatelessWidget {
                         "View aLL >>",
                         style: TextStyle(
                             fontSize: 14,
-                            color: ColorManager.mainOrange,
+                            color: ColorManager.mainBlue,
                             fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -165,7 +165,7 @@ class UserScreenLayout extends StatelessWidget {
                 width: 350,
                 height: 200,
                 decoration: const BoxDecoration(
-                    color: ColorManager.mainOrange,
+                    color: ColorManager.mainBlue,
                     borderRadius: BorderRadius.all(Radius.circular(15))),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

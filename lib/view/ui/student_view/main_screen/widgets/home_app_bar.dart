@@ -69,9 +69,10 @@ class SearchBar extends StatelessWidget {
         constraints: BoxConstraints(maxHeight: 70, maxWidth: 305),
         filled: true,
         isDense: true,
-        contentPadding: EdgeInsets.fromLTRB(12, 2, 0, 0),
+        contentPadding: EdgeInsets.fromLTRB(12, 2, 10, 10),
         fillColor: Colors.white,
         hintText: 'Search for the course here ',
+        hintStyle: TextStyle(fontSize: 12),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(12)),
           borderSide: BorderSide(color: Colors.white),

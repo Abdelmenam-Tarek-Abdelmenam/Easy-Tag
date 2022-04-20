@@ -1,5 +1,6 @@
 import 'package:auto_id/bloc/admin_bloc/admin_data_bloc.dart';
 import 'package:auto_id/bloc/student_bloc/student_data_bloc.dart';
+import 'package:auto_id/view/ui/admin_view/main_screen/main_screen.dart';
 import 'package:auto_id/view/ui/student_view/main_screen/main_screen.dart';
 
 import 'bloc/my_bloc_observer.dart';
@@ -19,7 +20,7 @@ import 'model/local/pref_repository.dart';
 
 Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: ColorManager.mainOrange,
+    statusBarColor: ColorManager.mainBlue,
   ));
 
   return BlocOverrides.runZoned(
@@ -57,7 +58,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
             create: (_) => StudentDataBloc()
               ..add(
-                const StartStudentOperations(),
+                StartStudentOperations(user),
               )),
       ],
       child: MaterialApp(
@@ -68,10 +69,14 @@ class MyApp extends StatelessWidget {
           progressIndicatorTheme: const ProgressIndicatorThemeData(
             circularTrackColor: ColorManager.whiteColor,
           ),
-          primarySwatch: Colors.orange,
-          primaryColor: ColorManager.mainOrange,
+          primarySwatch: Colors.blue,
+          primaryColor: ColorManager.mainBlue,
         ),
-        home: user.isEmpty ? OnBoardingView() : StudentMainScreen(),
+        home: user.isEmpty
+            ? OnBoardingView()
+            : user.isAdmin
+                ? MainScreen()
+                : StudentMainScreen(),
       ),
     );
   }

@@ -1,6 +1,11 @@
 import 'package:auto_id/view/resources/color_manager.dart';
+import 'package:auto_id/view/shared/functions/navigation_functions.dart';
 import 'package:auto_id/view/ui/student_view/student_screen/widgets/main_layout.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
+import '../../start_screen/signing/login_screen.dart';
 
 class StudentScreen extends StatelessWidget {
   const StudentScreen({Key? key}) : super(key: key);
@@ -15,7 +20,7 @@ class StudentScreen extends StatelessWidget {
             Align(
               alignment: Alignment.topCenter,
               child: Container(
-                color: ColorManager.mainOrange,
+                color: ColorManager.mainBlue,
                 height: 140,
                 width: double.infinity,
               ),
@@ -72,7 +77,12 @@ class StudentScreen extends StatelessWidget {
                           Navigator.of(context).pop();
                         }),
                     IconButton(
-                        icon: const Icon(Icons.logout), onPressed: () {}),
+                        icon: const Icon(Icons.logout),
+                        onPressed: () async {
+                          await FirebaseAuth.instance.signOut();
+                          await GoogleSignIn().signOut();
+                          navigateAndReplace(context, const LoginView());
+                        }),
                   ],
                 ),
               ),

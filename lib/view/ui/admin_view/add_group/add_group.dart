@@ -19,7 +19,7 @@ import '../../../resources/styles_manager.dart';
 import '../../../shared/functions/navigation_functions.dart';
 import '../../../shared/widgets/toast_helper.dart';
 
-List<String> columnsNames = const [
+List<String> _columnsNames = const [
   "ID",
   "Name",
   "Gender",
@@ -33,7 +33,6 @@ List<String> columnsNames = const [
   "Address",
 ];
 
-// ignore: must_be_immutable
 class AddGroupScreen extends StatefulWidget {
   const AddGroupScreen({Key? key}) : super(key: key);
 
@@ -43,7 +42,7 @@ class AddGroupScreen extends StatefulWidget {
 
 class _AddGroupScreenState extends State<AddGroupScreen> {
   List<bool> neededColumns =
-      List.generate(columnsNames.length, (index) => index < 2);
+      List.generate(_columnsNames.length, (index) => index < 2);
 
   var formKey = GlobalKey<FormState>();
   var sheetName = TextEditingController();
@@ -112,7 +111,7 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
                   lineDotRadius: 1,
                   stepRadius: 20,
                   enableNextPreviousButtons: false,
-                  activeStepColor: ColorManager.mainOrange,
+                  activeStepColor: ColorManager.mainBlue,
                   icons: const [
                     Icon(Icons.table_rows_outlined),
                     Icon(Icons.info_outline),
@@ -329,13 +328,13 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
   //********************************************************************************//
   Widget chooseColumnName() => Wrap(
       children: List.generate(
-          columnsNames.length,
+          _columnsNames.length,
           (index) => Padding(
                 padding: const EdgeInsets.all(2.0),
                 child: FilterChip(
                   selected: neededColumns[index],
                   label: Text(
-                    columnsNames[index],
+                    _columnsNames[index],
                   ),
                   backgroundColor: Colors.transparent,
                   shape: const StadiumBorder(side: BorderSide()),
@@ -496,7 +495,7 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
                 child: Text(
                   DateFormat('dd-MM-yyyy').format(startDate),
                   style: const TextStyle(
-                      color: ColorManager.mainOrange,
+                      color: ColorManager.mainBlue,
                       fontSize: 18,
                       fontWeight: FontWeight.bold),
                 ),

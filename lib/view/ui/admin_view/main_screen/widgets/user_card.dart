@@ -111,7 +111,7 @@ class UserCard extends StatelessWidget {
                         child: Text(
                           '${cardStudent.name}',
                           style: const TextStyle(
-                              color: Colors.orange,
+                              color: ColorManager.mainBlue,
                               fontSize: 20,
                               fontWeight: FontWeight.bold),
                         ),
@@ -179,7 +179,7 @@ class UserCard extends StatelessWidget {
             height: 150,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              color: Colors.orange,
+              color: ColorManager.mainBlue,
             ),
             child: Padding(
               padding: const EdgeInsets.all(5.0),
@@ -221,7 +221,7 @@ class CardBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-            border: Border.all(color: Colors.orange),
+            border: Border.all(color: ColorManager.mainBlue),
             borderRadius: BorderRadius.circular(20)),
         width: double.infinity,
         // height: 200,

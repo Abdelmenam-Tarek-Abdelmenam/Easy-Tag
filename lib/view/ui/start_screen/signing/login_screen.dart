@@ -52,7 +52,7 @@ class _LoginViewState extends State<LoginView> {
             style: TextStyle(
                 fontSize: 40,
                 fontWeight: FontWeight.w900,
-                color: ColorManager.mainOrange),
+                color: ColorManager.mainBlue),
           ),
           SizedBox(
             height: 20,

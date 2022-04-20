@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:auto_id/bloc/admin_bloc/admin_data_bloc.dart';
+import 'package:auto_id/bloc/student_bloc/student_data_bloc.dart';
+import 'package:auto_id/view/ui/student_view/main_screen/main_screen.dart';
 
 import '../../../../../../model/module/app_admin.dart';
 import 'package:auto_id/view/resources/color_manager.dart';
@@ -69,7 +71,7 @@ class _MainLoginWidgetState extends State<MainLoginWidget> {
               child: Container(
                 height: 500,
                 width: MediaQuery.of(context).size.width * 0.92,
-                color: ColorManager.lightOrange.withOpacity(0.1),
+                color: ColorManager.lightBlue.withOpacity(0.1),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: isLogin
@@ -94,11 +96,19 @@ class _MainLoginWidgetState extends State<MainLoginWidget> {
           BlocListener<AuthStatusBloc, AuthStates>(
             listener: (context, state) {
               if (state.status == AuthStatus.successLogIn) {
-                navigateAndReplace(context, MainScreen());
                 AppAdmin appAdmin = context.read<AuthStatusBloc>().user;
-                context
-                    .read<AdminDataBloc>()
-                    .add(StartAdminOperations(appAdmin));
+                if (appAdmin.isAdmin) {
+                  context
+                      .read<AdminDataBloc>()
+                      .add(StartAdminOperations(appAdmin));
+                  navigateAndReplace(context, MainScreen());
+                } else {
+                  context
+                      .read<StudentDataBloc>()
+                      .add(StartStudentOperations(appAdmin));
+                  navigateAndReplace(context, MainScreen());
+                  navigateAndReplace(context, StudentMainScreen());
+                }
               } else if (state.status == AuthStatus.successSignUp) {
                 setState(() {
                   isLogin = true;
@@ -216,7 +226,7 @@ class _MainLoginWidgetState extends State<MainLoginWidget> {
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 12,
-                              color: ColorManager.mainOrange),
+                              color: ColorManager.mainBlue),
                         ),
                       ),
                     ],
@@ -427,7 +437,7 @@ class _MainLoginWidgetState extends State<MainLoginWidget> {
           left: 30,
         ),
         height: 12,
-        child: const Card(elevation: 2, color: ColorManager.mainOrange));
+        child: const Card(elevation: 2, color: ColorManager.mainBlue));
   }
 
   Widget orLineWidget() => Padding(
@@ -458,7 +468,7 @@ class _MainLoginWidgetState extends State<MainLoginWidget> {
         margin: const EdgeInsets.symmetric(horizontal: 30),
         width: double.infinity,
         decoration: const BoxDecoration(
-          color: ColorManager.mainOrange,
+          color: ColorManager.mainBlue,
           borderRadius: BorderRadius.all(Radius.circular(25)),
         ),
         child: MaterialButton(

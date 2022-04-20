@@ -30,7 +30,7 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
   ///******************** Event handler functions **************************/
   Future<void> _startGettingDataHandler(
       StartAdminOperations event, Emitter emit) async {
-    if (!event.currentUser.isEmpty) {
+    if (!event.currentUser.isEmpty || event.currentUser.isAdmin) {
       emit(GetInitialDataState(
           status: AdminDataStatus.loading, cardStudent: CardStudent.empty));
       admin = event.currentUser;

@@ -26,7 +26,7 @@ class ForgetPassword extends StatelessWidget {
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 22,
-                color: ColorManager.mainOrange),
+                color: ColorManager.mainBlue),
           ),
           const Text(
             "Reset mail will be sent to you ",
@@ -65,7 +65,7 @@ class ForgetPassword extends StatelessWidget {
                     child: ElevatedButton(
                         style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
-                                ColorManager.mainOrange)),
+                                ColorManager.mainBlue)),
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
                             context

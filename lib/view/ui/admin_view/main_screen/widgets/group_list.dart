@@ -55,7 +55,7 @@ class GroupList extends StatelessWidget {
                 Text(
                   groups[index].name,
                   style: const TextStyle(
-                      color: Colors.orange,
+                      color: ColorManager.lightBlue,
                       fontSize: 30,
                       fontWeight: FontWeight.bold),
                 ),

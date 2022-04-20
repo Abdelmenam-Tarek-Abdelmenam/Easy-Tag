@@ -92,6 +92,7 @@ class AuthRepository {
   static Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
     await GoogleSignIn().signOut();
+    await GoogleSignIn().disconnect();
   }
 
   Future<void> forgetPassword(String email) async {

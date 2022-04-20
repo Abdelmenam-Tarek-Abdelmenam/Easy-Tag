@@ -16,17 +16,6 @@ class DetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //  late String name;
-    //   int? numberOfSessions;
-    //   late int price;
-    //   late String description;
-    //   late String offer;
-    //   late List<String> instructors;
-    //   late String logo;
-    //   late String date;
-    //   late String category;
-    //   late String inPlace;
-
     return Scaffold(
       backgroundColor: ColorManager.lightBlue,
       body: SafeArea(

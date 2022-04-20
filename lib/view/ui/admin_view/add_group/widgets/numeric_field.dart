@@ -45,7 +45,7 @@ class NumericField extends StatelessWidget {
             icon: Icon(
               FontAwesomeIcons.plus,
               size: 20,
-              color: ColorManager.mainOrange.withOpacity(0.5),
+              color: ColorManager.mainBlue.withOpacity(0.5),
             ),
             onPressed: () {
               int d = int.parse(controller.text);

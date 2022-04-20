@@ -8,5 +8,6 @@ abstract class StudentDataEvent extends Equatable {
 }
 
 class StartStudentOperations extends StudentDataEvent {
-  const StartStudentOperations();
+  final AppAdmin user;
+  const StartStudentOperations(this.user);
 }

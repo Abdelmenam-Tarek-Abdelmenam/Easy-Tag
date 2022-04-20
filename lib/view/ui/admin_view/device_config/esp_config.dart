@@ -14,6 +14,17 @@ class SendConfigScreen extends StatelessWidget {
         body: ListView(
           physics: const BouncingScrollPhysics(),
           children: [
+            Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: IconButton(
+                    icon: const Icon(Icons.arrow_back_rounded),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    }),
+              ),
+            ),
             topWidget(),
             const SizedBox(
               height: 40,
@@ -27,7 +38,7 @@ class SendConfigScreen extends StatelessWidget {
 
   Widget topWidget() {
     return Padding(
-      padding: const EdgeInsets.only(top: 80, left: 20),
+      padding: const EdgeInsets.only(top: 40, left: 20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,7 +48,7 @@ class SendConfigScreen extends StatelessWidget {
             style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.w900,
-                color: ColorManager.mainOrange),
+                color: ColorManager.mainBlue),
           ),
           SizedBox(
             height: 20,

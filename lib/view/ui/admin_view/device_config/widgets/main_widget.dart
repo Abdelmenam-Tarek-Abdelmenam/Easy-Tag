@@ -39,7 +39,7 @@ class MainConfigWidget extends StatelessWidget {
             child: Container(
               height: 400,
               width: MediaQuery.of(context).size.width * 0.92,
-              color: ColorManager.lightOrange.withOpacity(0.1),
+              color: ColorManager.lightBlue.withOpacity(0.1),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -178,14 +178,14 @@ class MainConfigWidget extends StatelessWidget {
           left: 20,
         ),
         height: 12,
-        child: const Card(elevation: 2, color: ColorManager.mainOrange));
+        child: const Card(elevation: 2, color: ColorManager.mainBlue));
   }
 
   Widget usedButton(Widget child, Function() onPressed) => Container(
         margin: const EdgeInsets.symmetric(horizontal: 30),
         width: double.infinity,
         decoration: const BoxDecoration(
-          color: ColorManager.mainOrange,
+          color: ColorManager.mainBlue,
           borderRadius: BorderRadius.all(Radius.circular(25)),
         ),
         child: MaterialButton(

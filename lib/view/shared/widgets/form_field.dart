@@ -45,7 +45,7 @@ class DefaultFormField extends StatelessWidget {
         prefixIcon: Icon(
           prefix,
           size: 20,
-          color: ColorManager.mainOrange,
+          color: ColorManager.mainBlue,
         ),
         labelText: title,
         labelStyle: TextStyle(

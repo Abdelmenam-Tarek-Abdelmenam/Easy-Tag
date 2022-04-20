@@ -7,7 +7,7 @@
 
 
     <application
-        android:label="Easy Tag"
+        android:label="EME-IH"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

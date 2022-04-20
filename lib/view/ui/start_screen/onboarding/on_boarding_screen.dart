@@ -1,8 +1,8 @@
 import 'package:auto_id/view/shared/functions/navigation_functions.dart';
-import 'package:auto_id/view/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:onboarding/onboarding.dart';
 
+import '../../../resources/color_manager.dart';
 import '../signing/login_screen.dart';
 
 // ignore: must_be_immutable
@@ -34,49 +34,47 @@ class OnBoardingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorManager.mainOrange,
+      backgroundColor: ColorManager.mainBlue,
       body: Onboarding(
         pages: List.generate(
             3,
             (index) => PageModel(
-                  widget: SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: Column(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 45.0,
-                            vertical: 90.0,
-                          ),
-                          child: FlutterLogo(
-                            size: 120,
+                  widget: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 45.0,
+                          vertical: 90.0,
+                        ),
+                        child: FlutterLogo(
+                          size: 120,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 45.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '$index- EASY ACCESS',
+                            style: pageTitleStyle,
+                            textAlign: TextAlign.left,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 45.0),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              '$index- EASY ACCESS',
-                              style: pageTitleStyle,
-                              textAlign: TextAlign.left,
-                            ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 45.0, vertical: 10.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Reach your files anytime from any devices anywhere',
+                            style: pageInfoStyle,
+                            textAlign: TextAlign.left,
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 45.0, vertical: 10.0),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Reach your files anytime from any devices anywhere',
-                              style: pageInfoStyle,
-                              textAlign: TextAlign.left,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 )),
         onPageChange: (int pageIndex) {

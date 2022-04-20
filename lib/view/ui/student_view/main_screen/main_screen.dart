@@ -15,7 +15,19 @@ class StudentMainScreen extends StatelessWidget {
   final List<Course> courses = List.generate(
       10,
       (index) => Course.fromJson({
-            'columnNames': [true, true, false, false],
+            'columnNames': [
+              true,
+              true,
+              false,
+              false,
+              true,
+              true,
+              false,
+              true,
+              false,
+              false,
+              true
+            ],
             "name": "IOT",
             "maxStudents": 10,
             "numberOfSessions": 5,
@@ -42,6 +54,7 @@ class StudentMainScreen extends StatelessWidget {
       },
       child: SafeArea(
         child: Scaffold(
+          backgroundColor: ColorManager.lightBlue,
           body: Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(
@@ -91,7 +104,7 @@ class StudentMainScreen extends StatelessWidget {
                                     courses[index],
                                   ),
                               separatorBuilder: (_, __) => const SizedBox(
-                                    height: 10,
+                                    height: 15,
                                   ),
                               itemCount: courses.length);
                         }

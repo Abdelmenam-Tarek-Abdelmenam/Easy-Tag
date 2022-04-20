@@ -21,7 +21,7 @@ class CourseCardDesign extends StatelessWidget {
       margin: const EdgeInsets.only(right: 5),
       height: 200,
       decoration: BoxDecoration(
-        color: ColorManager.lightBlue,
+        color: ColorManager.whiteColor,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
