@@ -177,8 +177,7 @@ class UserScreenLayout extends StatelessWidget {
                           itemBuilder: (_, index) => Padding(
                                 padding: const EdgeInsets.only(top: 40),
                                 child: CourseCardDesign(
-                                  course: state.courses[index],
-                                  index: -1,
+                                  state.courses[index],
                                 ),
                               ),
                           itemCount: state.courses.length > 5

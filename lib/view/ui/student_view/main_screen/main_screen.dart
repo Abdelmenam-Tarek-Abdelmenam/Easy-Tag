@@ -51,6 +51,9 @@ class StudentMainScreen extends StatelessWidget {
               children: [
                 const HomeAppBar(),
                 const CategoryButtonsList(),
+                const SizedBox(
+                  height: 15,
+                ),
                 Expanded(
                   child: BlocBuilder<StudentDataBloc, StudentDataStates>(
                       buildWhen: (prev, next) => true, // check state
@@ -83,9 +86,9 @@ class StudentMainScreen extends StatelessWidget {
                             );
                           }
                           return ListView.separated(
+                              physics: const BouncingScrollPhysics(),
                               itemBuilder: (_, index) => CourseCardDesign(
-                                    course: courses[index],
-                                    index: index,
+                                    courses[index],
                                   ),
                               separatorBuilder: (_, __) => const SizedBox(
                                     height: 10,

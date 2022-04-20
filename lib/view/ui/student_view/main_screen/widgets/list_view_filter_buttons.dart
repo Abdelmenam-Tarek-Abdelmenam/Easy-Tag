@@ -66,7 +66,7 @@ class CategoryButton extends StatelessWidget {
         margin: const EdgeInsets.only(left: 20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          color: isSelected ? ColorManager.mainOrange : ColorManager.darkGrey,
+          color: isSelected ? ColorManager.mainBlue : ColorManager.darkGrey,
         ),
         child: TextButton(
           onPressed: onPressed,
