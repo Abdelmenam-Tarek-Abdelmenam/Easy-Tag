@@ -10,7 +10,7 @@ import '../../../../bloc/admin_bloc/admin_data_bloc.dart';
 import '../../../shared/functions/navigation_functions.dart';
 import '../add_group/add_group.dart';
 import '../device_config/esp_config.dart';
-import '../start_screen/signing/login_screen.dart';
+import '../../start_screen/signing/login_screen.dart';
 
 class MainScreen extends StatelessWidget {
   final RefreshController _refreshController =

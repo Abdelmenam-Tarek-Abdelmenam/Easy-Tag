@@ -9,11 +9,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../../../../bloc/auth_bloc/auth_status_bloc.dart';
-import '../../../../../shared/functions/navigation_functions.dart';
-import '../../../main_screen/main_screen.dart';
+import '../../../../shared/functions/navigation_functions.dart';
+import '../../../admin_view/main_screen/main_screen.dart';
 import 'clip_pathes.dart';
 import 'forget_pass_dialog.dart';
-import '../../../../../shared/widgets/form_field.dart';
+import '../../../../shared/widgets/form_field.dart';
 
 // ignore: must_be_immutable
 class MainLoginWidget extends StatefulWidget {

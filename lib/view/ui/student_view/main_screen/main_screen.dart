@@ -4,7 +4,7 @@ import 'package:auto_id/view/resources/color_manager.dart';
 import 'package:auto_id/view/ui/student_view/main_screen/widgets/home_app_bar.dart';
 import 'package:auto_id/view/ui/student_view/main_screen/widgets/list_view_filter_buttons.dart';
 import 'package:auto_id/view/ui/student_view/main_screen/widgets/loading_card.dart';
-import 'package:auto_id/view/ui/student_view/main_screen/widgets/product_card.dart';
+import 'package:auto_id/view/ui/student_view/main_screen/widgets/course_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';

@@ -1,6 +1,6 @@
 import 'package:auto_id/view/resources/color_manager.dart';
 import 'package:auto_id/view/resources/string_manager.dart';
-import 'package:auto_id/view/ui/admin_view/start_screen/signing/widgtes/main_widget.dart';
+import 'package:auto_id/view/ui/start_screen/signing/widgtes/main_widget.dart';
 import 'package:flutter/material.dart';
 
 class LoginView extends StatefulWidget {

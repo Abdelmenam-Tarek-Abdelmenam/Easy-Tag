@@ -1,7 +1,7 @@
 // ignore: must_be_immutable
 import 'package:auto_id/bloc/student_bloc/student_data_bloc.dart';
 import 'package:auto_id/view/resources/color_manager.dart';
-import 'package:auto_id/view/ui/student_view/main_screen/widgets/product_card.dart';
+import 'package:auto_id/view/ui/student_view/main_screen/widgets/course_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';

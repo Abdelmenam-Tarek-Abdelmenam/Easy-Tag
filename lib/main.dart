@@ -6,7 +6,7 @@ import 'bloc/my_bloc_observer.dart';
 import 'model/module/app_admin.dart';
 import 'package:auto_id/view/resources/color_manager.dart';
 import 'package:auto_id/view/resources/string_manager.dart';
-import 'package:auto_id/view/ui/admin_view/start_screen/onboarding/on_boarding_screen.dart';
+import 'package:auto_id/view/ui/start_screen/onboarding/on_boarding_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
