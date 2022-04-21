@@ -48,6 +48,28 @@ class GetInitialDataState extends AdminDataStates {
   List<Object?> get props => [status, cardStudent, groupList.length];
 }
 
+class CreateGroupState extends AdminDataStates {
+  CreateGroupState(
+      {AdminDataStatus status = AdminDataStatus.initial,
+      CardStudent? cardStudent,
+      List<GroupDetails> groupList = const []})
+      : super(
+            status: status,
+            cardStudent: cardStudent ?? CardStudent.empty,
+            groupList: groupList);
+
+  factory CreateGroupState.fromOldState(
+      AdminDataStates oldState, AdminDataStatus status) {
+    return CreateGroupState(
+        cardStudent: oldState.cardStudent,
+        groupList: oldState.groupList,
+        status: status);
+  }
+
+  @override
+  List<Object?> get props => [status, cardStudent, groupList.length];
+}
+
 class LoadGroupDataState extends AdminDataStates {
   int groupIndex;
   bool loadingDelete;

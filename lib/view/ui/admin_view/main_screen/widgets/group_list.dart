@@ -53,7 +53,7 @@ class GroupList extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  groups[index].name,
+                  groups[index].course.name,
                   style: const TextStyle(
                       color: ColorManager.lightBlue,
                       fontSize: 30,

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_id/model/module/course.dart';
 import 'package:auto_id/model/module/group_details.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -20,13 +21,18 @@ class AdminDataRepository {
     }
   }
 
-  Future<List<GroupDetails>> getGroupNames() async {
+  Future<List<GroupDetails>> getGroupsData() async {
     DataSnapshot snap =
         await _dataBase.child(AdminDataBloc.admin.id).child("groups").get();
     if (snap.exists) {
+      print("data geted");
+      print(snap.children.first.value);
+      print(snap.children.first.value.runtimeType);
+      print(snap.children.first.key);
+      // return [];
       return snap.children
           .map((e) =>
-              GroupDetails(name: e.key.toString(), id: e.value.toString()))
+              GroupDetails(course: Course.fromJson(e.value, e.key.toString())))
           .toList();
     } else {
       return [];
@@ -52,7 +58,8 @@ class AdminDataRepository {
     await _dataBase
         .child(AdminDataBloc.admin.id)
         .child("groups")
-        .update({group.name: group.id});
+        .child(group.course.id)
+        .update(group.course.toJson);
   }
 
   Future<void> buildListener(Function(String key, dynamic value) onData) async {

@@ -45,7 +45,10 @@ class UserCard extends StatelessWidget {
                   color: Colors.grey,
                   fontWeight: FontWeight.bold,
                   fontSize: 18),
-            )
+            ),
+            SizedBox(
+              height: 10,
+            ),
           ],
         ));
       case StudentState.newStudent:
@@ -120,7 +123,7 @@ class UserCard extends StatelessWidget {
                         height: 10,
                       ),
                       Text(
-                          'Group : ${context.read<AdminDataBloc>().state.groupList[cardStudent.groupIndex!].name}'),
+                          'Group : ${context.read<AdminDataBloc>().state.groupList[cardStudent.groupIndex!].course.name}'),
                       const SizedBox(
                         height: 5,
                       ),

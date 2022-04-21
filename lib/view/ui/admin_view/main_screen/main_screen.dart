@@ -67,17 +67,17 @@ class MainScreen extends StatelessWidget {
           // cubit.addGroup(context);
         },
       ),
-      body: SmartRefresher(
-          enablePullUp: false,
-          controller: _refreshController,
-          onRefresh: () {
-            context
-                .read<AdminDataBloc>()
-                .add(StartAdminOperations(AdminDataBloc.admin));
-            _refreshController.refreshCompleted();
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
+      body: Container(
+        padding: const EdgeInsets.all(10.0),
+        child: SmartRefresher(
+            enablePullUp: false,
+            controller: _refreshController,
+            onRefresh: () {
+              context
+                  .read<AdminDataBloc>()
+                  .add(StartAdminOperations(AdminDataBloc.admin));
+              _refreshController.refreshCompleted();
+            },
             child: BlocBuilder<AdminDataBloc, AdminDataStates>(
                 buildWhen: (prev, next) => next is GetInitialDataState,
                 builder: (_, state) {
@@ -102,8 +102,8 @@ class MainScreen extends StatelessWidget {
                       ],
                     );
                   }
-                }),
-          )),
+                })),
+      ),
     );
   }
 

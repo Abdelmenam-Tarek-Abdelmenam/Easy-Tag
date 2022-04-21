@@ -32,7 +32,7 @@ class StudentMainScreen extends StatelessWidget {
             "startDate": 'dd-MM-yyyy',
             "instructorsNames": ['Ahmed', 'Menam', 'Mohamed'],
             "instructorsEmails": ['Ahmed', 'Menam', 'Mohamed'],
-          }));
+          }, ""));
 
   @override
   Widget build(BuildContext context) {

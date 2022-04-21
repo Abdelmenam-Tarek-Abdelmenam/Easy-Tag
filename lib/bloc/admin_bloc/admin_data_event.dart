@@ -42,6 +42,17 @@ class DeleteGroupIndex extends AdminDataEvent {
   List<Object?> get props => [groupIndex];
 }
 
+class CreateGroupEvent extends AdminDataEvent {
+  final Course groupData;
+  final List<String> instructorsMails;
+  final List<String> titles;
+
+  const CreateGroupEvent(this.groupData, this.instructorsMails, this.titles);
+
+  @override
+  List<Object?> get props => [groupData.name];
+}
+
 class SendConfigurationEvent extends AdminDataEvent {
   final String name;
   final String pass;

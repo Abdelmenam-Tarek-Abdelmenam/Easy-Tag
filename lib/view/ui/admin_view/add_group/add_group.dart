@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_id/model/module/course.dart';
 import 'package:auto_id/view/shared/widgets/form_field.dart';
 import 'package:auto_id/view/ui/admin_view/add_group/models.dart';
 import 'package:auto_id/view/ui/admin_view/add_group/widgets/numeric_field.dart';
@@ -73,23 +74,37 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
       },
       child: Scaffold(
           floatingActionButton: BlocConsumer<AdminDataBloc, AdminDataStates>(
-              listenWhen: (_, next) => true, // check next state
-              buildWhen: (_, next) => true, // check next state
-              listener: (context, state) {},
-              builder: (context, state) => FloatingActionButton(
-                    backgroundColor: ColorManager.darkGrey,
-                    child: const Icon(
-                      Icons.check,
-                      size: 40,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        print(createMap());
-                        // context.read<AdminDataBloc>().add(AddGroupEvent());
-                      }
-                    },
-                  )),
+              buildWhen: (_, state) => state is CreateGroupState,
+              listenWhen: (_, state) => state is CreateGroupState,
+              listener: (context, state) {
+                if (state.status == AdminDataStatus.loaded) {
+                  Navigator.of(context).pop();
+                }
+              },
+              builder: (context, state) =>
+                  state.status == AdminDataStatus.loading
+                      ? const CircularProgressIndicator()
+                      : FloatingActionButton(
+                          backgroundColor: ColorManager.darkGrey,
+                          child: const Icon(
+                            Icons.check,
+                            size: 40,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              Map<String, dynamic> data = createMap();
+                              //   final Course groupData;
+                              //   final List<String> instructorsMails;
+                              //   final List<String> titles;
+                              context.read<AdminDataBloc>().add(
+                                  CreateGroupEvent(
+                                      Course.fromJson(data, ""),
+                                      data['instructorsEmails'],
+                                      data['titles']));
+                            }
+                          },
+                        )),
           appBar: AppBar(
             shape: StyLeManager.appBarShape,
             foregroundColor: Colors.white,
@@ -544,15 +559,16 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
   }
 
   Map<String, dynamic> createMap() {
-    // List<String> renameRowsName = [];
-    // for (int i = 0; i < neededColumns.length; i++) {
-    //   if (neededColumns[i]) {
-    //     renameRowsName.add(columnsNames[i]);
-    //   }
-    // }
+    List<String> renameRowsName = [];
+    for (int i = 0; i < neededColumns.length; i++) {
+      if (neededColumns[i]) {
+        renameRowsName.add(_columnsNames[i]);
+      }
+    }
 
     return {
       'columnNames': neededColumns,
+      'titles': renameRowsName,
       "name": sheetName.text,
       "maxStudents": int.parse(maxStudents.text),
       "numberOfSessions": int.parse(numberOfSessions.text),

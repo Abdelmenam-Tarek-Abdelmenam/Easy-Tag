@@ -5,26 +5,25 @@ import 'package:dio/dio.dart';
 const _base = "https://script.google.com/macros/s/";
 
 const _funcSheetLinkBase = _base +
-    "AKfycbxx3WO2ZZQ0jSInhHwsl6p3ZvnM4NAVP-ka0ecbqkZJRnOlj8G7qTyvZcZdknsQGvk/exec?";
-const _dataSheetLinkBase = _base +
-    "AKfycbzAWq8QxQDISfOGFEougyd4gK29jQr3SWRUbDBgAR4Q6E-rekQbHqkrouqkidbG5SY/exec?";
-const _infoSheetLinkBase = _base +
-    "AKfycbwCgPd0uvbcYCrn3D5v-4GsH_E9OhMUakXe2D3tY0phqN3nxivfWn3efJ4TE6ckqgXa/exec?";
-const _setSheetDataLink = _base +
-    "AKfycbyDVddZV5IbMoj93yxZKY7tPdcyxG7pqjq5wkNTOxPHAKUsLZdvZoWZsjfmCJbhhO6NHA/exec?";
-const _createSheetLinkBase = _base +
-    "AKfycbz3o9eqSWAGqFUf1C2Vk1waU6DgaqyVUjPtSyz9rw8ZQ-o_8U_aAwnnCaunX1Heo3Vn/exec?";
-const _testSheetLinkBase = _base +
-    "AKfycbzi7OBUEk5ZaBWeOjelTJMVMaJnK4zTU78UwB59qJW0GvJBnZ_daHmY_VPusN3xCZb0jw/exec?";
+    "AKfycbwd0Dn620WtM_yG9x7Mu4xiMcLzJbOQTGKDZIVAT_qCkthI5aIqBvBU4nM1qEAnPvY/exec";
 
 class WebServices {
-  final Dio _dio = Dio(BaseOptions(
-    baseUrl: "https://script.google.com",
-    connectTimeout: 2000,
-    receiveTimeout: 3000,
-  ));
+  final Dio _dio = Dio();
 
   String get _id => AdminDataBloc.admin.id;
+
+  Future<String> createSpreadSheet(
+      String groupName, List<String> emails, List<String> titles) async {
+    String url = _funcSheetLinkBase +
+        "?func=addsheet" +
+        "&sheetName=$groupName" +
+        "&viewersEmailsList=$emails" +
+        "&columnsTitles=$titles";
+    print(url);
+    String id = await _doRequest(url);
+    print(id);
+    return id;
+  }
 
   Future<void> deleteStudentFromSheet(int userIndex, int groupIndex) async {
     String url =
@@ -45,7 +44,7 @@ class WebServices {
   Future<Map<String, dynamic>> getUserData(
       int groupIndex, int userIndex) async {
     Map<String, dynamic> userData = {};
-    String url = _dataSheetLinkBase +
+    String url = _funcSheetLinkBase +
         "userName=$_id"
             "&group=$groupIndex"
             "&index=${userIndex + 1}";
@@ -58,35 +57,16 @@ class WebServices {
   }
 
   Future<GroupDetails> getGroupData(int index, GroupDetails details) async {
-    String url = _infoSheetLinkBase +
+    String url = _funcSheetLinkBase +
         "userName=$_id"
             "&group=$index";
-    print("start requset");
+    print("start request");
     String data = await _doRequest(url);
-    print("recieved $data");
+    print("received $data");
     var list = data.split("!");
     details.studentNames = list[0].split(',');
-    details.columnNames = list[1].split(',');
+    // details.columnNames = list[1].split(',');
     return details;
-  }
-
-  Future<bool> addColumnNames(
-      String id, String groupName, List<String> renameRowsName) async {
-    String url = _setSheetDataLink + "id=" + id + "&list=$renameRowsName";
-    String returned = (await _doRequest(url)).toString();
-    return returned.trim() == "1";
-  }
-
-  Future<String> createSpreadSheet(String groupName) async {
-    String url = _createSheetLinkBase + "name=$_id $groupName";
-    String id = await _doRequest(url);
-    return id;
-  }
-
-  Future<dynamic> testSheetLink(String groupName, String link) async {
-    String id = link.split('/')[5];
-    var url = _testSheetLinkBase + "id=$id";
-    return await _doRequest(url);
   }
 
   Future<bool> sendCredentialsToEsp(
@@ -114,10 +94,10 @@ class WebServices {
       Response response = await _dio.get(url);
       return response.data;
     } on DioError catch (e) {
-      print("err");
+      print("err $e");
       throw DioErrors.fromCode(e);
     } catch (_) {
-      print("err");
+      print("err $_");
       throw const DioErrors();
     }
   }

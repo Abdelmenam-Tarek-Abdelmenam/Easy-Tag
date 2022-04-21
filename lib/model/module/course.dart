@@ -3,6 +3,7 @@ const String _onlineLogo =
 
 class Course {
   late String name;
+  late String id;
   int? maxStudent;
   int? numberOfSessions;
   late int price;
@@ -15,7 +16,7 @@ class Course {
   late String inPlace;
   late List<bool> columns;
 
-  Course.fromJson(Map<String, dynamic> json) {
+  Course.fromJson(json, String id) {
     name = json['name'];
     maxStudent = json['maxStudents'];
     numberOfSessions = json['numberOfSessions'];
@@ -26,7 +27,23 @@ class Course {
     inPlace = json['inPlace'];
     logo = json['logo'] ?? _onlineLogo;
     date = json['startDate'];
-    columns = json['columnNames'];
-    instructors = json['instructorsNames'];
+    // columns = json['columnNames'].map((e) => e.toString() == "true").toList();
+    instructors = List<String>.from(json['instructorsNames']);
+    columns = List<bool>.from(json['columnNames']);
   }
+
+  Map<String, dynamic> get toJson => {
+        'columnNames': columns,
+        "name": name,
+        "maxStudents": maxStudent,
+        "numberOfSessions": numberOfSessions,
+        "priceController": price,
+        "description": description,
+        "offer": offer,
+        "category": category,
+        "inPlace": inPlace,
+        "logo": logo,
+        "startDate": date,
+        "instructorsNames": instructors,
+      };
 }

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../shared/functions/dialogs.dart';
-import 'edit_user.dart';
 
 // ignore: must_be_immutable
 class UserScreen extends StatelessWidget {
@@ -30,12 +29,7 @@ class UserScreen extends StatelessWidget {
                 color: Colors.white,
               ),
               onPressed: () {
-                if (cubit.showedUserData['ID'].toString().isNotEmpty) {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return EditUserScreen(
-                        cubit.showedUserData['ID'] ?? '-', groupIndex, true);
-                  }));
-                }
+                if (cubit.showedUserData['ID'].toString().isNotEmpty) {}
               }),
           appBar: AppBar(
               foregroundColor: Colors.white,

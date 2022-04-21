@@ -39,7 +39,7 @@ class GroupScreen extends StatelessWidget {
               actions: [
                 IconButton(
                   onPressed: () {
-                    _copyId(state.groupList[groupIndex].id);
+                    _copyId(state.groupList[groupIndex].course.id);
                   },
                   icon: const Icon(Icons.link),
                   iconSize: 30,
@@ -67,7 +67,7 @@ class GroupScreen extends StatelessWidget {
               foregroundColor: Colors.white,
               shape: StyLeManager.appBarShape,
               title: Text(
-                state.groupList[groupIndex].name,
+                state.groupList[groupIndex].course.name,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ),

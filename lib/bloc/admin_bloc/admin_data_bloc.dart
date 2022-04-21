@@ -7,6 +7,7 @@ import 'package:equatable/equatable.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 import '../../model/module/app_admin.dart';
+import '../../model/module/course.dart';
 import '../../model/repository/realtime_firebase.dart';
 import '../../model/repository/web_sevices.dart';
 
@@ -17,6 +18,7 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
   AdminDataBloc() : super(GetInitialDataState.initial()) {
     on<StartAdminOperations>(_startGettingDataHandler);
     on<CardDataChangedEvents>(_cardDataChangesHandler);
+    on<CreateGroupEvent>(_createSpreadSheet);
     on<SendConfigurationEvent>(_sendEspConfigHandler);
     on<SignOutEvent>(_signOutHandler);
     on<LoadGroupDataEvent>(_getGroupDataHandler);
@@ -45,13 +47,26 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
         groupList: state.groupList));
   }
 
+  Future<void> _createSpreadSheet(CreateGroupEvent event, Emitter emit) async {
+    try {
+      emit(CreateGroupState.fromOldState(state, AdminDataStatus.loading));
+      String id = await _webServices.createSpreadSheet(
+          event.groupData.name, event.instructorsMails, event.titles);
+      await _createGroup(id, event.groupData.name, event.groupData, emit);
+      emit(CreateGroupState.fromOldState(state, AdminDataStatus.loaded));
+    } on DioErrors catch (err) {
+      emit(CreateGroupState.fromOldState(state, AdminDataStatus.error));
+      showToast(err.message, type: ToastType.error);
+    }
+  }
+
   Future<void> _getGroupDataHandler(
       LoadGroupDataEvent event, Emitter emit) async {
     print("Start get group data");
     emit(LoadGroupDataState.fromOldState(
         state, AdminDataStatus.loading, event.groupIndex,
         force: event.force));
-    if (state.groupList[event.groupIndex].columnNames == null || event.force) {
+    if (state.groupList[event.groupIndex].studentNames == null || event.force) {
       try {
         state.groupList[event.groupIndex] = await _webServices.getGroupData(
             event.groupIndex, state.groupList[event.groupIndex]);
@@ -73,7 +88,7 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
     LoadGroupDataState.fromOldState(state, state.status, event.groupIndex,
         loadingSate: true);
     await _adminDataRepository
-        .deleteGroup(state.groupList[event.groupIndex].name);
+        .deleteGroup(state.groupList[event.groupIndex].course.name);
     state.groupList.removeAt(event.groupIndex);
     emit(GetInitialDataState(
         status: AdminDataStatus.loaded,
@@ -147,35 +162,12 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
     }
   }
 
-  Future<void> createSpreadSheet(
-      String groupName, List<String> columnNames, Emitter emit) async {
-    try {
-      String id = await _webServices.createSpreadSheet(groupName);
-      addSheetColumnNames(id, groupName, columnNames, emit);
-      // user deleted successfully
-    } on DioErrors catch (err) {
-      showToast(err.message, type: ToastType.error);
-    }
-  }
-
-  Future<void> addSheetColumnNames(String id, String groupName,
-      List<String> columnNames, Emitter emit) async {
-    try {
-      bool success =
-          await _webServices.addColumnNames(id, groupName, columnNames);
-      if (success) {
-        await _createGroup(id, groupName, emit);
-      } else {
-        showToast("can't Create group,try again", type: ToastType.error);
-      }
-    } on DioErrors catch (err) {
-      showToast(err.message, type: ToastType.error);
-    }
-  }
-
   ///************************ Helper functions **************************/
-  Future<void> _createGroup(String id, String name, Emitter emit) async {
-    GroupDetails newGroup = GroupDetails(name: name, id: id);
+  Future<void> _createGroup(
+      String id, String name, Course course, Emitter emit) async {
+    course.id = id;
+    GroupDetails newGroup = GroupDetails(course: course);
+    newGroup.studentNames = [];
     await _adminDataRepository.createGroup(newGroup);
     state.groupList.insert(0, newGroup);
     emit(GetInitialDataState(
@@ -187,7 +179,7 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
   Future<void> _readInitialFireData(Emitter emit) async {
     if (await _checkConnectivity()) {
       CardStudent cardStudent = await _adminDataRepository.readAdminData();
-      List<GroupDetails> groups = await _adminDataRepository.getGroupNames();
+      List<GroupDetails> groups = await _adminDataRepository.getGroupsData();
       emit(GetInitialDataState(
           status: AdminDataStatus.loaded,
           cardStudent: cardStudent,

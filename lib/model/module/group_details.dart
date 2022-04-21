@@ -1,13 +1,9 @@
-class GroupDetails {
-  String name;
-  String id;
-  List<String>? studentNames;
-  List<String>? columnNames;
-  int get itemsLength => columnNames?.length ?? 0;
+import 'package:auto_id/model/module/course.dart';
 
-  GroupDetails(
-      {required this.name,
-      required this.id,
-      this.studentNames,
-      this.columnNames});
+class GroupDetails {
+  List<String>? studentNames;
+  Course course;
+  int get itemsLength => studentNames?.length ?? 0;
+
+  GroupDetails({this.studentNames, required this.course});
 }
