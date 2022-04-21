@@ -1,7 +1,9 @@
 import 'package:auto_id/bloc/admin_bloc/admin_data_bloc.dart';
-import 'package:auto_id/view/resources/styles_manager.dart';
+import 'package:auto_id/view/resources/color_manager.dart';
+import 'package:auto_id/view/shared/functions/navigation_functions.dart';
 import 'package:auto_id/view/ui/admin_view/group_screen/widgets/item_builder.dart';
 import 'package:auto_id/view/ui/admin_view/group_screen/widgets/search_bar.dart';
+import 'package:auto_id/view/ui/student_view/details_screen/details_screen.dart';
 import 'package:flutter/services.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -34,81 +36,129 @@ class GroupScreen extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return Scaffold(
-            appBar: AppBar(
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    _copyId(state.groupList[groupIndex].course.id);
-                  },
-                  icon: const Icon(Icons.link),
-                  iconSize: 30,
-                ),
-                if ((state is LoadGroupDataState) && state.loadingDelete)
-                  const CircularProgressIndicator(
-                    color: Colors.white,
-                  )
-                else
-                  IconButton(
-                    onPressed: () {
-                      customChoiceDialog(context,
-                          title: "Warning",
-                          content: "Are you sure you want to delete The group ",
-                          yesFunction: () {
-                        context
-                            .read<AdminDataBloc>()
-                            .add(DeleteGroupIndex(groupIndex));
-                      });
-                    },
-                    icon: const Icon(Icons.restore_from_trash_outlined),
-                    iconSize: 30,
-                  )
-              ],
-              foregroundColor: Colors.white,
-              shape: StyLeManager.appBarShape,
-              title: Text(
-                state.groupList[groupIndex].course.name,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+        return SafeArea(
+          child: Scaffold(
+              backgroundColor: ColorManager.lightBlue,
+              floatingActionButton: FloatingActionButton(
+                onPressed: () => navigateAndPush(
+                    context, DetailsScreen(state.groupList[groupIndex])),
+                child: const Icon(Icons.remove_red_eye_outlined),
               ),
-            ),
-            body: SmartRefresher(
-                enablePullUp: false,
-                controller: _refreshController,
-                onRefresh: () {
-                  context
-                      .read<AdminDataBloc>()
-                      .add(LoadGroupDataEvent(groupIndex, true));
-                  _refreshController.refreshCompleted();
-                },
-                child: ListView(
-                  physics: const BouncingScrollPhysics(),
-                  children: [
-                    const SizedBox(height: 10),
-                    SearchBar(state.groupList[groupIndex].studentNames ?? []),
-                    Container(
-                        padding: const EdgeInsets.all(15),
-                        child: (state is LoadGroupDataState) &&
-                                (state.status == AdminDataStatus.loading)
-                            ? const Center(child: CircularProgressIndicator())
-                            : ListView.separated(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount:
-                                    state.groupList[groupIndex].itemsLength,
-                                itemBuilder: (context, userIndex) {
-                                  return GroupItemBuilder(
-                                      userIndex,
-                                      groupIndex,
-                                      state.groupList[groupIndex]
-                                          .studentNames![userIndex]);
+              body: SmartRefresher(
+                  enablePullUp: false,
+                  controller: _refreshController,
+                  onRefresh: () {
+                    context
+                        .read<AdminDataBloc>()
+                        .add(LoadGroupDataEvent(groupIndex, true));
+                    _refreshController.refreshCompleted();
+                  },
+                  child: ListView(
+                    physics: const BouncingScrollPhysics(),
+                    children: [
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 20.0),
+                              child: IconButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
                                 },
-                                separatorBuilder: (context, index) {
-                                  return const SizedBox(
-                                    height: 10,
-                                  );
-                                }))
-                  ],
-                )));
+                                icon: const Icon(Icons.arrow_back_rounded),
+                                iconSize: 30,
+                              ),
+                            ),
+                            Text(
+                              state.groupList[groupIndex].name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: ColorManager.mainBlue,
+                                  fontSize: 18),
+                            ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    _copyId(state.groupList[groupIndex].id);
+                                  },
+                                  icon: const Icon(Icons.link),
+                                  iconSize: 30,
+                                ),
+                                if ((state is LoadGroupDataState) &&
+                                    state.loadingDelete)
+                                  const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
+                                else
+                                  IconButton(
+                                    onPressed: () {
+                                      customChoiceDialog(context,
+                                          title: "Warning",
+                                          content:
+                                              "Are you sure you want to delete The group ",
+                                          yesFunction: () {
+                                        context
+                                            .read<AdminDataBloc>()
+                                            .add(DeleteGroupIndex(groupIndex));
+                                      });
+                                    },
+                                    icon: const Icon(
+                                        Icons.restore_from_trash_outlined),
+                                    iconSize: 30,
+                                  )
+                              ],
+                            )
+                          ]),
+                      const SizedBox(height: 10),
+                      SearchBar(state.groupList[groupIndex].getStudentsNames),
+                      Container(
+                          padding: const EdgeInsets.all(15),
+                          child: (state is LoadGroupDataState) &&
+                                  (state.status == AdminDataStatus.loading)
+                              ? const Center(child: CircularProgressIndicator())
+                              : state.groupList[groupIndex].students!.isEmpty
+                                  ? Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: const [
+                                        Icon(
+                                          Icons.notes,
+                                          color: Colors.grey,
+                                          size: 100,
+                                        ),
+                                        Text(
+                                          "No students",
+                                          style: TextStyle(
+                                              color: Colors.grey,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18),
+                                        )
+                                      ],
+                                    )
+                                  : ListView.separated(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: state
+                                          .groupList[groupIndex].studentLength,
+                                      itemBuilder: (context, userIndex) {
+                                        return GroupItemBuilder(
+                                            userIndex,
+                                            groupIndex,
+                                            state.groupList[groupIndex]
+                                                .students![userIndex][' Name']);
+                                      },
+                                      separatorBuilder: (context, index) {
+                                        return const SizedBox(
+                                          height: 10,
+                                        );
+                                      }))
+                    ],
+                  ))),
+        );
       },
     );
   }

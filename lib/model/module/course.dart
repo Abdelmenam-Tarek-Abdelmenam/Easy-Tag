@@ -16,7 +16,8 @@ class Course {
   late String inPlace;
   late List<bool> columns;
 
-  Course.fromJson(json, String id) {
+  Course.fromJson(json, String cId) {
+    id = cId;
     name = json['name'];
     maxStudent = json['maxStudents'];
     numberOfSessions = json['numberOfSessions'];

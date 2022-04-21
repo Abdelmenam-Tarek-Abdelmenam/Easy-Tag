@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 const _base = "https://script.google.com/macros/s/";
 
 const _funcSheetLinkBase = _base +
-    "AKfycbwd0Dn620WtM_yG9x7Mu4xiMcLzJbOQTGKDZIVAT_qCkthI5aIqBvBU4nM1qEAnPvY/exec";
+    "AKfycbwd0Dn620WtM_yG9x7Mu4xiMcLzJbOQTGKDZIVAT_qCkthI5aIqBvBU4nM1qEAnPvY/exec?";
 
 class WebServices {
   final Dio _dio = Dio();
@@ -15,13 +15,11 @@ class WebServices {
   Future<String> createSpreadSheet(
       String groupName, List<String> emails, List<String> titles) async {
     String url = _funcSheetLinkBase +
-        "?func=addsheet" +
+        "func=addsheet" +
         "&sheetName=$groupName" +
         "&viewersEmailsList=$emails" +
         "&columnsTitles=$titles";
-    print(url);
     String id = await _doRequest(url);
-    print(id);
     return id;
   }
 
@@ -31,14 +29,16 @@ class WebServices {
     await _doRequest(url);
   }
 
-  Future<void> sendStudentNewData(
-      int groupIndex, String id, Map dataToSent) async {
-    String url = "${_funcSheetLinkBase}fun=edit"
-        "&group=$groupIndex"
-        "&user_data=$dataToSent"
-        "&person_id=$id"
-        "&userName=$_id";
-    await _doRequest(url);
+  Future<GroupDetails> getGroupData(int index, GroupDetails details) async {
+    String url = _funcSheetLinkBase +
+        "func=get_all_users"
+            "&sheetID=${details.id}";
+    print(url);
+    print("start request");
+    List<dynamic> data = await _doRequest(url);
+    print("received $data");
+    details.students = data.cast();
+    return details;
   }
 
   Future<Map<String, dynamic>> getUserData(
@@ -56,17 +56,16 @@ class WebServices {
     return userData;
   }
 
-  Future<GroupDetails> getGroupData(int index, GroupDetails details) async {
-    String url = _funcSheetLinkBase +
-        "userName=$_id"
-            "&group=$index";
-    print("start request");
-    String data = await _doRequest(url);
-    print("received $data");
-    var list = data.split("!");
-    details.studentNames = list[0].split(',');
-    // details.columnNames = list[1].split(',');
-    return details;
+  //---------------------------------------------------------------------------
+
+  Future<void> sendStudentNewData(
+      int groupIndex, String id, Map dataToSent) async {
+    String url = "${_funcSheetLinkBase}fun=edit"
+        "&group=$groupIndex"
+        "&user_data=$dataToSent"
+        "&person_id=$id"
+        "&userName=$_id";
+    await _doRequest(url);
   }
 
   Future<bool> sendCredentialsToEsp(

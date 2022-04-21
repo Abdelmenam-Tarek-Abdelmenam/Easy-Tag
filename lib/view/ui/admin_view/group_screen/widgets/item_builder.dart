@@ -27,7 +27,7 @@ class GroupItemBuilder extends StatelessWidget {
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(10),
                     bottomLeft: Radius.circular(8)),
-                color: Colors.orange,
+                color: ColorManager.mainBlue,
               ),
               padding: const EdgeInsets.all(10),
               child: Text(

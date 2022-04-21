@@ -39,7 +39,7 @@ class MainConfigWidget extends StatelessWidget {
             child: Container(
               height: 400,
               width: MediaQuery.of(context).size.width * 0.92,
-              color: ColorManager.lightBlue.withOpacity(0.1),
+              color: ColorManager.lightBlue.withOpacity(0.5),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.end,

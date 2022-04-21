@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:auto_id/model/module/course.dart';
 import 'package:auto_id/view/shared/widgets/form_field.dart';
 import 'package:auto_id/view/ui/admin_view/add_group/models.dart';
 import 'package:auto_id/view/ui/admin_view/add_group/widgets/numeric_field.dart';
@@ -82,7 +81,7 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
                 }
               },
               builder: (context, state) =>
-                  state.status == AdminDataStatus.loading
+                  state.status == AdminDataStatus.loaded
                       ? const CircularProgressIndicator()
                       : FloatingActionButton(
                           backgroundColor: ColorManager.darkGrey,
@@ -97,11 +96,9 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
                               //   final Course groupData;
                               //   final List<String> instructorsMails;
                               //   final List<String> titles;
-                              context.read<AdminDataBloc>().add(
-                                  CreateGroupEvent(
-                                      Course.fromJson(data, ""),
-                                      data['instructorsEmails'],
-                                      data['titles']));
+                              context
+                                  .read<AdminDataBloc>()
+                                  .add(CreateGroupEvent(data));
                             }
                           },
                         )),

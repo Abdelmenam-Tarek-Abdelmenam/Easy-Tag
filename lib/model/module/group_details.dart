@@ -1,9 +1,15 @@
 import 'package:auto_id/model/module/course.dart';
 
-class GroupDetails {
-  List<String>? studentNames;
-  Course course;
-  int get itemsLength => studentNames?.length ?? 0;
+class GroupDetails extends Course {
+  List<Map<String, dynamic>>? students;
+  int get studentLength => students?.length ?? 0;
 
-  GroupDetails({this.studentNames, required this.course});
+  List<String> get getStudentsNames =>
+      students!.map((e) => e['Name'].toString()).toList();
+
+  GroupDetails({
+    this.students,
+    required json,
+    required String id,
+  }) : super.fromJson(json, id);
 }

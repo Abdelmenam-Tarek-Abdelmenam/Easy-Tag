@@ -61,8 +61,7 @@ class AddBottomSheet extends StatelessWidget {
   Widget menuItemBuilder(int index, BuildContext context) {
     return Center(
       child: TextButton(
-          child: Text(
-              "${context.read<AdminCubit>().groups?[index].course.name}",
+          child: Text("${context.read<AdminCubit>().groups?[index].name}",
               style: const TextStyle(color: Colors.orange, fontSize: 12)),
           style: ButtonStyle(
               padding: MaterialStateProperty.all<EdgeInsets>(
