@@ -7,8 +7,6 @@ class DetailsLayout extends StatelessWidget {
   final Course course;
   const DetailsLayout(this.course, {Key? key}) : super(key: key);
 
-  //   late List<String> instructors;
-
   @override
   Widget build(BuildContext context) {
     return ListView(children: [
@@ -136,13 +134,14 @@ class DetailsLayout extends StatelessWidget {
       );
 
   Widget coursePhoto(BuildContext context) => Container(
+        // height: 180,
+        width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
             border: Border.all(color: ColorManager.mainBlue, width: 1),
             borderRadius: BorderRadius.circular(10)),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10.0),
           child: Image.network(course.logo,
-              width: MediaQuery.of(context).size.width,
               fit: BoxFit.fitWidth,
               errorBuilder: (_, __, ___) => Container(
                     height: 180,

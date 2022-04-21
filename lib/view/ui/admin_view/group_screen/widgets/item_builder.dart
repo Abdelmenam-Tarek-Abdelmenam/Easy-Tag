@@ -1,11 +1,16 @@
 import 'package:auto_id/view/resources/color_manager.dart';
+import 'package:auto_id/view/shared/functions/navigation_functions.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../../model/module/students.dart';
+import '../../user_screen.dart';
 
 class GroupItemBuilder extends StatelessWidget {
   final int userIndex;
   final int groupIndex;
-  final String name;
-  const GroupItemBuilder(this.userIndex, this.groupIndex, this.name, {Key? key})
+  final Student student;
+  const GroupItemBuilder(this.userIndex, this.groupIndex, this.student,
+      {Key? key})
       : super(key: key);
 
   @override
@@ -17,6 +22,13 @@ class GroupItemBuilder extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
+          navigateAndPush(
+              context,
+              UserScreen(
+                student: student,
+                groupIndex: groupIndex,
+                userIndex: userIndex,
+              ));
           // cubit.goToUser(groupIndex, index, context);
         },
         child: Row(
@@ -45,7 +57,7 @@ class GroupItemBuilder extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Text(
-                  name,
+                  student.name,
                   style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,

@@ -81,7 +81,7 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
                 }
               },
               builder: (context, state) =>
-                  state.status == AdminDataStatus.loaded
+                  state.status == AdminDataStatus.loading
                       ? const CircularProgressIndicator()
                       : FloatingActionButton(
                           backgroundColor: ColorManager.darkGrey,

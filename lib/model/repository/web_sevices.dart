@@ -2,6 +2,8 @@ import 'package:auto_id/bloc/admin_bloc/admin_data_bloc.dart';
 import 'package:auto_id/model/module/group_details.dart';
 import 'package:dio/dio.dart';
 
+import '../module/students.dart';
+
 const _base = "https://script.google.com/macros/s/";
 
 const _funcSheetLinkBase = _base +
@@ -23,12 +25,6 @@ class WebServices {
     return id;
   }
 
-  Future<void> deleteStudentFromSheet(int userIndex, int groupIndex) async {
-    String url =
-        "${_funcSheetLinkBase}fun=remove&group=$groupIndex&person_id=$userIndex&userName=$_id";
-    await _doRequest(url);
-  }
-
   Future<GroupDetails> getGroupData(int index, GroupDetails details) async {
     String url = _funcSheetLinkBase +
         "func=get_all_users"
@@ -37,23 +33,28 @@ class WebServices {
     print("start request");
     List<dynamic> data = await _doRequest(url);
     print("received $data");
-    details.students = data.cast();
+    details.students = data.cast().map((e) => Student.fromJson(e)).toList();
     return details;
   }
 
-  Future<Map<String, dynamic>> getUserData(
-      int groupIndex, int userIndex) async {
+  Future<bool> deleteStudentFromSheet(String userId, String sheetId) async {
+    String url = _funcSheetLinkBase +
+        "func=delete_user" +
+        "&sheetID=$sheetId" +
+        "&uid=$userId";
+    String response = await _doRequest(url);
+    return response.trim() == "done";
+  }
+
+  Future<Student> getUserData(String userId, String sheetId) async {
     Map<String, dynamic> userData = {};
     String url = _funcSheetLinkBase +
-        "userName=$_id"
-            "&group=$groupIndex"
-            "&index=${userIndex + 1}";
+        "func=get_user" +
+        "&sheetID=$sheetId" +
+        "&uid=$userId";
     userData = await _doRequest(url);
-    if (userData.containsKey("imgUrl")) {
-      userData['imgUrl'] = "https://drive.google.com/uc?export=view&id=" +
-          userData['imgUrl'].split('/')[5];
-    }
-    return userData;
+
+    return Student.fromJson(userData);
   }
 
   //---------------------------------------------------------------------------

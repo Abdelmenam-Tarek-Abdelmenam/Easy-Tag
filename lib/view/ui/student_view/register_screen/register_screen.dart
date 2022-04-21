@@ -3,14 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../../bloc/student_bloc/student_data_bloc.dart';
+import '../../../../model/module/students.dart';
 import '../../../resources/color_manager.dart';
 import '../../../shared/widgets/form_field.dart';
 import '../../admin_view/add_group/widgets/numeric_field.dart';
-
-enum Gender {
-  male,
-  female,
-}
 
 // ignore: must_be_immutable
 class RegisterScreen extends StatelessWidget {

@@ -37,11 +37,11 @@ class AdminDataRepository {
     }
   }
 
-  Future<void> deleteGroup(String groupName) async {
+  Future<void> deleteGroup(String groupId) async {
     await _dataBase
         .child(AdminDataBloc.admin.id)
         .child("groups")
-        .child(groupName)
+        .child(groupId)
         .remove();
   }
 

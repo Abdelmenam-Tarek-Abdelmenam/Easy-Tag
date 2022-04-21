@@ -1,5 +1,6 @@
 import 'package:auto_id/model/module/card_student.dart';
 import 'package:auto_id/model/module/group_details.dart';
+import 'package:auto_id/model/module/students.dart';
 import 'package:auto_id/model/repository/auth_repository.dart';
 import 'package:auto_id/view/shared/widgets/toast_helper.dart';
 import 'package:bloc/bloc.dart';
@@ -22,6 +23,7 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
     on<SignOutEvent>(_signOutHandler);
     on<LoadGroupDataEvent>(_getGroupDataHandler);
     on<DeleteGroupIndex>(_deleteGroup);
+    on<DeleteStudentIndex>(_deleteStudent);
   }
 
   static AppAdmin admin = AppAdmin.empty;
@@ -94,12 +96,32 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
     LoadGroupDataState.fromOldState(state, state.status, event.groupIndex,
         loadingSate: true);
     await _adminDataRepository
-        .deleteGroup(state.groupList[event.groupIndex].name);
+        .deleteGroup(state.groupList[event.groupIndex].id);
     state.groupList.removeAt(event.groupIndex);
     emit(GetInitialDataState(
         status: AdminDataStatus.loaded,
         cardStudent: state.cardStudent,
         groupList: state.groupList));
+  }
+
+  Future<void> _deleteStudent(DeleteStudentIndex event, Emitter emit) async {
+    try {
+      emit(DeleteUserState.fromOldState(state, AdminDataStatus.loading));
+      bool response = await _webServices.deleteStudentFromSheet(
+          state.groupList[event.groupIndex].students![event.userIndex].id,
+          state.groupList[event.groupIndex].id);
+      if (response) {
+        state.groupList[event.groupIndex].students!.removeAt(event.userIndex);
+        emit(LoadGroupDataState.fromOldState(
+            state, AdminDataStatus.loaded, event.groupIndex,
+            force: false));
+      } else {
+        emit(DeleteUserState.fromOldState(state, AdminDataStatus.error));
+      }
+    } on DioErrors catch (err) {
+      showToast(err.message, type: ToastType.error);
+      emit(DeleteUserState.fromOldState(state, AdminDataStatus.error));
+    }
   }
 
   Future<void> _sendEspConfigHandler(
@@ -132,15 +154,6 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
   }
 
   ///***************** need events and states **************************/
-
-  Future<void> deleteUser(int userIndex, int groupIndex) async {
-    try {
-      await _webServices.deleteStudentFromSheet(userIndex, groupIndex);
-    } on DioErrors catch (err) {
-      showToast(err.message, type: ToastType.error);
-    }
-  }
-
   Future<void> sendEditData(int groupIndex, String id, Map dataToSent) async {
     try {
       await _webServices.sendStudentNewData(groupIndex, id, dataToSent);
@@ -158,11 +171,10 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
     }
   }
 
-  Future<void> getUserData(int groupIndex, int userIndex) async {
+  Future<void> getUserData(String userId, String sheetId) async {
     try {
-      Map<String, dynamic> showedUserData =
-          await _webServices.getUserData(userIndex, groupIndex);
-      print(showedUserData);
+      Student student = await _webServices.getUserData(userId, sheetId);
+      print(student.name);
     } on DioErrors catch (err) {
       showToast(err.message, type: ToastType.error);
     }

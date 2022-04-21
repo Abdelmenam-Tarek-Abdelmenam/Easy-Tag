@@ -153,7 +153,7 @@ class GroupScreen extends StatelessWidget {
                                             userIndex,
                                             groupIndex,
                                             state.groupList[groupIndex]
-                                                .students![userIndex][' Name']);
+                                                .students![userIndex]);
                                       },
                                       separatorBuilder: (context, index) {
                                         return const SizedBox(

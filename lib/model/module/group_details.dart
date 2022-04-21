@@ -1,11 +1,12 @@
 import 'package:auto_id/model/module/course.dart';
+import 'package:auto_id/model/module/students.dart';
 
 class GroupDetails extends Course {
-  List<Map<String, dynamic>>? students;
+  List<Student>? students;
   int get studentLength => students?.length ?? 0;
 
   List<String> get getStudentsNames =>
-      students?.map((e) => e['Name'].toString()).toList() ?? [];
+      students?.map((e) => e.name.toString()).toList() ?? [];
 
   GroupDetails({
     this.students,

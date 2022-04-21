@@ -103,6 +103,26 @@ class LoadGroupDataState extends AdminDataStates {
       [status, cardStudent, groupList.length, loadingDelete, false];
 }
 
+class DeleteUserState extends AdminDataStates {
+  DeleteUserState(
+      {AdminDataStatus status = AdminDataStatus.initial,
+      CardStudent? cardStudent,
+      List<GroupDetails> groupList = const []})
+      : super(
+            status: status,
+            cardStudent: cardStudent ?? CardStudent.empty,
+            groupList: groupList);
+
+  factory DeleteUserState.fromOldState(
+      AdminDataStates oldState, AdminDataStatus status,
+      {bool loadingSate = false, bool force = false}) {
+    return DeleteUserState(
+        cardStudent: oldState.cardStudent,
+        groupList: oldState.groupList,
+        status: status);
+  }
+}
+
 class SignOutState extends AdminDataStates {
   SignOutState(
       {AdminDataStatus status = AdminDataStatus.initial,
