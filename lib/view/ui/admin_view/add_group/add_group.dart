@@ -22,15 +22,18 @@ import '../../../shared/widgets/toast_helper.dart';
 List<String> _columnsNames = const [
   "ID",
   "Name",
-  "Gender",
+  "Age",
+  "College",
   "Department",
   "Image",
+  "CV",
   "Phone",
   "second-Phone",
   "Email",
   "LinkedIn",
   "Facebook",
   "Address",
+  "Gender",
 ];
 
 class AddGroupScreen extends StatefulWidget {

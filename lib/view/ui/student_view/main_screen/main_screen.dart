@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:auto_id/bloc/student_bloc/student_data_bloc.dart';
 import 'package:auto_id/model/module/course.dart';
 import 'package:auto_id/view/resources/color_manager.dart';
@@ -12,22 +14,11 @@ import 'package:shimmer/shimmer.dart';
 class StudentMainScreen extends StatelessWidget {
   StudentMainScreen({Key? key}) : super(key: key);
 
-  final List<Course> courses = List.generate(
+  final Random r = Random();
+  late final List<Course> courses = List.generate(
       10,
       (index) => Course.fromJson({
-            'columnNames': [
-              true,
-              true,
-              false,
-              false,
-              true,
-              true,
-              false,
-              true,
-              false,
-              false,
-              true
-            ],
+            'columnNames': List.generate(14, (index) => r.nextBool()),
             "name": "IOT",
             "maxStudents": 10,
             "numberOfSessions": 5,

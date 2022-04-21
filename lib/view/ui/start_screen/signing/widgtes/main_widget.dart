@@ -71,7 +71,7 @@ class _MainLoginWidgetState extends State<MainLoginWidget> {
               child: Container(
                 height: 500,
                 width: MediaQuery.of(context).size.width * 0.92,
-                color: ColorManager.lightBlue.withOpacity(0.1),
+                color: ColorManager.lightBlue.withOpacity(0.5),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: isLogin

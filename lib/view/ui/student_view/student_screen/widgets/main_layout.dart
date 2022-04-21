@@ -79,7 +79,7 @@ class UserScreenLayout extends StatelessWidget {
           ],
         );
       } else {
-        if (true) {
+        if (true == true) {
           return Column(
             children: [
               Row(
