@@ -5,7 +5,7 @@ class GroupDetails extends Course {
   int get studentLength => students?.length ?? 0;
 
   List<String> get getStudentsNames =>
-      students!.map((e) => e['Name'].toString()).toList();
+      students?.map((e) => e['Name'].toString()).toList() ?? [];
 
   GroupDetails({
     this.students,

@@ -41,7 +41,11 @@ class GroupScreen extends StatelessWidget {
               backgroundColor: ColorManager.lightBlue,
               floatingActionButton: FloatingActionButton(
                 onPressed: () => navigateAndPush(
-                    context, DetailsScreen(state.groupList[groupIndex])),
+                    context,
+                    DetailsScreen(
+                      state.groupList[groupIndex],
+                      enableRegister: false,
+                    )),
                 child: const Icon(Icons.remove_red_eye_outlined),
               ),
               body: SmartRefresher(
