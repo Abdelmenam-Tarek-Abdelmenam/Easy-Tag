@@ -19,7 +19,7 @@ import '../../../resources/styles_manager.dart';
 import '../../../shared/functions/navigation_functions.dart';
 import '../../../shared/widgets/toast_helper.dart';
 
-List<String> _columnsNames = const [
+List<String> columnsNames = const [
   "ID",
   "Name",
   "Age",
@@ -45,7 +45,7 @@ class AddGroupScreen extends StatefulWidget {
 
 class _AddGroupScreenState extends State<AddGroupScreen> {
   List<bool> neededColumns =
-      List.generate(_columnsNames.length, (index) => index < 2);
+      List.generate(columnsNames.length, (index) => index < 2);
 
   var formKey = GlobalKey<FormState>();
   var sheetName = TextEditingController();
@@ -343,13 +343,13 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
   //********************************************************************************//
   Widget chooseColumnName() => Wrap(
       children: List.generate(
-          _columnsNames.length,
+          columnsNames.length,
           (index) => Padding(
                 padding: const EdgeInsets.all(2.0),
                 child: FilterChip(
                   selected: neededColumns[index],
                   label: Text(
-                    _columnsNames[index],
+                    columnsNames[index],
                   ),
                   backgroundColor: Colors.transparent,
                   shape: const StadiumBorder(side: BorderSide()),
@@ -559,7 +559,7 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
     List<String> renameRowsName = [];
     for (int i = 0; i < neededColumns.length; i++) {
       if (neededColumns[i]) {
-        renameRowsName.add(_columnsNames[i]);
+        renameRowsName.add(columnsNames[i]);
       }
     }
 

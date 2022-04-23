@@ -1,4 +1,3 @@
-import 'package:auto_id/bloc/admin_bloc/admin_data_bloc.dart';
 import 'package:auto_id/model/module/group_details.dart';
 import 'package:dio/dio.dart';
 
@@ -12,7 +11,7 @@ const _funcSheetLinkBase = _base +
 class WebServices {
   final Dio _dio = Dio();
 
-  String get _id => AdminDataBloc.admin.id;
+  // String get _id => AdminDataBloc.admin.id;
 
   Future<String> createSpreadSheet(
       String groupName, List<String> emails, List<String> titles) async {
@@ -57,16 +56,23 @@ class WebServices {
     return Student.fromJson(userData);
   }
 
-  //---------------------------------------------------------------------------
+  Future<bool> sendStudentNewData(String groupId, Map dataToSent) async {
+    String url = _funcSheetLinkBase +
+        "func=adduser"
+            "&sheetID=$groupId"
+            "&userData=$dataToSent";
+    String response = await _doRequest(url);
+    return response.trim() == "done";
+  }
 
-  Future<void> sendStudentNewData(
-      int groupIndex, String id, Map dataToSent) async {
-    String url = "${_funcSheetLinkBase}fun=edit"
-        "&group=$groupIndex"
-        "&user_data=$dataToSent"
-        "&person_id=$id"
-        "&userName=$_id";
-    await _doRequest(url);
+  Future<bool> editStudentData(String groupId, Map dataToSent) async {
+    String url = _funcSheetLinkBase +
+        "func=adduser"
+            "&sheetID=$groupId"
+            "&userData=$dataToSent";
+    "&uid=${dataToSent['ID']}";
+    String response = await _doRequest(url);
+    return response.trim() == "done";
   }
 
   Future<bool> sendCredentialsToEsp(
@@ -74,8 +80,8 @@ class WebServices {
     wifiPassword = _prepareCredentials(wifiPassword);
     wifiName = _prepareCredentials(wifiName);
 
-    String url =
-        'http://192.168.4.1/data?user=$_id&wifi=$wifiName&pass=$wifiPassword';
+    String url = 'http://192.168.4.1/data?user=jCekYTPEXmMD7XJWlJdPPtrLBED2'
+        '&wifi=$wifiName&pass=$wifiPassword';
     print("url");
     try {
       String response = await _doRequest(url);

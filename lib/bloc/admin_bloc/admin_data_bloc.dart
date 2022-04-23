@@ -22,8 +22,9 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
     on<SendConfigurationEvent>(_sendEspConfigHandler);
     on<SignOutEvent>(_signOutHandler);
     on<LoadGroupDataEvent>(_getGroupDataHandler);
-    on<DeleteGroupIndex>(_deleteGroup);
-    on<DeleteStudentIndex>(_deleteStudent);
+    on<DeleteGroupIndex>(_deleteGroupHandler);
+    on<DeleteStudentIndex>(_deleteStudentHandler);
+    on<EditStudentEvent>(_editStudentHandler);
   }
 
   static AppAdmin admin = AppAdmin.empty;
@@ -92,7 +93,7 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
     }
   }
 
-  Future<void> _deleteGroup(DeleteGroupIndex event, Emitter emit) async {
+  Future<void> _deleteGroupHandler(DeleteGroupIndex event, Emitter emit) async {
     LoadGroupDataState.fromOldState(state, state.status, event.groupIndex,
         loadingSate: true);
     await _adminDataRepository
@@ -104,7 +105,8 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
         groupList: state.groupList));
   }
 
-  Future<void> _deleteStudent(DeleteStudentIndex event, Emitter emit) async {
+  Future<void> _deleteStudentHandler(
+      DeleteStudentIndex event, Emitter emit) async {
     try {
       emit(DeleteUserState.fromOldState(state, AdminDataStatus.loading));
       bool response = await _webServices.deleteStudentFromSheet(
@@ -121,6 +123,37 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
     } on DioErrors catch (err) {
       showToast(err.message, type: ToastType.error);
       emit(DeleteUserState.fromOldState(state, AdminDataStatus.error));
+    }
+  }
+
+  Future<void> _editStudentHandler(EditStudentEvent event, Emitter emit) async {
+    try {
+      emit(EditUserState.fromOldState(state, AdminDataStatus.loading));
+      String groupId = state.groupList[event.groupIndex].id;
+      bool response = await _webServices.editStudentData(groupId, event.data);
+      if (response) {
+        CardStudent student = state.cardStudent;
+        state.groupList[event.groupIndex].students![event.studentIndex] =
+            Student.fromJson(event.data);
+        if (student.state == StudentState.newStudent &&
+            student.id == event.data['ID']) {
+          student = student.copyWith(
+              name: event.data['Name'],
+              groupIndex: event.groupIndex,
+              state: StudentState.notRegistered);
+          _adminDataRepository.updateCardState();
+        }
+        emit(GetInitialDataState(
+            status: AdminDataStatus.loaded,
+            cardStudent: state.cardStudent,
+            groupList: state.groupList));
+        emit(EditUserState.fromOldState(state, AdminDataStatus.loaded));
+      } else {
+        emit(EditUserState.fromOldState(state, AdminDataStatus.error));
+      }
+    } on DioErrors catch (err) {
+      emit(EditUserState.fromOldState(state, AdminDataStatus.error));
+      showToast(err.message, type: ToastType.error);
     }
   }
 
@@ -154,23 +187,6 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
   }
 
   ///***************** need events and states **************************/
-  Future<void> sendEditData(int groupIndex, String id, Map dataToSent) async {
-    try {
-      await _webServices.sendStudentNewData(groupIndex, id, dataToSent);
-      CardStudent student = state.cardStudent;
-      if (student.state == StudentState.newStudent && student.id == id) {
-        student = student.copyWith(
-            name: dataToSent['Name'],
-            groupIndex: groupIndex,
-            state: StudentState.notRegistered);
-        _adminDataRepository.updateCardState();
-        // user edited successfully
-      }
-    } on DioErrors catch (err) {
-      showToast(err.message, type: ToastType.error);
-    }
-  }
-
   Future<void> getUserData(String userId, String sheetId) async {
     try {
       Student student = await _webServices.getUserData(userId, sheetId);

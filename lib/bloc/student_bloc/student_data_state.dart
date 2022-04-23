@@ -27,3 +27,17 @@ class GetInitialDataState extends StudentDataStates {
     return GetInitialDataState();
   }
 }
+
+class RegisterUserState extends StudentDataStates {
+  RegisterUserState(
+      {StudentDataStatus status = StudentDataStatus.initial,
+      List<Course> courses = const [],
+      String category = "ALL"})
+      : super(status: status, courses: courses, category: category);
+
+  factory RegisterUserState.fromOldState(
+      StudentDataStates oldState, StudentDataStatus status) {
+    return RegisterUserState(
+        courses: oldState.courses, category: oldState.category, status: status);
+  }
+}

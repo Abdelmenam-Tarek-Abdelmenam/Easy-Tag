@@ -123,6 +123,25 @@ class DeleteUserState extends AdminDataStates {
   }
 }
 
+class EditUserState extends AdminDataStates {
+  EditUserState(
+      {AdminDataStatus status = AdminDataStatus.initial,
+      CardStudent? cardStudent,
+      List<GroupDetails> groupList = const []})
+      : super(
+            status: status,
+            cardStudent: cardStudent ?? CardStudent.empty,
+            groupList: groupList);
+
+  factory EditUserState.fromOldState(
+      AdminDataStates oldState, AdminDataStatus status) {
+    return EditUserState(
+        cardStudent: oldState.cardStudent,
+        groupList: oldState.groupList,
+        status: status);
+  }
+}
+
 class SignOutState extends AdminDataStates {
   SignOutState(
       {AdminDataStatus status = AdminDataStatus.initial,

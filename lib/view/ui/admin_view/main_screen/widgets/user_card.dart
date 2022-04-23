@@ -1,11 +1,12 @@
 import 'package:auto_id/bloc/admin_bloc/admin_data_bloc.dart';
 import 'package:auto_id/model/module/card_student.dart';
+import 'package:auto_id/view/shared/functions/navigation_functions.dart';
+import 'package:auto_id/view/ui/admin_view/edit_user_id.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../resources/color_manager.dart';
-import '../../add_user_sheet.dart';
 
 // ignore: must_be_immutable
 class UserCard extends StatelessWidget {
@@ -90,8 +91,9 @@ class UserCard extends StatelessWidget {
                         padding: const EdgeInsets.all(15.0),
                         child: Center(
                           child: OutlinedButton(
-                              child: const Text("Add the user"),
-                              onPressed: () => showBottomSheet(context)),
+                              child: const Text("Add the ID"),
+                              onPressed: () => navigateAndPush(
+                                  context, AddUserIdScreen(cardStudent.id!))),
                         ),
                       ),
                     ]),
@@ -207,14 +209,6 @@ class UserCard extends StatelessWidget {
           ),
         ),
       );
-
-  void showBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return const AddBottomSheet();
-        });
-  }
 }
 
 class CardBox extends StatelessWidget {

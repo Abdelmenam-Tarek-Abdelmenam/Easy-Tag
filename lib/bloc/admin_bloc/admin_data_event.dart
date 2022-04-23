@@ -52,6 +52,17 @@ class DeleteStudentIndex extends AdminDataEvent {
   List<Object?> get props => [groupIndex, userIndex];
 }
 
+class EditStudentEvent extends AdminDataEvent {
+  final Map<String, dynamic> data;
+  final int groupIndex;
+  final int studentIndex;
+
+  const EditStudentEvent(this.data, this.groupIndex, this.studentIndex);
+
+  @override
+  List<Object?> get props => [data, groupIndex, studentIndex];
+}
+
 class CreateGroupEvent extends AdminDataEvent {
   final Map<String, dynamic> groupData;
 

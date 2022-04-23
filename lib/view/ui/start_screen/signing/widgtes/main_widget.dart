@@ -106,7 +106,6 @@ class _MainLoginWidgetState extends State<MainLoginWidget> {
                   context
                       .read<StudentDataBloc>()
                       .add(StartStudentOperations(appAdmin));
-                  navigateAndReplace(context, MainScreen());
                   navigateAndReplace(context, StudentMainScreen());
                 }
               } else if (state.status == AuthStatus.successSignUp) {
