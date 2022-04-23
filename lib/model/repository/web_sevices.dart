@@ -37,12 +37,15 @@ class WebServices {
   }
 
   Future<bool> deleteStudentFromSheet(String userId, String sheetId) async {
+    print(userId);
+    print(userId.trim());
     String url = _funcSheetLinkBase +
         "func=delete_user" +
         "&sheetID=$sheetId" +
         "&uid=$userId";
     String response = await _doRequest(url);
-    return response.trim() == "done";
+    print(response);
+    return response.trim() == "removed";
   }
 
   Future<Student> getUserData(String userId, String sheetId) async {
@@ -59,10 +62,13 @@ class WebServices {
   Future<bool> sendStudentNewData(String groupId, Map dataToSent) async {
     String url = _funcSheetLinkBase +
         "func=adduser"
-            "&sheetID=$groupId"
-            "&userData=$dataToSent";
+                "&sheetID=$groupId"
+                "&userData=$dataToSent"
+            .replaceAll(' ', '');
+    print(url);
     String response = await _doRequest(url);
-    return response.trim() == "done";
+    print(response);
+    return response.trim() == "Done,0";
   }
 
   Future<bool> editStudentData(String groupId, Map dataToSent) async {

@@ -17,8 +17,8 @@ class RegisterScreen extends StatelessWidget {
   RegisterScreen(this.course, {Key? key}) : super(key: key);
   final List fieldsController = [
     TextEditingController(text: StudentDataBloc.student.name),
+    TextEditingController(text: "20"),
     ...List.generate(10, (index) => TextEditingController()),
-    TextEditingController(text: "20")
   ];
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   Gender gender = Gender.male;
@@ -42,6 +42,7 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(fieldsController.length);
     return Scaffold(
       backgroundColor: ColorManager.lightBlue,
       body: SafeArea(
@@ -115,7 +116,7 @@ class RegisterScreen extends StatelessWidget {
                               MaterialStateProperty.all(ColorManager.mainBlue),
                           foregroundColor: MaterialStateProperty.all(
                               ColorManager.whiteColor)),
-                      child: state.status == StudentDataStatus.loaded
+                      child: state.status == StudentDataStatus.loading
                           ? const CircularProgressIndicator()
                           : const Text(
                               "Done",
@@ -138,7 +139,7 @@ class RegisterScreen extends StatelessWidget {
   }
 
   Widget nameField() => DefaultFormField(
-        controller: fieldsController[1],
+        controller: fieldsController[0],
         title: "Name",
         prefix: Icons.person,
         fillHint: AutofillHints.name,
@@ -195,12 +196,12 @@ class RegisterScreen extends StatelessWidget {
           const SizedBox(
             width: 20,
           ),
-          Expanded(child: NumericField(fieldsController[2]))
+          Expanded(child: NumericField(fieldsController[1]))
         ],
       );
 
   Widget collegeField() => DefaultFormField(
-        controller: fieldsController[3],
+        controller: fieldsController[2],
         title: "College",
         prefix: FontAwesomeIcons.book,
         border: true,
@@ -208,7 +209,7 @@ class RegisterScreen extends StatelessWidget {
       );
 
   Widget departmentField() => DefaultFormField(
-        controller: fieldsController[4],
+        controller: fieldsController[3],
         title: "department",
         prefix: FontAwesomeIcons.pen,
         border: true,
@@ -216,7 +217,7 @@ class RegisterScreen extends StatelessWidget {
       );
 
   Widget imageField() => DefaultFormField(
-        controller: fieldsController[5],
+        controller: fieldsController[4],
         title: "Image Drive Link",
         prefix: FontAwesomeIcons.image,
         keyboardType: TextInputType.url,
@@ -233,7 +234,7 @@ class RegisterScreen extends StatelessWidget {
       );
 
   Widget cvField() => DefaultFormField(
-        controller: fieldsController[6],
+        controller: fieldsController[5],
         title: "CV Drive Link",
         prefix: FontAwesomeIcons.paperclip,
         keyboardType: TextInputType.url,
@@ -250,7 +251,7 @@ class RegisterScreen extends StatelessWidget {
       );
 
   Widget phoneField() => DefaultFormField(
-      controller: fieldsController[7],
+      controller: fieldsController[6],
       title: "Phone Number",
       keyboardType: TextInputType.phone,
       fillHint: AutofillHints.telephoneNumber,
@@ -259,7 +260,7 @@ class RegisterScreen extends StatelessWidget {
       validator: (val) => val!.isEmpty ? "Phone cannot be Empty" : null);
 
   Widget secondPhoneField() => DefaultFormField(
-      controller: fieldsController[8],
+      controller: fieldsController[7],
       title: "Second phone number",
       fillHint: AutofillHints.telephoneNumber,
       keyboardType: TextInputType.phone,
@@ -268,7 +269,7 @@ class RegisterScreen extends StatelessWidget {
       validator: (val) => val!.isEmpty ? "Second phone cannot be Empty" : null);
 
   Widget emailField() => DefaultFormField(
-      controller: fieldsController[9],
+      controller: fieldsController[8],
       title: "Email address",
       keyboardType: TextInputType.emailAddress,
       fillHint: AutofillHints.email,
@@ -277,7 +278,7 @@ class RegisterScreen extends StatelessWidget {
       validator: (val) => val!.isEmpty ? "Second phone cannot be Empty" : null);
 
   Widget linkedInField() => DefaultFormField(
-      controller: fieldsController[10],
+      controller: fieldsController[9],
       title: "LinkedIn profile",
       keyboardType: TextInputType.url,
       prefix: FontAwesomeIcons.linkedinIn,
@@ -285,7 +286,7 @@ class RegisterScreen extends StatelessWidget {
       validator: (val) => val!.isEmpty ? "LinkedIn cannot be Empty" : null);
 
   Widget facebookField() => DefaultFormField(
-      controller: fieldsController[11],
+      controller: fieldsController[10],
       title: "Facebook profile",
       keyboardType: TextInputType.url,
       prefix: FontAwesomeIcons.facebook,
@@ -293,7 +294,7 @@ class RegisterScreen extends StatelessWidget {
       validator: (val) => val!.isEmpty ? "Facebook cannot be Empty" : null);
 
   Widget addressField() => DefaultFormField(
-      controller: fieldsController[12],
+      controller: fieldsController[11],
       title: "Address",
       keyboardType: TextInputType.streetAddress,
       fillHint: AutofillHints.fullStreetAddress,

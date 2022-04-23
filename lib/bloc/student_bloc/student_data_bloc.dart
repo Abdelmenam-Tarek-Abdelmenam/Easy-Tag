@@ -22,17 +22,14 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
 
   static AppAdmin student = AppAdmin.empty;
 
-  void _startGettingDataHandler(StartStudentOperations event, Emitter emit) {
+  Future<void> _startGettingDataHandler(
+      StartStudentOperations event, Emitter emit) async {
     if (!event.user.isEmpty || !event.user.isAdmin) {
       emit(GetInitialDataState(status: StudentDataStatus.loading));
       if (!event.user.isEmpty && !event.user.isAdmin) {
         student = event.user;
-        _readInitialFireData(emit);
+        await _readInitialFireData(emit);
       }
-      emit(GetInitialDataState(
-          status: StudentDataStatus.loaded,
-          courses: const [],
-          category: "ALL"));
     }
   }
 

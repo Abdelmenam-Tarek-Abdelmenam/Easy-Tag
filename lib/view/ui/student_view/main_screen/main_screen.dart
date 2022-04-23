@@ -52,13 +52,14 @@ class StudentMainScreen extends StatelessWidget {
                     child: BlocBuilder<StudentDataBloc, StudentDataStates>(
                         buildWhen: (prev, next) => true, // check state
                         builder: (context, state) {
+                          print(state.courses.length);
                           if (state.status == StudentDataStatus.loading) {
                             return Shimmer.fromColors(
                                 baseColor: Colors.grey.withOpacity(0.5),
                                 highlightColor: Colors.white,
                                 child: const LoadingView());
                           } else {
-                            if (state.courses.isNotEmpty) {
+                            if (state.courses.isEmpty) {
                               return Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: const [
