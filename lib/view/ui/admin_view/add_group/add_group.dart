@@ -15,7 +15,6 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../bloc/admin_bloc/admin_data_bloc.dart';
 import '../../../resources/color_manager.dart';
-import '../../../resources/styles_manager.dart';
 import '../../../shared/functions/navigation_functions.dart';
 import '../../../shared/widgets/toast_helper.dart';
 
@@ -71,92 +70,100 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
           currentFocus.unfocus();
         }
       },
-      child: Scaffold(
-          floatingActionButton: BlocConsumer<AdminDataBloc, AdminDataStates>(
-              buildWhen: (_, state) => state is CreateGroupState,
-              listenWhen: (_, state) => state is CreateGroupState,
-              listener: (context, state) {
-                if (state.status == AdminDataStatus.loaded) {
-                  Navigator.of(context).pop();
-                }
-              },
-              builder: (context, state) =>
-                  state.status == AdminDataStatus.loading
-                      ? const CircularProgressIndicator()
-                      : FloatingActionButton(
-                          backgroundColor: ColorManager.darkGrey,
-                          child: const Icon(
-                            Icons.check,
-                            size: 40,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              Map<String, dynamic> data = createMap();
+      child: SafeArea(
+        child: Scaffold(
+            floatingActionButton: BlocConsumer<AdminDataBloc, AdminDataStates>(
+                buildWhen: (_, state) => state is CreateGroupState,
+                listenWhen: (_, state) => state is CreateGroupState,
+                listener: (context, state) {
+                  if (state.status == AdminDataStatus.loaded) {
+                    Navigator.of(context).pop();
+                  }
+                },
+                builder: (context, state) =>
+                    state.status == AdminDataStatus.loading
+                        ? const CircularProgressIndicator()
+                        : FloatingActionButton(
+                            backgroundColor: ColorManager.darkGrey,
+                            child: const Icon(
+                              Icons.check,
+                              size: 40,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              if (formKey.currentState!.validate()) {
+                                Map<String, dynamic> data = createMap();
 
-                              context
-                                  .read<AdminDataBloc>()
-                                  .add(CreateGroupEvent(data));
-                            }
-                          },
-                        )),
-          appBar: AppBar(
-            shape: StyLeManager.appBarShape,
-            foregroundColor: Colors.white,
-            title: const Text('Add Group'),
-          ),
-          body: Padding(
-            padding: const EdgeInsets.all(10),
-            child: ListView(
-              physics: const BouncingScrollPhysics(),
-              children: [
-                Form(
-                    key: formKey,
-                    child: DefaultFormField(
-                      border: true,
-                      controller: sheetName,
-                      title: "Group name",
-                      prefix: Icons.drive_file_rename_outline,
-                      validator: (val) =>
-                          val!.isEmpty ? "Name cannot be empty" : null,
-                    )),
-                IconStepper(
-                  lineDotRadius: 1,
-                  stepRadius: 20,
-                  enableNextPreviousButtons: false,
-                  activeStepColor: ColorManager.mainBlue,
-                  icons: const [
-                    Icon(Icons.table_rows_outlined),
-                    Icon(Icons.info_outline),
-                    Icon(Icons.add_box_outlined),
-                    Icon(Icons.person_add_alt),
-                  ],
-                  activeStep: activeStep,
-                  onStepReached: (index) {
-                    setState(() {
-                      activeStep = index;
-                    });
-                  },
-                ),
-                [
-                  firstStep(),
-                  secondStep(),
-                  thirdStep(),
-                  forthStep()
-                ][activeStep],
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      previousButton(),
-                      nextButton(),
-                    ],
+                                context
+                                    .read<AdminDataBloc>()
+                                    .add(CreateGroupEvent(data));
+                              }
+                            },
+                          )),
+            body: Padding(
+              padding: const EdgeInsets.all(10),
+              child: ListView(
+                physics: const BouncingScrollPhysics(),
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: IconButton(
+                          icon: const Icon(Icons.arrow_back_rounded),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          }),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          )),
+                  Form(
+                      key: formKey,
+                      child: DefaultFormField(
+                        border: true,
+                        controller: sheetName,
+                        title: "Group name",
+                        prefix: Icons.drive_file_rename_outline,
+                        validator: (val) =>
+                            val!.isEmpty ? "Name cannot be empty" : null,
+                      )),
+                  IconStepper(
+                    lineDotRadius: 1,
+                    stepRadius: 20,
+                    enableNextPreviousButtons: false,
+                    activeStepColor: ColorManager.mainBlue,
+                    icons: const [
+                      Icon(Icons.table_rows_outlined),
+                      Icon(Icons.info_outline),
+                      Icon(Icons.add_box_outlined),
+                      Icon(Icons.person_add_alt),
+                    ],
+                    activeStep: activeStep,
+                    onStepReached: (index) {
+                      setState(() {
+                        activeStep = index;
+                      });
+                    },
+                  ),
+                  [
+                    firstStep(),
+                    secondStep(),
+                    thirdStep(),
+                    forthStep()
+                  ][activeStep],
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        previousButton(),
+                        nextButton(),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            )),
+      ),
     );
   }
 
@@ -371,7 +378,7 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
           value: which ? category : inPlace,
           elevation: 0,
           items: (which
-                  ? ['Course', 'Event', 'Workshop', 'Competition', 'internship']
+                  ? ['Course', 'Event', 'Workshop', 'Competition', 'Internship']
                   : ["in place", "online", "hybrid"])
               .map((String value) {
             return DropdownMenuItem<String>(

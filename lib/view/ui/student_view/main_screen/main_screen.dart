@@ -50,9 +50,9 @@ class StudentMainScreen extends StatelessWidget {
                   ),
                   Expanded(
                     child: BlocBuilder<StudentDataBloc, StudentDataStates>(
-                        buildWhen: (prev, next) => true, // check state
+                        buildWhen: (_, state) =>
+                            state is GetInitialDataState, // check state
                         builder: (context, state) {
-                          print(state.courses.length);
                           if (state.status == StudentDataStatus.loading) {
                             return Shimmer.fromColors(
                                 baseColor: Colors.grey.withOpacity(0.5),
@@ -83,7 +83,7 @@ class StudentMainScreen extends StatelessWidget {
                             return ListView.separated(
                                 physics: const BouncingScrollPhysics(),
                                 itemBuilder: (_, index) => CourseCardDesign(
-                                      state.courses[index],
+                                      state.getCourses[index],
                                     ),
                                 separatorBuilder: (_, __) => const SizedBox(
                                       height: 15,

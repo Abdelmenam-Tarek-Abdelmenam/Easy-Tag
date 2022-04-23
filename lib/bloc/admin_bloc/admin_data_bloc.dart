@@ -26,6 +26,7 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
     on<DeleteGroupIndex>(_deleteGroupHandler);
     on<DeleteStudentIndex>(_deleteStudentHandler);
     on<EditStudentEvent>(_editStudentHandler);
+    on<SearchByNameEvent>(_searchByNameHandler);
   }
 
   static AppAdmin admin = AppAdmin.empty;
@@ -44,10 +45,8 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
   }
 
   void _cardDataChangesHandler(CardDataChangedEvents event, Emitter emit) {
-    emit(GetInitialDataState(
-        status: AdminDataStatus.loaded,
-        cardStudent: state.cardStudent.edit(event.key, event.value),
-        groupList: state.groupList));
+    state.cardStudent = state.cardStudent.edit(event.key, event.value);
+    emit(GetInitialDataState.fromOldState(state, AdminDataStatus.loaded));
   }
 
   Future<void> _createSpreadSheet(CreateGroupEvent event, Emitter emit) async {
@@ -63,10 +62,7 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
       sender.postData(
           title: "EME IH Announcement",
           body: 'New ${event.groupData['category']}s is available now');
-      emit(GetInitialDataState(
-          status: AdminDataStatus.loaded,
-          cardStudent: state.cardStudent,
-          groupList: state.groupList));
+      emit(GetInitialDataState.fromOldState(state, AdminDataStatus.loaded));
       emit(CreateGroupState.fromOldState(state, AdminDataStatus.loaded));
     } on DioErrors catch (err) {
       emit(CreateGroupState.fromOldState(state, AdminDataStatus.error));
@@ -104,10 +100,7 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
     await _adminDataRepository
         .deleteGroup(state.groupList[event.groupIndex].id);
     state.groupList.removeAt(event.groupIndex);
-    emit(GetInitialDataState(
-        status: AdminDataStatus.loaded,
-        cardStudent: state.cardStudent,
-        groupList: state.groupList));
+    emit(GetInitialDataState.fromOldState(state, AdminDataStatus.loaded));
   }
 
   Future<void> _deleteStudentHandler(
@@ -148,10 +141,7 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
               state: StudentState.notRegistered);
           _adminDataRepository.updateCardState();
         }
-        emit(GetInitialDataState(
-            status: AdminDataStatus.loaded,
-            cardStudent: state.cardStudent,
-            groupList: state.groupList));
+        emit(GetInitialDataState.fromOldState(state, AdminDataStatus.loaded));
         emit(EditUserState.fromOldState(state, AdminDataStatus.loaded));
       } else {
         emit(EditUserState.fromOldState(state, AdminDataStatus.error));
@@ -191,14 +181,12 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
     emit(SignOutState(status: AdminDataStatus.loaded));
   }
 
-  ///***************** need events and states **************************/
-  Future<void> getUserData(String userId, String sheetId) async {
-    try {
-      Student student = await _webServices.getUserData(userId, sheetId);
-      print(student.name);
-    } on DioErrors catch (err) {
-      showToast(err.message, type: ToastType.error);
-    }
+  void _searchByNameHandler(SearchByNameEvent event, Emitter emit) {
+    state.usingIds = state.groupList
+        .where((element) => element.name.contains(event.subName))
+        .map((e) => e.id)
+        .toList();
+    emit(GetInitialDataState.fromOldState(state, AdminDataStatus.loaded));
   }
 
   ///************************ Helper functions **************************/
@@ -210,7 +198,8 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
       emit(GetInitialDataState(
           status: AdminDataStatus.loaded,
           cardStudent: cardStudent,
-          groupList: groups));
+          groupList: groups,
+          groupIds: groups.map((e) => e.id).toList()));
       _adminDataRepository.buildListener((key, value) {
         add(CardDataChangedEvents(key, value));
       });

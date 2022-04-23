@@ -6,10 +6,11 @@ import '../../../../resources/color_manager.dart';
 
 const List<String> categories = [
   'ALL',
-  'Courses',
-  'Internships',
-  'Events',
-  'Competitions'
+  'Course',
+  'Internship',
+  'Event',
+  'Competition',
+  'Workshop'
 ];
 
 class CategoryButtonsList extends StatelessWidget {
@@ -31,15 +32,9 @@ class CategoryButtonsList extends StatelessWidget {
                 category: categories[index],
                 isSelected: categories[index] == state.category,
                 onPressed: () {
-                  if (index == 0 && categories[index] != state.category) {
-                    // context
-                    //     .read<StudentDataBloc>()
-                    //     .add();
-                  } else if (categories[index] != "All") {
-                    // context
-                    //     .read<StudentDataBloc>()
-                    //     .add();
-                  }
+                  context
+                      .read<StudentDataBloc>()
+                      .add(ChangeFilterTypeEvent(categories[index]));
                 }),
           );
         },

@@ -82,6 +82,14 @@ class SendConfigurationEvent extends AdminDataEvent {
   List<Object?> get props => [name, pass];
 }
 
+class SearchByNameEvent extends AdminDataEvent {
+  final String subName;
+  const SearchByNameEvent(this.subName);
+
+  @override
+  List<Object?> get props => [subName];
+}
+
 class SignOutEvent extends AdminDataEvent {
   @override
   List<Object?> get props => [true];

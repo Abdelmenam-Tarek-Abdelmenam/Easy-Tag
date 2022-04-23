@@ -21,3 +21,19 @@ class StartStudentOperations extends StudentDataEvent {
   final AppAdmin user;
   const StartStudentOperations(this.user);
 }
+
+class ChangeFilterTypeEvent extends StudentDataEvent {
+  final String newType;
+  const ChangeFilterTypeEvent(this.newType);
+
+  @override
+  List<Object?> get props => [newType];
+}
+
+class ChangeFilterNameEvent extends StudentDataEvent {
+  final String subName;
+  const ChangeFilterNameEvent(this.subName);
+
+  @override
+  List<Object?> get props => [subName];
+}
