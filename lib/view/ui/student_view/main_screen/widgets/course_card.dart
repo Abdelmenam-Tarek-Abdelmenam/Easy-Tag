@@ -87,7 +87,7 @@ class CourseCardDesign extends StatelessWidget {
                 fontWeight: FontWeight.w600),
           ),
           Text(
-            course.offer,
+            course.offer + " offer",
             style: const TextStyle(
                 fontSize: 16,
                 color: ColorManager.darkGrey,

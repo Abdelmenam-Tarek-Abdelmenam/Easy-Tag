@@ -45,6 +45,7 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
 
         /// add to my courses
       } else {
+        showToast("Data handling error", type: ToastType.error);
         emit(RegisterUserState.fromOldState(state, StudentDataStatus.error));
       }
     } on DioErrors catch (err) {

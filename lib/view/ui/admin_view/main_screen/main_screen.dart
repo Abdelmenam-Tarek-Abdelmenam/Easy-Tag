@@ -34,7 +34,7 @@ class MainScreen extends StatelessWidget {
         actions: [
           IconButton(
               icon: const Icon(Icons.settings),
-              onPressed: () {
+              onPressed: () async {
                 navigateAndPush(context, const SendConfigScreen());
               }),
           BlocConsumer<AdminDataBloc, AdminDataStates>(

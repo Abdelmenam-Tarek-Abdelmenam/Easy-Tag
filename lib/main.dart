@@ -1,5 +1,6 @@
 import 'package:auto_id/bloc/admin_bloc/admin_data_bloc.dart';
 import 'package:auto_id/bloc/student_bloc/student_data_bloc.dart';
+import 'package:auto_id/model/fcm/fire_message.dart';
 import 'package:auto_id/view/ui/admin_view/main_screen/main_screen.dart';
 import 'package:auto_id/view/ui/student_view/main_screen/main_screen.dart';
 
@@ -28,6 +29,7 @@ Future<void> main() async {
       await Firebase.initializeApp();
       await PreferenceRepository.initializePreference();
       User? user = FirebaseAuth.instance.currentUser;
+      FireNotificationHelper();
       AppAdmin tempUser = AppAdmin.empty;
       if (user != null) {
         tempUser = AppAdmin.fromFirebaseUser(user);

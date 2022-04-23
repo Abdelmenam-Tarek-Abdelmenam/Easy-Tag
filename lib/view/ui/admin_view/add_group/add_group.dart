@@ -93,9 +93,7 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
                               Map<String, dynamic> data = createMap();
-                              //   final Course groupData;
-                              //   final List<String> instructorsMails;
-                              //   final List<String> titles;
+
                               context
                                   .read<AdminDataBloc>()
                                   .add(CreateGroupEvent(data));
@@ -557,6 +555,7 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
 
   Map<String, dynamic> createMap() {
     List<String> renameRowsName = [];
+    renameRowsName.add("RFID");
     for (int i = 0; i < neededColumns.length; i++) {
       if (neededColumns[i]) {
         renameRowsName.add(columnsNames[i]);

@@ -3,10 +3,10 @@ import 'package:dio/dio.dart';
 const String _fcmKey =
     "AAAAfv9fgQs:APA91bGXFhmp0B9-Rb12Laeo9Ol7JV7QzprIwwKupKF0ISHeJqGS_pC9PnRIXMtg9BXmiDmyIMr48A-xhtAIatsfATFsTihoObRMMwCGQnGrKT_NRraSEUGx1Q70F0D5qsjhfNPZwqal";
 
-class DioHelper {
+class NotificationSender {
   late Dio dio;
 
-  DioHelper() {
+  NotificationSender() {
     dio = Dio(BaseOptions(
       baseUrl: 'https://fcm.googleapis.com/fcm/',
       receiveDataWhenStatusError: true,
