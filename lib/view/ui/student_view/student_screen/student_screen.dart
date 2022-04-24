@@ -13,82 +13,80 @@ class StudentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          alignment: Alignment.topLeft,
-          children: [
-            Align(
-              alignment: Alignment.topCenter,
-              child: Container(
-                color: ColorManager.mainBlue,
-                height: 140,
-                width: double.infinity,
+      body: Stack(
+        alignment: Alignment.topLeft,
+        children: [
+          Align(
+            alignment: Alignment.topCenter,
+            child: Container(
+              color: ColorManager.mainBlue,
+              height: 140,
+              width: double.infinity,
+            ),
+          ),
+          Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 70, right: 20),
+              child: CircleAvatar(
+                radius: 55,
+                backgroundColor: ColorManager.whiteColor,
+                child: userPhoto(),
               ),
             ),
-            Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 70, right: 20),
-                child: CircleAvatar(
-                  radius: 55,
-                  backgroundColor: ColorManager.whiteColor,
-                  child: userPhoto(),
-                ),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(left: 20.0, top: 110),
+            child: SizedBox(
+              width: 205,
+              child: Text("App user",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      color: ColorManager.whiteColor,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold)),
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(left: 20, top: 140),
+            child: SizedBox(
+              width: 205,
+              child: Text("App user",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style:
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.w300)),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 180),
+            child: UserScreenLayout(),
+          ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                      icon: const Icon(Icons.arrow_back_rounded),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      }),
+                  IconButton(
+                      icon: const Icon(Icons.logout),
+                      onPressed: () async {
+                        await FirebaseAuth.instance.signOut();
+                        await GoogleSignIn().signOut();
+                        navigateAndReplace(context, const LoginView());
+                      }),
+                ],
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(left: 20.0, top: 110),
-              child: SizedBox(
-                width: 205,
-                child: Text("App user",
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        color: ColorManager.whiteColor,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold)),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(left: 20, top: 140),
-              child: SizedBox(
-                width: 205,
-                child: Text("App user",
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.w300)),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 180),
-              child: UserScreenLayout(),
-            ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                        icon: const Icon(Icons.arrow_back_rounded),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        }),
-                    IconButton(
-                        icon: const Icon(Icons.logout),
-                        onPressed: () async {
-                          await FirebaseAuth.instance.signOut();
-                          await GoogleSignIn().signOut();
-                          navigateAndReplace(context, const LoginView());
-                        }),
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

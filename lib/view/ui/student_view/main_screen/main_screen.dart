@@ -24,20 +24,16 @@ class StudentMainScreen extends StatelessWidget {
           currentFocus.unfocus();
         }
       },
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: ColorManager.lightBlue,
-          body: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 15,
-            ),
+      child: Scaffold(
+        backgroundColor: ColorManager.lightBlue,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
             child: SmartRefresher(
               enablePullUp: false,
               controller: _refreshController,
               onRefresh: () {
-                context
-                    .read<StudentDataBloc>()
+                context.read<StudentDataBloc>()
                     .add(StartStudentOperations(StudentDataBloc.student));
                 _refreshController.refreshCompleted();
               },

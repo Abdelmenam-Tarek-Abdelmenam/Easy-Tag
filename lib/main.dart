@@ -19,8 +19,12 @@ import 'bloc/auth_bloc/auth_status_bloc.dart';
 import 'model/local/pref_repository.dart';
 
 Future<void> main() async {
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: ColorManager.mainBlue,
+  SystemChrome.setSystemUIOverlayStyle( SystemUiOverlayStyle(
+    //statusBarColor: ColorManager.mainBlue,
+    statusBarColor: Colors.white.withOpacity(0),
+    statusBarBrightness: Brightness.light,
+    statusBarIconBrightness: Brightness.dark
+
   ));
 
   return BlocOverrides.runZoned(

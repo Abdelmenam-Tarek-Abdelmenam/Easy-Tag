@@ -20,53 +20,48 @@ class _LoginViewState extends State<LoginView> {
           currentFocus.unfocus();
         }
       },
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: ColorManager.whiteColor,
-          body: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                topWidget(),
-                const SizedBox(
-                  height: 40,
+      child: Scaffold(
+        bottomNavigationBar: Image.asset('images/eme_logo.png',height: 50,),
+        backgroundColor: ColorManager.whiteColor,
+        body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text(
+                      StringManger.appName,
+                      style: TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.w900,
+                          color: ColorManager.mainBlue),
+                    ),
+                    Icon(Icons.nfc_rounded,size: 30)
+                  ],
                 ),
-                const MainLoginWidget()
-              ],
-            ),
+              ),
+              // const SizedBox(
+              //   height: 40,
+              // ),
+              const MainLoginWidget(),
+
+              // const Text(
+              //   StringManger.appSlogan,
+              //   style: TextStyle(
+              //       fontSize: 14,
+              //       fontWeight: FontWeight.w400,
+              //       color: ColorManager.darkGrey),
+              //   textAlign: TextAlign.center,
+              // ),
+            ],
           ),
         ),
       ),
     );
   }
 
-  Widget topWidget() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 40.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: const [
-          Text(
-            StringManger.appName,
-            style: TextStyle(
-                fontSize: 40,
-                fontWeight: FontWeight.w900,
-                color: ColorManager.mainBlue),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Text(
-            StringManger.appSlogan,
-            style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                color: ColorManager.darkGrey),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
-  }
+
 }

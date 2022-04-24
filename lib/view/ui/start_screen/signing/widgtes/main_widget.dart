@@ -43,19 +43,7 @@ class _MainLoginWidgetState extends State<MainLoginWidget> {
           right: 10.0,
           left: 10.0,
           bottom: MediaQuery.of(context).viewInsets.bottom),
-      child: SizedBox(
-        height: 500,
-        width: MediaQuery.of(context).size.width * 0.95,
-        child: AnimatedSwitcher(
-          duration: const Duration(seconds: 1),
-          transitionBuilder: (Widget child, Animation<double> animation) {
-            return ScaleTransition(scale: animation, child: child);
-          },
-          switchInCurve: Curves.ease,
-          switchOutCurve: Curves.easeInOut,
-          child: defaultMainWidget(context),
-        ),
-      ),
+      child: defaultMainWidget(context),
     );
   }
 
@@ -81,7 +69,7 @@ class _MainLoginWidgetState extends State<MainLoginWidget> {
                     Container(
                       margin: const EdgeInsets.fromLTRB(30, 40, 30, 0),
                       child: Text(
-                        isLogin ? "Sign Up" : "Sign In",
+                        isLogin ? "Sign Up" : "Login",
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 25,
@@ -122,6 +110,7 @@ class _MainLoginWidgetState extends State<MainLoginWidget> {
   Widget logInWidget() => ClipPath(
         clipper: LoginClipper(),
         child: Container(
+
           height: 500,
           width: MediaQuery.of(context).size.width * 0.92,
           color: Colors.white,
@@ -238,10 +227,10 @@ class _MainLoginWidgetState extends State<MainLoginWidget> {
                     state.status == AuthStatus.submittingEmail
                         ? const CircularProgressIndicator()
                         : const Text(
-                            "Sign In",
+                            "LOGIN",
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
-                                fontSize: 12,
+                                fontSize: 18,
                                 color: Colors.white),
                           ), () {
                   if (loginGlobalKey.currentState!.validate()) {
@@ -415,7 +404,7 @@ class _MainLoginWidgetState extends State<MainLoginWidget> {
                             "Sign Up",
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
-                                fontSize: 12,
+                                fontSize: 18,
                                 color: Colors.white),
                           ), () {
                   if (signUpGlobalKey.currentState!.validate()) {

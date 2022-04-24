@@ -20,25 +20,58 @@ class CategoryButtonsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 70,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: categories.length,
-        physics: const BouncingScrollPhysics(),
-        itemBuilder: (BuildContext context, int index) {
-          return BlocBuilder<StudentDataBloc, StudentDataStates>(
-            builder: (_, StudentDataStates state) => CategoryButton(
-                category: categories[index],
-                isSelected: categories[index] == state.category,
-                onPressed: () {
-                  context
-                      .read<StudentDataBloc>()
-                      .add(ChangeFilterTypeEvent(categories[index]));
-                }),
-          );
-        },
-      ),
+    List<Widget> filterTitles = List<Widget>.generate(categories.length, (int index) =>
+        BlocBuilder<StudentDataBloc, StudentDataStates>(
+      builder: (_, StudentDataStates state) => CategoryButton(
+          category: categories[index],
+          isSelected: categories[index] == state.category,
+          onPressed: () {
+            context
+                .read<StudentDataBloc>()
+                .add(ChangeFilterTypeEvent(categories[index]));
+          }),
+    ));
+
+    return Column(
+      children: [
+        Row(
+          children: const [
+            Icon(Icons.filter_alt_rounded),
+            Text('Filter',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+          ],
+        ),
+
+        SizedBox(
+          width: double.infinity,
+          child: Wrap(
+            runSpacing: 0,
+            spacing: 0,
+            alignment: WrapAlignment.start,
+            children: filterTitles
+          ),
+        ),
+
+        // SizedBox(
+        //   height: 70,
+        //   child: ListView.builder(
+        //     scrollDirection: Axis.horizontal,
+        //     itemCount: categories.length,
+        //     physics: const BouncingScrollPhysics(),
+        //     itemBuilder: (BuildContext context, int index) {
+        //       return BlocBuilder<StudentDataBloc, StudentDataStates>(
+        //         builder: (_, StudentDataStates state) => CategoryButton(
+        //             category: categories[index],
+        //             isSelected: categories[index] == state.category,
+        //             onPressed: () {
+        //               context
+        //                   .read<StudentDataBloc>()
+        //                   .add(ChangeFilterTypeEvent(categories[index]));
+        //             }),
+        //       );
+        //     },
+        //   ),
+        // ),
+      ],
     );
   }
 }
@@ -58,7 +91,7 @@ class CategoryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: const EdgeInsets.only(left: 20),
+        //margin: const EdgeInsets.only(left: 20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           color: isSelected ? ColorManager.mainBlue : ColorManager.darkGrey,

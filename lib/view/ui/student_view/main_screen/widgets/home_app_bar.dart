@@ -1,7 +1,6 @@
 import 'package:auto_id/bloc/student_bloc/student_data_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../shared/functions/navigation_functions.dart';
 import '../../student_screen/student_screen.dart';
 
@@ -45,7 +44,7 @@ class ProfileIcon extends StatelessWidget {
       backgroundColor: Colors.white,
       radius: 20,
       child: IconButton(
-        iconSize: 20,
+        iconSize: 22,
         color: Colors.white,
         icon: const Icon(
           Icons.person_outline_rounded,

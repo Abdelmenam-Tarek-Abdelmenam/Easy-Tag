@@ -1,4 +1,4 @@
 class StringManger {
-  static const String appName = "EME-IH";
+  static const String appName = "EasyTag";
   static const String appSlogan = "Egypt Makes Electronics Innovation Hub";
 }
