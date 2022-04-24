@@ -141,7 +141,8 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
               state: StudentState.notRegistered);
           _adminDataRepository.updateCardState();
         }
-        emit(GetInitialDataState.fromOldState(state, AdminDataStatus.loaded));
+        emit(LoadGroupDataState.fromOldState(
+            state, AdminDataStatus.loaded, event.groupIndex));
         emit(EditUserState.fromOldState(state, AdminDataStatus.loaded));
       } else {
         emit(EditUserState.fromOldState(state, AdminDataStatus.error));

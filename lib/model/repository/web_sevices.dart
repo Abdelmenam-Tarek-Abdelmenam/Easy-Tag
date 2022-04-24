@@ -6,9 +6,8 @@ import 'package:dio/dio.dart';
 import '../module/students.dart';
 
 const _base = "https://script.google.com/macros/s/";
-
 const _funcSheetLinkBase = _base +
-    "AKfycbwd0Dn620WtM_yG9x7Mu4xiMcLzJbOQTGKDZIVAT_qCkthI5aIqBvBU4nM1qEAnPvY/exec?";
+    "AKfycbyEazGuwCLyFwut7WXoDQqovSmpNeP_GesKoWXJbiLFxBepDYoPPTZiFQ3YsOaxnkI/exec?";
 
 class WebServices {
   final Dio _dio = Dio();
@@ -68,9 +67,8 @@ class WebServices {
   Future<bool> sendStudentNewData(String groupId, Map dataToSent) async {
     String url = _funcSheetLinkBase +
         "func=adduser"
-                "&sheetID=$groupId"
-                "&userData=$dataToSent"
-            .replaceAll(' ', '');
+            "&sheetID=$groupId"
+            "&userData=$dataToSent";
     print(url);
     String response = await _doRequest(url);
     print(response);
