@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_id/model/module/group_details.dart';
 import 'package:dio/dio.dart';
 
@@ -32,7 +34,11 @@ class WebServices {
     print("start request");
     List<dynamic> data = await _doRequest(url);
     print("received $data");
-    details.students = data.cast().map((e) => Student.fromJson(e)).toList();
+    if (data.isEmpty) {
+      details.students = [];
+    } else {
+      details.students = data.cast().map((e) => Student.fromJson(e)).toList();
+    }
     return details;
   }
 
@@ -73,12 +79,14 @@ class WebServices {
 
   Future<bool> editStudentData(String groupId, Map dataToSent) async {
     String url = _funcSheetLinkBase +
-        "func=adduser"
+        "func=edit_user"
             "&sheetID=$groupId"
-            "&userData=$dataToSent";
-    "&uid=${dataToSent['ID']}";
+            "&userData=$dataToSent"
+            "&uid=${dataToSent['ID']}";
+    log(url);
     String response = await _doRequest(url);
-    return response.trim() == "done";
+    log(response);
+    return response.trim() == "Done,0";
   }
 
   Future<bool> sendCredentialsToEsp(

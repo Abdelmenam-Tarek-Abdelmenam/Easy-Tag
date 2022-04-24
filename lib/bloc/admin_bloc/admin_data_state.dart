@@ -39,7 +39,7 @@ class GetInitialDataState extends AdminDataStates {
       AdminDataStates oldState, AdminDataStatus status) {
     return GetInitialDataState(
         cardStudent: oldState.cardStudent,
-        groupList: oldState.groupList,
+        groupList: oldState.allGroupList,
         groupIds: oldState.usingIds,
         status: status);
   }
@@ -66,7 +66,7 @@ class CreateGroupState extends AdminDataStates {
       AdminDataStates oldState, AdminDataStatus status) {
     return CreateGroupState(
         cardStudent: oldState.cardStudent,
-        groupList: oldState.groupList,
+        groupList: oldState.allGroupList,
         groupIds: oldState.usingIds,
         status: status);
   }
@@ -99,7 +99,7 @@ class LoadGroupDataState extends AdminDataStates {
         loadingDelete: loadingSate,
         force: force,
         cardStudent: oldState.cardStudent,
-        groupList: oldState.groupList,
+        groupList: oldState.allGroupList,
         status: status);
   }
 
@@ -126,7 +126,7 @@ class DeleteUserState extends AdminDataStates {
     return DeleteUserState(
         groupIds: oldState.usingIds,
         cardStudent: oldState.cardStudent,
-        groupList: oldState.groupList,
+        groupList: oldState.allGroupList,
         status: status);
   }
 }
@@ -148,7 +148,7 @@ class EditUserState extends AdminDataStates {
     return EditUserState(
         groupIds: oldState.usingIds,
         cardStudent: oldState.cardStudent,
-        groupList: oldState.groupList,
+        groupList: oldState.allGroupList,
         status: status);
   }
 }
@@ -170,7 +170,7 @@ class SignOutState extends AdminDataStates {
     return SignOutState(
         groupIds: oldState.usingIds,
         cardStudent: oldState.cardStudent,
-        groupList: oldState.groupList,
+        groupList: oldState.allGroupList,
         status: status);
   }
 }
@@ -192,7 +192,7 @@ class SendEspDataState extends AdminDataStates {
     return SendEspDataState(
         groupIds: oldState.usingIds,
         cardStudent: oldState.cardStudent,
-        groupList: oldState.groupList,
+        groupList: oldState.allGroupList,
         status: status);
   }
 }

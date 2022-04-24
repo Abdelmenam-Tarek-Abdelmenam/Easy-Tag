@@ -1,3 +1,4 @@
+import 'package:auto_id/bloc/admin_bloc/admin_data_bloc.dart';
 import 'package:auto_id/model/module/course.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,9 +14,25 @@ import '../../admin_view/add_group/widgets/numeric_field.dart';
 // ignore: must_be_immutable
 class RegisterScreen extends StatelessWidget {
   final Course course;
+  final Student? student;
+  int? groupIndex;
+  int? courseIndex;
 
-  RegisterScreen(this.course, {Key? key}) : super(key: key);
-  final List fieldsController = [
+  RegisterScreen(this.course, this.student, this.groupIndex, this.courseIndex,
+      {Key? key})
+      : super(key: key) {
+    if (student != null) {
+      fieldsController[0].text = student!.name;
+      fieldsController[1].text = student!.age?.toString() ?? "20";
+      for (int i = 2; i <= 11; i++) {
+        String? props = student!.getProps[i];
+        fieldsController[i].text = props ?? "";
+      }
+      gender = student!.gender ?? Gender.male;
+    }
+  }
+
+  final List<TextEditingController> fieldsController = [
     TextEditingController(text: StudentDataBloc.student.name),
     TextEditingController(text: "20"),
     ...List.generate(10, (index) => TextEditingController()),
@@ -103,33 +120,56 @@ class RegisterScreen extends StatelessWidget {
               child: SizedBox(
                 width: double.infinity,
                 height: 50,
-                child: BlocConsumer<StudentDataBloc, StudentDataStates>(
-                  listenWhen: (_, state) => state is RegisterUserState,
-                  buildWhen: (_, state) => state is RegisterUserState,
-                  listener: (context, state) => {
-                    if (state.status == StudentDataStatus.loaded)
-                      Navigator.of(context).pop()
-                  },
-                  builder: (context, state) => ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(ColorManager.mainBlue),
-                          foregroundColor: MaterialStateProperty.all(
-                              ColorManager.whiteColor)),
-                      child: state.status == StudentDataStatus.loading
-                          ? const CircularProgressIndicator()
-                          : const Text(
-                              "Done",
-                              style: TextStyle(fontSize: 18),
-                            ),
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          print(generateMap());
-                          context.read<StudentDataBloc>().add(
-                              RegisterStudentEvent(generateMap(), course.id));
-                        }
-                      }),
-                ),
+                child: student == null
+                    ? BlocConsumer<StudentDataBloc, StudentDataStates>(
+                        listenWhen: (_, state) => state is RegisterUserState,
+                        buildWhen: (_, state) => state is RegisterUserState,
+                        listener: (context, state) => {
+                          if (state.status == StudentDataStatus.loaded)
+                            Navigator.of(context).pop()
+                        },
+                        builder: (context, state) => ElevatedButton(
+                            style: buttonStyle,
+                            child: state.status == StudentDataStatus.loading
+                                ? const CircularProgressIndicator()
+                                : const Text(
+                                    "Register",
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                            onPressed: () {
+                              if (formKey.currentState!.validate()) {
+                                print(generateMap());
+
+                                context.read<StudentDataBloc>().add(
+                                    RegisterStudentEvent(
+                                        generateMap(), course.id));
+                              }
+                            }),
+                      )
+                    : BlocConsumer<AdminDataBloc, AdminDataStates>(
+                        listenWhen: (_, state) => state is EditUserState,
+                        buildWhen: (_, state) => state is EditUserState,
+                        listener: (context, state) => {
+                          if (state.status == AdminDataStatus.loaded)
+                            Navigator.of(context).pop()
+                        },
+                        builder: (context, state) => ElevatedButton(
+                            style: buttonStyle,
+                            child: state.status == AdminDataStatus.loading
+                                ? const CircularProgressIndicator()
+                                : const Text(
+                                    "Edit",
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                            onPressed: () {
+                              if (formKey.currentState!.validate()) {
+                                print(generateMap());
+                                context.read<AdminDataBloc>().add(
+                                    EditStudentEvent(generateMap(), groupIndex!,
+                                        courseIndex!));
+                              }
+                            }),
+                      ),
               ),
             )
           ],
@@ -137,6 +177,10 @@ class RegisterScreen extends StatelessWidget {
       ),
     );
   }
+
+  ButtonStyle buttonStyle = ButtonStyle(
+      backgroundColor: MaterialStateProperty.all(ColorManager.mainBlue),
+      foregroundColor: MaterialStateProperty.all(ColorManager.whiteColor));
 
   Widget nameField() => DefaultFormField(
         controller: fieldsController[0],
@@ -304,7 +348,11 @@ class RegisterScreen extends StatelessWidget {
 
   Map<String, dynamic> generateMap() {
     Map<String, dynamic> data = {};
-    data['ID'] = StudentDataBloc.student.id;
+    if (student != null) {
+      data['ID'] = student!.id;
+    } else {
+      data['ID'] = StudentDataBloc.student.id;
+    }
     for (int i = 1; i < columnsNames.length - 1; i++) {
       if (course.columns[i]) {
         data[columnsNames[i]] = fieldsController[i - 1].text;

@@ -3,7 +3,7 @@ import 'package:auto_id/view/shared/functions/navigation_functions.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../model/module/students.dart';
-import '../../user_screen.dart';
+import '../../user_screen/user_screen.dart';
 
 class GroupItemBuilder extends StatelessWidget {
   final int userIndex;

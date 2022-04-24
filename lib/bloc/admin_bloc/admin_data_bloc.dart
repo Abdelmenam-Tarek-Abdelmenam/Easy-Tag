@@ -182,10 +182,18 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
   }
 
   void _searchByNameHandler(SearchByNameEvent event, Emitter emit) {
-    state.usingIds = state.groupList
-        .where((element) => element.name.contains(event.subName))
+    emit(GetInitialDataState.fromOldState(state, AdminDataStatus.loading));
+
+    print(state.groupList.length);
+    print(state.usingIds.length);
+    print("Search by ${event.subName}");
+    state.usingIds = state.allGroupList
+        .where((element) =>
+            element.name.toLowerCase().contains(event.subName.toLowerCase()))
         .map((e) => e.id)
         .toList();
+    print(state.allGroupList.length);
+    print(state.usingIds.length);
     emit(GetInitialDataState.fromOldState(state, AdminDataStatus.loaded));
   }
 
@@ -195,6 +203,7 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
     if (await _checkConnectivity()) {
       CardStudent cardStudent = await _adminDataRepository.readAdminData();
       List<GroupDetails> groups = await _adminDataRepository.getGroupsData();
+      print(groups);
       emit(GetInitialDataState(
           status: AdminDataStatus.loaded,
           cardStudent: cardStudent,

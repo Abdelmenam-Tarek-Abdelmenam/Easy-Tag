@@ -1,5 +1,3 @@
-import 'card_student.dart';
-
 enum Gender {
   male,
   female,
@@ -7,6 +5,7 @@ enum Gender {
 
 class Student {
   late String id;
+  String? rfId;
   late String name;
   String? college;
   String? department;
@@ -23,6 +22,7 @@ class Student {
 
   Student.fromJson(Map<String, dynamic> data) {
     id = data['ID'];
+    rfId = data['RFID'];
     name = data['Name'];
     age = data['Age'];
     college = data['College'];
@@ -42,14 +42,33 @@ class Student {
     }[data['Gender'] ?? "null"];
   }
 
-  String _cvtImgLink(String? old) {
-    if (old == null) {
-      old = randomPhoto;
-    } else if (old.contains("drive.google.com")) {
-      return "https://drive.google.com/uc?export=view&id=" + old.split('/')[5];
-    } else if (!old.contains("http")) {
-      old = randomPhoto;
+  String? _cvtImgLink(String? old) {
+    if ((old ?? "").contains("drive.google.com")) {
+      try {
+        return "https://drive.google.com/uc?export=view&id=" +
+            old!.split('/')[5];
+      } catch (err) {
+        return null;
+      }
+    } else if (!(old ?? "").contains("http")) {
+      old = null;
     }
     return old;
   }
+
+  List get getProps => [
+        name,
+        age,
+        college,
+        department,
+        image,
+        cV,
+        phone,
+        phone2,
+        email,
+        linkedIn,
+        facebook,
+        address,
+        gender,
+      ];
 }

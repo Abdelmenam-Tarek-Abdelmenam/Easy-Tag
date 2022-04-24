@@ -7,8 +7,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../../bloc/admin_bloc/admin_data_bloc.dart';
 import '../../../shared/functions/navigation_functions.dart';
-import '../../student_view/main_screen/widgets/home_app_bar.dart';
 import '../add_group/add_group.dart';
+import 'widgets/home_app_bar.dart';
 
 class MainScreen extends StatelessWidget {
   final RefreshController _refreshController =
@@ -18,56 +18,64 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          child: const Icon(
-            Icons.add,
-            size: 40,
-            color: Colors.white,
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: SafeArea(
+        child: Scaffold(
+          floatingActionButton: FloatingActionButton(
+            child: const Icon(
+              Icons.add,
+              size: 40,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              navigateAndPush(context, const AddGroupScreen());
+              // cubit.addGroup(context);
+            },
           ),
-          onPressed: () {
-            navigateAndPush(context, const AddGroupScreen());
-            // cubit.addGroup(context);
-          },
-        ),
-        body: Container(
-          padding: const EdgeInsets.all(10.0),
-          child: SmartRefresher(
-              enablePullUp: false,
-              controller: _refreshController,
-              onRefresh: () {
-                context
-                    .read<AdminDataBloc>()
-                    .add(StartAdminOperations(AdminDataBloc.admin));
-                _refreshController.refreshCompleted();
-              },
-              child: BlocBuilder<AdminDataBloc, AdminDataStates>(
-                  buildWhen: (prev, next) => next is GetInitialDataState,
-                  builder: (_, state) {
-                    bool myState = state is GetInitialDataState;
-                    if (myState && (state.status == AdminDataStatus.error)) {
-                      return emptyGroups();
-                    } else {
-                      return ListView(
-                        physics: const BouncingScrollPhysics(),
-                        children: [
-                          const HomeAppBar(),
-                          UserCard(
-                              (state).cardStudent,
-                              myState &&
-                                  (state.status == AdminDataStatus.loading)),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          GroupList(
-                              state.groupList,
-                              myState &&
-                                  (state.status == AdminDataStatus.loading)),
-                        ],
-                      );
-                    }
-                  })),
+          body: Container(
+            padding: const EdgeInsets.all(10.0),
+            child: SmartRefresher(
+                enablePullUp: false,
+                controller: _refreshController,
+                onRefresh: () {
+                  context
+                      .read<AdminDataBloc>()
+                      .add(StartAdminOperations(AdminDataBloc.admin));
+                  _refreshController.refreshCompleted();
+                },
+                child: BlocBuilder<AdminDataBloc, AdminDataStates>(
+                    buildWhen: (prev, next) => next is GetInitialDataState,
+                    builder: (_, state) {
+                      bool myState = state is GetInitialDataState;
+                      if (myState && (state.status == AdminDataStatus.error)) {
+                        return emptyGroups();
+                      } else {
+                        return ListView(
+                          physics: const BouncingScrollPhysics(),
+                          children: [
+                            const HomeAppBar(),
+                            UserCard(
+                                (state).cardStudent,
+                                myState &&
+                                    (state.status == AdminDataStatus.loading)),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            GroupList(
+                                state.groupList,
+                                myState &&
+                                    (state.status == AdminDataStatus.loading)),
+                          ],
+                        );
+                      }
+                    })),
+          ),
         ),
       ),
     );

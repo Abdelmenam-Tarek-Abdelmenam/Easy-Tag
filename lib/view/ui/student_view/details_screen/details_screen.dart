@@ -55,27 +55,27 @@ class DetailsScreen extends StatelessWidget {
                     }),
               ),
             ),
-            Visibility(
-              visible: enableRegister,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(ColorManager.mainBlue),
-                          foregroundColor: MaterialStateProperty.all(
-                              ColorManager.whiteColor)),
-                      child: const Text(
-                        "Register",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      onPressed: () {
-                        navigateAndPush(context, RegisterScreen(course));
-                      }),
-                ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(ColorManager.mainBlue),
+                        foregroundColor:
+                            MaterialStateProperty.all(ColorManager.whiteColor)),
+                    child: Text(
+                      enableRegister ? "Register" : "Edit Course",
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                    onPressed: () {
+                      if (enableRegister) {
+                        navigateAndPush(
+                            context, RegisterScreen(course, null, null, null));
+                      } else {}
+                    }),
               ),
             )
           ],

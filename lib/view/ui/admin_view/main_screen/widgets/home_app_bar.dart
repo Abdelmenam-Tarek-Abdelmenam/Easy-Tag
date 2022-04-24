@@ -83,7 +83,7 @@ class SearchBar extends StatelessWidget {
     return TextFormField(
       enableSuggestions: true,
       onChanged: (value) {
-        // context.read<DataStatusBloc>().add(SearchByName(value));
+        context.read<AdminDataBloc>().add(SearchByNameEvent(value));
       },
       decoration: const InputDecoration(
         constraints: BoxConstraints(maxHeight: 70, maxWidth: 305),
