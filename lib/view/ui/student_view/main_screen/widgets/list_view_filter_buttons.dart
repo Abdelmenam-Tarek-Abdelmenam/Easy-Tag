@@ -90,20 +90,25 @@ class CategoryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        //margin: const EdgeInsets.only(left: 20),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: isSelected ? ColorManager.mainBlue : ColorManager.darkGrey,
+    return Padding(
+      padding: const EdgeInsets.all(2),
+      child: InkWell(
+        onTap: onPressed,
+        child: Container(
+            //margin: const EdgeInsets.only(left: 20),
+          padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              color: isSelected ? ColorManager.mainBlue : ColorManager.whiteColor,
+            ),
+            child: Text(
+              category,
+              textAlign: TextAlign.center,
+              style:  TextStyle(
+                  fontSize: 14, color: isSelected ? ColorManager.whiteColor: ColorManager.mainBlue  , fontWeight: FontWeight.bold),
+            )
         ),
-        child: TextButton(
-          onPressed: onPressed,
-          child: Text(
-            category,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-                fontSize: 14, color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-        ));
+      ),
+    );
   }
 }

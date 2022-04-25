@@ -63,6 +63,7 @@ class SearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       enableSuggestions: true,
+        textInputAction: TextInputAction.search,
       onChanged: (value) {
         context.read<StudentDataBloc>().add(ChangeFilterNameEvent(value));
       },
@@ -82,6 +83,8 @@ class SearchBar extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(12)),
           borderSide: BorderSide(color: Colors.white),
         ),
+        //suffixIcon: Icon(Icons.search,color: Colors.red,),
+
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:auto_id/model/module/course.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../resources/color_manager.dart';
@@ -9,127 +10,88 @@ class DetailsLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(children: [
-      Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10.0),
-        child: Row(
+    return SingleChildScrollView(
+      child: Column(
           children: [
-            Text(
-              "${course.price} EGP - ",
-              style: const TextStyle(
-                  fontSize: 20,
-                  color: ColorManager.darkGrey,
-                  fontWeight: FontWeight.w600),
+        coursePhoto(context),
+            const SizedBox(height: 20,),
+            Column(
+              children: [
+                {'title': 'Course','val':course.name},
+                {'title': 'Price', 'val': "${course.price} EGP"},
+                {'title': 'Offer', 'val': course.offer},
+                {'title': 'Description','val':course.description},
+                {'title': 'Category','val':"${course.category} - ${course.inPlace} "},
+                {'title': 'Start Date','val':course.date},
+                {'title': 'Number of sessions','val':course.numberOfSessions.toString()},
+              ].map((e) => Column(
+                        children: [
+                          SizedBox(
+                            width: double.infinity,
+                            child: Wrap(
+                              alignment: WrapAlignment.start,
+                              children: [
+                                Text(
+                                  '${e['title']} : ',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      color: ColorManager.mainBlue,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  e['val']!,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Divider(),
+                        ],
+                      )
+              ).toList(),
             ),
-            Text(
-              course.offer,
-              style: const TextStyle(
-                  fontSize: 16,
-                  color: ColorManager.darkGrey,
-                  fontWeight: FontWeight.w300),
-            ),
-          ],
-        ),
-      ),
-      coursePhoto(context),
-      const Text(
-        "Description",
-        style: TextStyle(
-            fontSize: 20,
-            color: ColorManager.darkGrey,
-            fontWeight: FontWeight.w600),
-      ),
-      const SizedBox(
-        height: 5,
-      ),
-      Text(course.description),
-      const Divider(),
-      detailsList(),
-      const Divider(),
-      Visibility(
-          visible: course.instructors.isNotEmpty, child: instructorsList()),
-    ]);
+        Visibility(
+            visible: course.instructors.isNotEmpty, child: instructorsList()),
+      ]),
+    );
   }
 
   Widget instructorsList() => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "Instructors",
-            style: TextStyle(
-                fontSize: 20,
-                color: ColorManager.darkGrey,
-                fontWeight: FontWeight.w600),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(
-                width: 30,
-              ),
-              Expanded(
-                child: ListView.separated(
+          SizedBox(
+            width: double.infinity,
+            child: Wrap(
+              children: [
+                const Text(
+                  'Instructors : ',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: ColorManager.mainBlue,
+                      fontWeight: FontWeight.bold),
+                ),
+                ListView.separated(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     separatorBuilder: (_, __) => const SizedBox(
-                          height: 2,
-                        ),
+                      height: 2,
+                    ),
                     itemBuilder: (_, index) =>
-                        Text("${index + 1} - ${course.instructors[index]}"),
-                    itemCount: course.instructors.length),
-              )
-            ],
-          )
-        ],
-      );
-
-  Widget detailsList() => Column(
-        children: [
-          Row(
-            children: [
-              const Text(
-                "Category : ",
-                style: TextStyle(
-                    fontSize: 18,
-                    color: ColorManager.darkGrey,
-                    fontWeight: FontWeight.w600),
-              ),
-              Text("${course.category} - ${course.inPlace} ")
-            ],
+                        Text(" ${course.instructors[index]}", style: const TextStyle(
+                          fontSize: 20,
+                          color: ColorManager.darkGrey,),),
+                    itemCount: course.instructors.length)
+              ],
+            ),
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          Row(
-            children: [
-              const Text(
-                "Start Date : ",
-                style: TextStyle(
-                    fontSize: 18,
-                    color: ColorManager.darkGrey,
-                    fontWeight: FontWeight.w600),
-              ),
-              Text(course.date)
-            ],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Row(
-            children: [
-              const Text(
-                "Number of sessions : ",
-                style: TextStyle(
-                    fontSize: 18,
-                    color: ColorManager.darkGrey,
-                    fontWeight: FontWeight.w600),
-              ),
-              Text(course.numberOfSessions.toString())
-            ],
-          )
         ],
       );
 

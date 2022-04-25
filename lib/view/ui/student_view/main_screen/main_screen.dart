@@ -9,6 +9,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../shared/widgets/powered_by_navigation_bar.dart';
+
 class StudentMainScreen extends StatelessWidget {
   StudentMainScreen({Key? key}) : super(key: key);
 
@@ -25,6 +27,7 @@ class StudentMainScreen extends StatelessWidget {
         }
       },
       child: Scaffold(
+        bottomNavigationBar: poweredBy(),
         backgroundColor: ColorManager.lightBlue,
         body: SafeArea(
           child: Padding(
@@ -44,6 +47,15 @@ class StudentMainScreen extends StatelessWidget {
                   const SizedBox(
                     height: 15,
                   ),
+                  Row(
+                    children: const [
+                      Icon(Icons.search),
+                      Text('Results',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
                   Expanded(
                     child: BlocBuilder<StudentDataBloc, StudentDataStates>(
                         buildWhen: (_, state) =>
@@ -58,19 +70,15 @@ class StudentMainScreen extends StatelessWidget {
                             if (state.courses.isEmpty) {
                               return Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Icon(
-                                    Icons.table_rows_outlined,
-                                    color: ColorManager.lightGrey,
-                                    size: 70,
+                                children: [
+                                  Image.asset('images/icons/empty_icon.png',width: 60,),
+                                  const SizedBox(
+                                    height: 10,
                                   ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Text(
+                                  const Text(
                                     "No Courses",
                                     style: TextStyle(
-                                        color: ColorManager.lightGrey,
+                                        //color: ColorManager.lightGrey,
                                         fontSize: 18),
                                   )
                                 ],
