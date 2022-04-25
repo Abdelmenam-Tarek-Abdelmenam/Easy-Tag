@@ -75,6 +75,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           primaryColor: ColorManager.mainBlue,
         ),
+        // home: const QrGeneratorScreen(),
         home: user.isEmpty
             ? OnBoardingView()
             : user.isAdmin

@@ -4,7 +4,6 @@ const String _onlineLogo =
 class Course {
   late String name;
   late String id;
-  int? maxStudent;
   int? numberOfSessions;
   late int price;
   late String description;
@@ -19,11 +18,10 @@ class Course {
   Course.fromJson(json, String cId) {
     id = cId;
     name = json['name'];
-    maxStudent = json['maxStudents'];
     numberOfSessions = json['numberOfSessions'];
     price = json['priceController'];
     description = json['description'];
-    offer = json['offer'];
+    offer = json['offer'].toString();
     category = json['category'];
     inPlace = json['inPlace'];
     logo = json['logo'] ?? _onlineLogo;
@@ -32,11 +30,21 @@ class Course {
     instructors = List<String>.from(json['instructorsNames']);
     columns = List<bool>.from(json['columnNames']);
   }
+  void editCourse(Map<String, dynamic> json) {
+    name = json['name'];
+    numberOfSessions = json['numberOfSessions'];
+    price = json['priceController'];
+    description = json['description'];
+    offer = json['offer'].toString();
+    category = json['category'];
+    inPlace = json['inPlace'];
+    logo = json['logo'] ?? _onlineLogo;
+    date = json['startDate'];
+  }
 
   Map<String, dynamic> get toJson => {
         'columnNames': columns,
         "name": name,
-        "maxStudents": maxStudent,
         "numberOfSessions": numberOfSessions,
         "priceController": price,
         "description": description,

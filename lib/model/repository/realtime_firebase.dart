@@ -52,6 +52,10 @@ class AdminDataRepository {
         .update(group.toJson);
   }
 
+  Future<void> editCourse(String id, Map<String, dynamic> newData) async {
+    await _dataBase.child(_id).child("groups").child(id).update(newData);
+  }
+
   Future<void> buildListener(Function(String key, dynamic value) onData) async {
     await cancelListener();
     _listener =

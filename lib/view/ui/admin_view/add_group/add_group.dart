@@ -48,7 +48,6 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
 
   var formKey = GlobalKey<FormState>();
   var sheetName = TextEditingController();
-  var maxStudents = TextEditingController(text: "0");
   var numberOfSessions = TextEditingController(text: "1");
   var priceController = TextEditingController(text: "1000");
   TextEditingController description = TextEditingController();
@@ -236,25 +235,6 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
               controller: offer,
               title: "Offers",
               prefix: FontAwesomeIcons.moneyBill),
-          const SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text("Max Student",
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: ColorManager.darkGrey,
-                      fontWeight: FontWeight.bold)),
-              const Text("Keep empty if not",
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: ColorManager.darkGrey,
-                      fontWeight: FontWeight.w400)),
-              SizedBox(width: 120, child: NumericField(maxStudents)),
-            ],
-          ),
           const SizedBox(
             height: 10,
           ),
@@ -573,7 +553,6 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
       'columnNames': neededColumns,
       'titles': renameRowsName,
       "name": sheetName.text,
-      "maxStudents": int.parse(maxStudents.text),
       "numberOfSessions": int.parse(numberOfSessions.text),
       "priceController": int.parse(priceController.text),
       "description": description.text,
