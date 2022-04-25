@@ -26,9 +26,7 @@ class CategoryButtonsList extends StatelessWidget {
           category: categories[index],
           isSelected: categories[index] == state.category,
           onPressed: () {
-            context
-                .read<StudentDataBloc>()
-                .add(ChangeFilterTypeEvent(categories[index]));
+            context.read<StudentDataBloc>().add(ChangeFilterTypeEvent(categories[index]));
           }),
     ));
 

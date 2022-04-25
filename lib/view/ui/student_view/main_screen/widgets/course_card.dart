@@ -134,18 +134,21 @@ class CourseCardDesign extends StatelessWidget {
             borderRadius: BorderRadius.circular(10)),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10.0),
-          child: Image.network(course.logo,
-              height: 130,
-              fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => Container(
-                    height: 150,
-                    color: ColorManager.lightGrey,
-                    child: const Icon(
-                      Icons.image_not_supported_outlined,
-                      size: 50,
-                      color: ColorManager.darkGrey,
-                    ),
-                  )),
+          child: Hero(
+            tag: course.id,
+            child: Image.network(course.logo,
+                height: 130,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => Container(
+                      height: 150,
+                      color: ColorManager.lightGrey,
+                      child: const Icon(
+                        Icons.image_not_supported_outlined,
+                        size: 50,
+                        color: ColorManager.darkGrey,
+                      ),
+                    )),
+          ),
         ),
       );
 }

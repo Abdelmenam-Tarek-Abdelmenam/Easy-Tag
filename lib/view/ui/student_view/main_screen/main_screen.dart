@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer/shimmer.dart';
-
 import '../../../shared/widgets/powered_by_navigation_bar.dart';
 
 class StudentMainScreen extends StatelessWidget {
@@ -58,8 +57,7 @@ class StudentMainScreen extends StatelessWidget {
                   ),
                   Expanded(
                     child: BlocBuilder<StudentDataBloc, StudentDataStates>(
-                        buildWhen: (_, state) =>
-                            state is GetInitialDataState, // check state
+                        buildWhen: (_, state) => state is GetInitialDataState, // check state
                         builder: (context, state) {
                           if (state.status == StudentDataStatus.loading) {
                             return Shimmer.fromColors(
@@ -76,7 +74,7 @@ class StudentMainScreen extends StatelessWidget {
                                     height: 10,
                                   ),
                                   const Text(
-                                    "No Courses",
+                                    "No Results",
                                     style: TextStyle(
                                         //color: ColorManager.lightGrey,
                                         fontSize: 18),

@@ -101,18 +101,21 @@ class DetailsLayout extends StatelessWidget {
             borderRadius: BorderRadius.circular(10)),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10.0),
-          child: Image.network(course.logo,
-              fit: BoxFit.fitWidth,
-              errorBuilder: (_, __, ___) => Container(
-                    height: 180,
-                    width: MediaQuery.of(context).size.width,
-                    color: ColorManager.lightGrey,
-                    child: const Icon(
-                      Icons.image_not_supported_outlined,
-                      size: 50,
-                      color: ColorManager.darkGrey,
-                    ),
-                  )),
+          child: Hero(
+            tag: course.id,
+            child: Image.network(course.logo,
+                fit: BoxFit.fitWidth,
+                errorBuilder: (_, __, ___) => Container(
+                      height: 180,
+                      width: MediaQuery.of(context).size.width,
+                      color: ColorManager.lightGrey,
+                      child: const Icon(
+                        Icons.image_not_supported_outlined,
+                        size: 50,
+                        color: ColorManager.darkGrey,
+                      ),
+                    )),
+          ),
         ),
       );
 }

@@ -24,7 +24,6 @@ Future<void> main() async {
     statusBarColor: Colors.white.withOpacity(0),
     statusBarBrightness: Brightness.light,
     statusBarIconBrightness: Brightness.dark
-
   ));
 
   return BlocOverrides.runZoned(
