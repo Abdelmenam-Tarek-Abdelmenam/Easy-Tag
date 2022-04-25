@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../model/module/course.dart';
 import '../../../resources/color_manager.dart';
+import '../../admin_view/edit_course/edit_course_screen.dart';
 
 class DetailsScreen extends StatelessWidget {
   final Course course;
@@ -74,7 +75,9 @@ class DetailsScreen extends StatelessWidget {
                       if (enableRegister) {
                         navigateAndPush(
                             context, RegisterScreen(course, null, null, null));
-                      } else {}
+                      } else {
+                        navigateAndPush(context, EditCourseScreen(course));
+                      }
                     }),
               ),
             )
