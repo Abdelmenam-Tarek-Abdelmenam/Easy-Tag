@@ -1,7 +1,5 @@
 import 'package:auto_id/model/module/course.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../../../../resources/color_manager.dart';
 
 class DetailsLayout extends StatelessWidget {

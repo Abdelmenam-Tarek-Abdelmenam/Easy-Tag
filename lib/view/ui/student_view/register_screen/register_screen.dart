@@ -3,10 +3,10 @@ import 'package:auto_id/model/module/course.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import '../../../../bloc/student_bloc/student_data_bloc.dart';
 import '../../../../model/module/students.dart';
 import '../../../resources/color_manager.dart';
+import '../../../shared/widgets/app_bar.dart';
 import '../../../shared/widgets/form_field.dart';
 import '../../admin_view/add_group/add_group.dart';
 import '../../admin_view/add_group/widgets/numeric_field.dart';
@@ -60,119 +60,96 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print(fieldsController.length);
-    return Scaffold(
-      backgroundColor: ColorManager.lightBlue,
-      body: SafeArea(
-        child: Stack(
-          alignment: Alignment.topLeft,
-          children: [
-            Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: Text(
-                  course.name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                      fontSize: 26,
-                      color: ColorManager.mainBlue,
-                      fontWeight: FontWeight.bold),
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
+        bottomNavigationBar: SizedBox(
+          width: double.infinity,
+          height: 50,
+          child: student == null
+              ? BlocConsumer<StudentDataBloc, StudentDataStates>(
+            listenWhen: (_, state) => state is RegisterUserState,
+            buildWhen: (_, state) => state is RegisterUserState,
+            listener: (context, state) => {
+              if (state.status == StudentDataStatus.loaded)
+                Navigator.of(context).pop()
+            },
+            builder: (context, state) => ElevatedButton(
+                style: buttonStyle,
+                child: state.status == StudentDataStatus.loading
+                    ? const CircularProgressIndicator()
+                    : const Text(
+                  "Register",
+                  style: TextStyle(fontSize: 18),
                 ),
-              ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 55),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                onPressed: () {
+                  if (formKey.currentState!.validate()) {
+                    print(generateMap());
+
+                    context.read<StudentDataBloc>().add(
+                        RegisterStudentEvent(
+                            generateMap(), course.id));
+                  }
+                }),
+          )
+              : BlocConsumer<AdminDataBloc, AdminDataStates>(
+            listenWhen: (_, state) => state is EditUserState,
+            buildWhen: (_, state) => state is EditUserState,
+            listener: (context, state) => {
+              if (state.status == AdminDataStatus.loaded)
+                Navigator.of(context).pop()
+            },
+            builder: (context, state) => ElevatedButton(
+                style: buttonStyle,
+                child: state.status == AdminDataStatus.loading
+                    ? const CircularProgressIndicator()
+                    : const Text(
+                  "Edit",
+                  style: TextStyle(fontSize: 18),
+                ),
+                onPressed: () {
+                  if (formKey.currentState!.validate()) {
+                    print(generateMap());
+                    context.read<AdminDataBloc>().add(
+                        EditStudentEvent(generateMap(), groupIndex!,
+                            courseIndex!));
+                  }
+                }),
+          ),
+        ),
+        appBar: appBar(course.name),
+        backgroundColor: ColorManager.lightBlue,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10),
                 child: Form(
                   key: formKey,
-                  child: ListView.separated(
+                  child: ListView.builder(
+                    shrinkWrap: true,
                     physics: const BouncingScrollPhysics(),
                     itemCount: course.columns.length,
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const SizedBox(
-                      height: 10,
-                    ),
                     itemBuilder: (BuildContext context, int index) =>
                         Visibility(
-                      visible: course.columns[index],
-                      child: fields[index],
-                    ),
+                          visible: course.columns[index],
+                          child: Column(
+                            children: [
+                              fields[index],
+                              const SizedBox(height: 10,)
+                            ],
+                          ),
+                        ),
                   ),
                 ),
               ),
-            ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: IconButton(
-                    icon: const Icon(Icons.arrow_back_rounded),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    }),
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: student == null
-                    ? BlocConsumer<StudentDataBloc, StudentDataStates>(
-                        listenWhen: (_, state) => state is RegisterUserState,
-                        buildWhen: (_, state) => state is RegisterUserState,
-                        listener: (context, state) => {
-                          if (state.status == StudentDataStatus.loaded)
-                            Navigator.of(context).pop()
-                        },
-                        builder: (context, state) => ElevatedButton(
-                            style: buttonStyle,
-                            child: state.status == StudentDataStatus.loading
-                                ? const CircularProgressIndicator()
-                                : const Text(
-                                    "Register",
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                            onPressed: () {
-                              if (formKey.currentState!.validate()) {
-                                print(generateMap());
-
-                                context.read<StudentDataBloc>().add(
-                                    RegisterStudentEvent(
-                                        generateMap(), course.id));
-                              }
-                            }),
-                      )
-                    : BlocConsumer<AdminDataBloc, AdminDataStates>(
-                        listenWhen: (_, state) => state is EditUserState,
-                        buildWhen: (_, state) => state is EditUserState,
-                        listener: (context, state) => {
-                          if (state.status == AdminDataStatus.loaded)
-                            Navigator.of(context).pop()
-                        },
-                        builder: (context, state) => ElevatedButton(
-                            style: buttonStyle,
-                            child: state.status == AdminDataStatus.loading
-                                ? const CircularProgressIndicator()
-                                : const Text(
-                                    "Edit",
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                            onPressed: () {
-                              if (formKey.currentState!.validate()) {
-                                print(generateMap());
-                                context.read<AdminDataBloc>().add(
-                                    EditStudentEvent(generateMap(), groupIndex!,
-                                        courseIndex!));
-                              }
-                            }),
-                      ),
-              ),
-            )
-          ],
+            ],
+          ),
         ),
       ),
     );
