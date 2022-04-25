@@ -69,7 +69,17 @@ class CreateGroupEvent extends AdminDataEvent {
   const CreateGroupEvent(this.groupData);
 
   @override
-  List<Object?> get props => [groupData['name']];
+  List<Object?> get props => [groupData];
+}
+
+class EditGroupEvent extends AdminDataEvent {
+  final Map<String, dynamic> groupData;
+  final String id;
+
+  const EditGroupEvent(this.groupData, this.id);
+
+  @override
+  List<Object?> get props => [groupData, id];
 }
 
 class SendConfigurationEvent extends AdminDataEvent {

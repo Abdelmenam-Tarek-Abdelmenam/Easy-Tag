@@ -13,6 +13,14 @@ class AdminDataStates extends Equatable {
   List<GroupDetails> get groupList =>
       allGroupList.where((element) => usingIds.contains(element.id)).toList();
 
+  int getGroupIndex(String id) =>
+      allGroupList.indexWhere((element) => element.id == id);
+
+  void removeId(String id) {
+    usingIds.removeWhere((element) => element == id);
+    allGroupList.removeWhere((element) => element.id == id);
+  }
+
   AdminDataStates(
       {this.status = AdminDataStatus.initial,
       required this.cardStudent,
@@ -105,7 +113,7 @@ class LoadGroupDataState extends AdminDataStates {
 
   @override
   List<Object?> get props =>
-      [status, cardStudent, groupList.length, loadingDelete, groupIndex, force];
+      [status, cardStudent, usingIds.length, loadingDelete, groupIndex, force];
 }
 
 class DeleteUserState extends AdminDataStates {

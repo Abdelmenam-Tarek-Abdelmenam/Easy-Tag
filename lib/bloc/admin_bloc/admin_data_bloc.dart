@@ -20,6 +20,7 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
     on<StartAdminOperations>(_startGettingDataHandler);
     on<CardDataChangedEvents>(_cardDataChangesHandler);
     on<CreateGroupEvent>(_createSpreadSheet);
+    on<EditGroupEvent>(_editSpreadSheet);
     on<SendConfigurationEvent>(_sendEspConfigHandler);
     on<SignOutEvent>(_signOutHandler);
     on<LoadGroupDataEvent>(_getGroupDataHandler);
@@ -57,12 +58,26 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
       GroupDetails newGroup = GroupDetails(id: id, json: event.groupData);
       newGroup.students = [];
       await _adminDataRepository.createGroup(newGroup);
-      state.groupList.insert(0, newGroup);
+      state.allGroupList.insert(0, newGroup);
+      state.usingIds.insert(0, newGroup.id);
       NotificationSender sender = NotificationSender();
       sender.postData(
           title: "EME IH Announcement",
           body: 'New ${event.groupData['category']}s is available now');
       emit(GetInitialDataState.fromOldState(state, AdminDataStatus.loaded));
+      emit(CreateGroupState.fromOldState(state, AdminDataStatus.loaded));
+    } on DioErrors catch (err) {
+      emit(CreateGroupState.fromOldState(state, AdminDataStatus.error));
+      showToast(err.message, type: ToastType.error);
+    }
+  }
+
+  Future<void> _editSpreadSheet(EditGroupEvent event, Emitter emit) async {
+    try {
+      emit(CreateGroupState.fromOldState(state, AdminDataStatus.loading));
+      await _adminDataRepository.editCourse(event.id, event.groupData);
+      int groupIndex = state.getGroupIndex(event.id);
+      state.allGroupList[groupIndex].editCourse(event.groupData);
       emit(CreateGroupState.fromOldState(state, AdminDataStatus.loaded));
     } on DioErrors catch (err) {
       emit(CreateGroupState.fromOldState(state, AdminDataStatus.error));
@@ -76,10 +91,11 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
     emit(LoadGroupDataState.fromOldState(
         state, AdminDataStatus.loading, event.groupIndex,
         force: event.force));
-    if (state.groupList[event.groupIndex].students == null || event.force) {
+    int realGroupIndex = state.getGroupIndex(state.usingIds[event.groupIndex]);
+    if (state.allGroupList[realGroupIndex].students == null || event.force) {
       try {
-        state.groupList[event.groupIndex] = await _webServices.getGroupData(
-            event.groupIndex, state.groupList[event.groupIndex]);
+        state.allGroupList[realGroupIndex] = await _webServices.getGroupData(
+            event.groupIndex, state.allGroupList[realGroupIndex]);
         emit(LoadGroupDataState.fromOldState(
             state, AdminDataStatus.loaded, event.groupIndex));
       } on DioErrors catch (err) {
@@ -97,9 +113,8 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
   Future<void> _deleteGroupHandler(DeleteGroupIndex event, Emitter emit) async {
     LoadGroupDataState.fromOldState(state, state.status, event.groupIndex,
         loadingSate: true);
-    await _adminDataRepository
-        .deleteGroup(state.groupList[event.groupIndex].id);
-    state.groupList.removeAt(event.groupIndex);
+    await _adminDataRepository.deleteGroup(state.usingIds[event.groupIndex]);
+    state.removeId(state.usingIds[event.groupIndex]);
     emit(GetInitialDataState.fromOldState(state, AdminDataStatus.loaded));
   }
 
@@ -107,11 +122,14 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
       DeleteStudentIndex event, Emitter emit) async {
     try {
       emit(DeleteUserState.fromOldState(state, AdminDataStatus.loading));
+      String groupId = state.usingIds[event.groupIndex];
       bool response = await _webServices.deleteStudentFromSheet(
-          state.groupList[event.groupIndex].students![event.userIndex].id,
-          state.groupList[event.groupIndex].id);
+          state.allGroupList[state.getGroupIndex(groupId)]
+              .students![event.userIndex].id,
+          groupId);
       if (response) {
-        state.groupList[event.groupIndex].students!.removeAt(event.userIndex);
+        state.allGroupList[state.getGroupIndex(groupId)].students!
+            .removeAt(event.userIndex);
         emit(LoadGroupDataState.fromOldState(
             state, AdminDataStatus.loaded, event.groupIndex,
             force: false));
@@ -127,12 +145,12 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
   Future<void> _editStudentHandler(EditStudentEvent event, Emitter emit) async {
     try {
       emit(EditUserState.fromOldState(state, AdminDataStatus.loading));
-      String groupId = state.groupList[event.groupIndex].id;
+      String groupId = state.usingIds[event.groupIndex];
       bool response = await _webServices.editStudentData(groupId, event.data);
       if (response) {
         CardStudent student = state.cardStudent;
-        state.groupList[event.groupIndex].students![event.studentIndex] =
-            Student.fromJson(event.data);
+        state.allGroupList[state.getGroupIndex(groupId)]
+            .students![event.studentIndex] = Student.fromJson(event.data);
         if (student.state == StudentState.newStudent &&
             student.id == event.data['ID']) {
           student = student.copyWith(
@@ -185,8 +203,6 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
   void _searchByNameHandler(SearchByNameEvent event, Emitter emit) {
     emit(GetInitialDataState.fromOldState(state, AdminDataStatus.loading));
 
-    print(state.groupList.length);
-    print(state.usingIds.length);
     print("Search by ${event.subName}");
     state.usingIds = state.allGroupList
         .where((element) =>

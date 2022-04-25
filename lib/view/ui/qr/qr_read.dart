@@ -7,7 +7,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
-
 import '../../resources/color_manager.dart';
 import '../../shared/widgets/toast_helper.dart';
 
