@@ -147,13 +147,20 @@ class MainConfigWidget extends StatelessWidget {
                                             (state.status ==
                                                 AdminDataStatus.loading)
                                         ? const CircularProgressIndicator()
-                                        : const Text(
-                                            "Send",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 12,
-                                                color: Colors.white),
-                                          ), () {
+                                        : Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                          children: const [
+                                            Text(
+                                                "Send",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 18,
+                                                    color: Colors.white),
+                                              ),
+                                            SizedBox(width: 8,),
+                                            Icon(Icons.send,color: Colors.white,),
+                                          ],
+                                        ), () {
                                   if (formKey.currentState!.validate()) {
                                     context.read<AdminDataBloc>().add(
                                         SendConfigurationEvent(

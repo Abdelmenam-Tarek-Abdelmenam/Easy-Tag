@@ -1,4 +1,6 @@
 import 'package:auto_id/view/resources/color_manager.dart';
+import 'package:auto_id/view/shared/widgets/app_bar.dart';
+import 'package:auto_id/view/shared/widgets/powered_by_navigation_bar.dart';
 import 'package:auto_id/view/ui/admin_view/device_config/widgets/main_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -7,63 +9,57 @@ class SendConfigScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        // resizeToAvoidBottomInset: true,
-        backgroundColor: ColorManager.whiteColor,
-        body: ListView(
-          physics: const BouncingScrollPhysics(),
-          children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: IconButton(
-                    icon: const Icon(Icons.arrow_back_rounded),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    }),
-              ),
-            ),
-            topWidget(),
-            const SizedBox(
-              height: 40,
-            ),
-            MainConfigWidget()
-          ],
-        ),
+    return Scaffold(
+      bottomNavigationBar: poweredBy(),
+      appBar: appBar('Device Configuration'),
+      // resizeToAvoidBottomInset: true,
+      backgroundColor: ColorManager.whiteColor,
+      body: ListView(
+        physics: const BouncingScrollPhysics(),
+        children: [
+          topWidget(),
+          const SizedBox(
+            height: 40,
+          ),
+          MainConfigWidget()
+        ],
       ),
     );
   }
 
   Widget topWidget() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 40, left: 20),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          Text(
-            "Device configuration",
-            style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w900,
-                color: ColorManager.mainBlue),
+    return Stack(
+      children: [
+
+        Transform.translate(
+          offset: const Offset(-50,0),
+          child: Container(
+            margin: const EdgeInsets.only(right: 50),
+            decoration: BoxDecoration(
+              color: Colors.deepOrange[300],
+              borderRadius: BorderRadius.circular(80),
+            ),
+            child: const SizedBox(width: 300,height: 85,)
           ),
-          SizedBox(
-            height: 20,
-          ),
-          Text.rich(
-              TextSpan(text: 'Connect to WI-FI', children: <InlineSpan>[
+        ),
+        const Padding(
+          padding: EdgeInsets.only(top: 10, left: 10),
+          child: Text.rich(
+              TextSpan(
+                  style: TextStyle(color: Colors.white,fontSize: 18),
+                  text: 'Note', children: <InlineSpan>[
+                TextSpan(
+                  text: ' \nConnect to WI-FI ',
+                ),
                 TextSpan(
                   text: ' EasyTag ',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 TextSpan(
-                  text: 'With password',
+                  text: ' \nwith password ',
                 ),
                 TextSpan(
-                  text: ' 88888888',
+                  text: ' 88888888 ',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 )
               ]),
@@ -71,8 +67,8 @@ class SendConfigScreen extends StatelessWidget {
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                   color: ColorManager.darkGrey)),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
