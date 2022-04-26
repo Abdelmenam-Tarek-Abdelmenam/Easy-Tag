@@ -11,19 +11,11 @@ class HomeAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 65,
+      height: 50,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Expanded(child: SearchBar()),
-          const SizedBox(
-            width: 10,
-          ),
-          ProfileIcon(
-            profileHandler: () {
-              navigateAndPush(context, const StudentScreen());
-            },
-          ),
+        children: const [
+          Expanded(child: SearchBar()),
         ],
       ),
     );
