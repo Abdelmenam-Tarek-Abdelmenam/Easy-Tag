@@ -1,9 +1,7 @@
 import 'package:auto_id/view/shared/functions/navigation_functions.dart';
 import 'package:auto_id/view/ui/student_view/details_screen/widgets/details_layout.dart';
 import 'package:auto_id/view/ui/student_view/register_screen/register_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../../../../model/module/course.dart';
 import '../../../resources/color_manager.dart';
 

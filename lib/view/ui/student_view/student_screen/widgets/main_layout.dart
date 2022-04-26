@@ -1,13 +1,9 @@
 
 import 'package:auto_id/bloc/student_bloc/student_data_bloc.dart';
 import 'package:auto_id/view/resources/color_manager.dart';
-import 'package:auto_id/view/ui/student_view/main_screen/widgets/course_card.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
 import '../../../../../model/module/course.dart';
 import '../../../../shared/functions/navigation_functions.dart';
 import '../../../../shared/widgets/toast_helper.dart';
@@ -15,7 +11,7 @@ import '../../details_screen/details_screen.dart';
 import '../../main_screen/widgets/loading_card.dart';
 
 class UserScreenLayout extends StatelessWidget {
-  UserScreenLayout({Key? key}) : super(key: key);
+  const UserScreenLayout({Key? key}) : super(key: key);
 
   //final PageController controller = PageController();
 

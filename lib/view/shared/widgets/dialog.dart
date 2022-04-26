@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Future<bool> dialog(BuildContext context,{title,content,yes,no}) async {

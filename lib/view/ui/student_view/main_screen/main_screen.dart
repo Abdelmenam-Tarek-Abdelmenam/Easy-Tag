@@ -12,7 +12,6 @@ import '../../../shared/functions/navigation_functions.dart';
 import '../../../shared/widgets/dialog.dart';
 import '../../../shared/widgets/powered_by_navigation_bar.dart';
 import '../../admin_view/main_screen/main_screen.dart';
-import '../../qr/qr_generate.dart';
 
 class StudentMainScreen extends StatelessWidget {
   StudentMainScreen({Key? key}) : super(key: key);
@@ -33,7 +32,7 @@ class StudentMainScreen extends StatelessWidget {
         },
         child: Scaffold(
           floatingActionButton: FloatingActionButton(onPressed: (){
-            navigateAndPush(context,  MainScreen());
+            navigateAndReplace(context,  MainScreen());
           }),
           bottomNavigationBar: poweredBy(),
           backgroundColor: ColorManager.lightBlue,

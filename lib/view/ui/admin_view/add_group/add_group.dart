@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:auto_id/view/shared/widgets/app_bar.dart';
 import 'package:auto_id/view/shared/widgets/form_field.dart';
 import 'package:auto_id/view/ui/admin_view/add_group/models.dart';
 import 'package:auto_id/view/ui/admin_view/add_group/widgets/numeric_field.dart';
@@ -12,7 +12,6 @@ import 'package:im_stepper/stepper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 import '../../../../bloc/admin_bloc/admin_data_bloc.dart';
 import '../../../resources/color_manager.dart';
 import '../../../shared/functions/navigation_functions.dart';
@@ -43,8 +42,7 @@ class AddGroupScreen extends StatefulWidget {
 }
 
 class _AddGroupScreenState extends State<AddGroupScreen> {
-  List<bool> neededColumns =
-      List.generate(columnsNames.length, (index) => index < 2);
+  List<bool> neededColumns = List.generate(columnsNames.length, (index) => index < 2);
 
   var formKey = GlobalKey<FormState>();
   var sheetName = TextEditingController();
@@ -69,100 +67,92 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
           currentFocus.unfocus();
         }
       },
-      child: SafeArea(
-        child: Scaffold(
-            floatingActionButton: BlocConsumer<AdminDataBloc, AdminDataStates>(
-                buildWhen: (_, state) => state is CreateGroupState,
-                listenWhen: (_, state) => state is CreateGroupState,
-                listener: (context, state) {
-                  if (state.status == AdminDataStatus.loaded) {
-                    Navigator.of(context).pop();
-                  }
-                },
-                builder: (context, state) =>
-                    state.status == AdminDataStatus.loading
-                        ? const CircularProgressIndicator()
-                        : FloatingActionButton(
-                            backgroundColor: ColorManager.darkGrey,
-                            child: const Icon(
-                              Icons.check,
-                              size: 40,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
-                              if (formKey.currentState!.validate()) {
-                                Map<String, dynamic> data = createMap();
-
-                                context
-                                    .read<AdminDataBloc>()
-                                    .add(CreateGroupEvent(data));
-                              }
-                            },
-                          )),
-            body: Padding(
-              padding: const EdgeInsets.all(10),
-              child: ListView(
-                physics: const BouncingScrollPhysics(),
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: IconButton(
-                          icon: const Icon(Icons.arrow_back_rounded),
+      child: Scaffold(
+        appBar: appBar('add Group'),
+          floatingActionButton: BlocConsumer<AdminDataBloc, AdminDataStates>(
+              buildWhen: (_, state) => state is CreateGroupState,
+              listenWhen: (_, state) => state is CreateGroupState,
+              listener: (context, state) {
+                if (state.status == AdminDataStatus.loaded) {
+                  Navigator.of(context).pop();
+                }
+              },
+              builder: (context, state) =>
+                  state.status == AdminDataStatus.loading
+                      ? const CircularProgressIndicator()
+                      : FloatingActionButton(
+                          backgroundColor: ColorManager.darkGrey,
+                          child: const Icon(
+                            Icons.check,
+                            size: 40,
+                            color: Colors.white,
+                          ),
                           onPressed: () {
-                            Navigator.of(context).pop();
-                          }),
-                    ),
-                  ),
-                  Form(
-                      key: formKey,
-                      child: DefaultFormField(
-                        border: true,
-                        controller: sheetName,
-                        title: "Group name",
-                        prefix: Icons.drive_file_rename_outline,
-                        validator: (val) =>
-                            val!.isEmpty ? "Name cannot be empty" : null,
-                      )),
-                  IconStepper(
-                    lineDotRadius: 1,
-                    stepRadius: 20,
-                    enableNextPreviousButtons: false,
-                    activeStepColor: ColorManager.mainBlue,
-                    icons: const [
-                      Icon(Icons.table_rows_outlined),
-                      Icon(Icons.info_outline),
-                      Icon(Icons.add_box_outlined),
-                      Icon(Icons.person_add_alt),
+                            if (formKey.currentState!.validate()) {
+                              Map<String, dynamic> data = createMap();
+
+                              context
+                                  .read<AdminDataBloc>()
+                                  .add(CreateGroupEvent(data));
+                            }
+                          },
+                        )),
+          body: Padding(
+            padding: const EdgeInsets.all(10),
+            child: ListView(
+              physics: const BouncingScrollPhysics(),
+              children: [
+                Form(
+                    key: formKey,
+                    child: DefaultFormField(
+                      border: true,
+                      controller: sheetName,
+                      title: "Group name",
+                      prefix: Icons.group_add,
+                      validator: (val) =>
+                          val!.isEmpty ? "Name cannot be empty" : null,
+                    )),
+                IconStepper(
+                  lineDotRadius: 1,
+                  stepRadius: 18,
+                  enableNextPreviousButtons: false,
+                  activeStepColor: ColorManager.mainBlue,
+                  icons: const [
+                    Icon(Icons.table_rows_outlined,color: Colors.white,),
+                    Icon(Icons.info_outline,color: Colors.white,),
+                    Icon(Icons.add_box_outlined,color: Colors.white,),
+                    Icon(Icons.person_add_alt,color: Colors.white,),
+                  ],
+                  activeStep: activeStep,
+                  onStepReached: (index) {
+                    setState(() {
+                      activeStep = index;
+                    });
+                  },
+                ),
+                [
+                  firstStep(),
+                  secondStep(),
+                  thirdStep(),
+                  forthStep()
+                ][activeStep],
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Visibility(
+                          child: previousButton(),
+                      visible: activeStep!=0),
+                      Visibility(
+                          child: nextButton(),
+                          visible: activeStep!=3),
                     ],
-                    activeStep: activeStep,
-                    onStepReached: (index) {
-                      setState(() {
-                        activeStep = index;
-                      });
-                    },
                   ),
-                  [
-                    firstStep(),
-                    secondStep(),
-                    thirdStep(),
-                    forthStep()
-                  ][activeStep],
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        previousButton(),
-                        nextButton(),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            )),
-      ),
+                ),
+              ],
+            ),
+          )),
     );
   }
 
@@ -172,7 +162,7 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
-              'choose student information',
+              'Select Students Data',
               style: TextStyle(
                   fontSize: 20,
                   color: ColorManager.darkGrey,
@@ -192,11 +182,10 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("Price",
+              const Text(" Price",
                   style: TextStyle(
                       fontSize: 18,
-                      color: ColorManager.darkGrey,
-                      fontWeight: FontWeight.bold)),
+                      color: ColorManager.darkGrey,)),
               SizedBox(width: 200, child: NumericField(priceController)),
             ],
           ),
@@ -206,11 +195,10 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("Number of sessions",
+              const Text(" Number of sessions",
                   style: TextStyle(
                       fontSize: 18,
-                      color: ColorManager.darkGrey,
-                      fontWeight: FontWeight.bold)),
+                      color: ColorManager.darkGrey,)),
               SizedBox(width: 150, child: NumericField(numberOfSessions)),
             ],
           ),
@@ -241,11 +229,10 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("Group category",
+              const Text("Group Category",
                   style: TextStyle(
                       fontSize: 18,
-                      color: ColorManager.darkGrey,
-                      fontWeight: FontWeight.bold)),
+                      color: ColorManager.darkGrey,)),
               categoryMenu(true),
             ],
           ),
@@ -258,8 +245,7 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
               const Text("Attendance type",
                   style: TextStyle(
                       fontSize: 18,
-                      color: ColorManager.darkGrey,
-                      fontWeight: FontWeight.bold)),
+                      color: ColorManager.darkGrey,)),
               categoryMenu(false),
             ],
           ),
@@ -291,13 +277,13 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
                           children: [
                             DefaultFormField(
                                 controller: instructors[index].nameController,
-                                title: "Instructor ${index + 1} name",
+                                title: "Instructor ${index + 1} Name",
                                 prefix: Icons.person),
                             const SizedBox(height: 10),
                             DefaultFormField(
                                 controller: instructors[index].emailController,
                                 keyboardType: TextInputType.emailAddress,
-                                title: "Instructor ${index + 1} email",
+                                title: "Instructor ${index + 1} Email",
                                 prefix: Icons.email_outlined)
                           ],
                         ),
@@ -347,19 +333,23 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
                 ),
               )));
 
-  Widget categoryMenu(bool which) => Container(
-        width: 130,
-        padding: const EdgeInsets.symmetric(horizontal: 5),
+  Widget categoryMenu(bool which) =>
+      Container(
+        padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            border: Border.all(
-                color: ColorManager.darkGrey.withOpacity(0.4), width: 2.0)),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(width: 1,color: ColorManager.mainBlue)),
+        width: 120,height: 40,
         child: DropdownButton<String>(
+          underline: Container(),
+          //alignment: Alignment.center,
+          isExpanded: true,
+          dropdownColor: Colors.blue[100],
           value: which ? category : inPlace,
           elevation: 0,
-          items: (which
-                  ? ['Course', 'Event', 'Workshop', 'Competition', 'Internship']
-                  : ["in place", "online", "hybrid"])
+          items: (
+              which? ['Course', 'Event', 'Workshop', 'Competition', 'Internship']
+                  : ['in place', 'online','hybrid'])
               .map((String value) {
             return DropdownMenuItem<String>(
               value: value,
@@ -415,10 +405,14 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
                     });
                   }
                 },
+                style: ButtonStyle(
+                  foregroundColor: MaterialStateProperty.all(ColorManager.mainBlue),
+                  side: MaterialStateProperty.all(const BorderSide(color: ColorManager.mainBlue))
+                ),
                 icon: photoLoading
                     ? const CircularProgressIndicator()
-                    : Icon(link == null ? Icons.screenshot : Icons.check),
-                label: const Text("upload Poster"),
+                    : Icon(link == null ? Icons.image : Icons.check),
+                label: const Text("Upload Poster"),
               ),
             ),
             Visibility(
@@ -437,7 +431,7 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
       );
 
   Widget nextButton() {
-    return ElevatedButton(
+    return TextButton(
       onPressed: () {
         if (activeStep < 3) {
           setState(() {
@@ -445,12 +439,18 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
           });
         }
       },
-      child: const Text('Next'),
+      child: Row(
+        children: const [
+          Text('Next',style: TextStyle(fontSize: 18),),
+          Icon(Icons.arrow_forward_ios_rounded,size: 30,),
+        ],
+      ),
+
     );
   }
 
   Widget previousButton() {
-    return ElevatedButton(
+    return TextButton(
       onPressed: () {
         if (activeStep > 0) {
           setState(() {
@@ -458,7 +458,12 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
           });
         }
       },
-      child: const Text('Previous'),
+      child: Row(
+        children:  const [
+          Icon(Icons.arrow_back_ios,size: 30,),
+          Text('Back',style: TextStyle(fontSize: 18),),
+        ],
+      ),
     );
   }
 
@@ -467,40 +472,30 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         const Text(
-          'Start date',
+          ' Start date',
           style: TextStyle(
               fontSize: 18,
-              color: ColorManager.darkGrey,
-              fontWeight: FontWeight.bold),
+              color: ColorManager.darkGrey,),
         ),
         AnimatedSwitcher(
           duration: const Duration(milliseconds: 600),
           transitionBuilder: (Widget child, Animation<double> animation) {
             return ScaleTransition(scale: animation, child: child);
           },
-          child: InkWell(
+          child: ElevatedButton(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all(Colors.white),
+                backgroundColor: MaterialStateProperty.all( ColorManager.mainBlue )),
             key: Key(startDate.toString()),
-            onTap: () async {
-              startDate = await _selectDate(context: context);
-              setState(() {});
-            },
-            child: Container(
-              width: 150,
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  border: Border.all(
-                      width: 2, color: ColorManager.darkGrey.withOpacity(0.4)),
-                  borderRadius: BorderRadius.circular(10)),
-              child: Center(
-                child: Text(
-                  DateFormat('dd-MM-yyyy').format(startDate),
-                  style: const TextStyle(
-                      color: ColorManager.mainBlue,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
+            onPressed: () async {
+            startDate = await _selectDate(context: context);
+            setState(() {});
+          }, child: Text(
+            DateFormat('dd-MM-yyyy').format(startDate),
+            style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold),
+          ),
           ),
         )
       ],

@@ -78,7 +78,7 @@ class StudentScreen extends StatelessWidget {
                 ],
               ),
             ),
-            UserScreenLayout()
+            const UserScreenLayout()
           ],
         ),
       ),

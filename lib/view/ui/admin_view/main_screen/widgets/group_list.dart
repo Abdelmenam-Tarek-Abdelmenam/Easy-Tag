@@ -2,8 +2,6 @@ import 'package:auto_id/bloc/admin_bloc/admin_data_bloc.dart';
 import 'package:auto_id/model/module/group_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../resources/color_manager.dart';
 import '../../../../shared/functions/navigation_functions.dart';
 import '../../group_screen/group_screen.dart';
 

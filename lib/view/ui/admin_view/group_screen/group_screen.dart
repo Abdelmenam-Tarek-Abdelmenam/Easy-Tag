@@ -6,11 +6,9 @@ import 'package:auto_id/view/ui/admin_view/group_screen/widgets/search_bar.dart'
 import 'package:auto_id/view/ui/student_view/details_screen/details_screen.dart';
 import 'package:flutter/services.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
 import '../../../shared/functions/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../shared/widgets/toast_helper.dart';
 
 class GroupScreen extends StatelessWidget {

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../../../resources/color_manager.dart';
-import 'course_card.dart';
 
 class LoadingView extends StatelessWidget {
   const LoadingView({this.count = 12, Key? key}) : super(key: key);

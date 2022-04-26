@@ -1,22 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../../bloc/admin_bloc/admin_data_bloc.dart';
-import '../../../../shared/functions/navigation_functions.dart';
-import '../../../start_screen/signing/login_screen.dart';
-import '../../device_config/esp_config.dart';
 
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      //color: Colors.indigo[100],
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SearchBar(),
-        ));
+    return const Padding(
+      padding: EdgeInsets.all(8.0),
+      child: SearchBar(),
+    );
   }
 }
 
