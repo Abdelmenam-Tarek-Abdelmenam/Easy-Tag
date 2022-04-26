@@ -11,14 +11,18 @@ class SearchBar extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(4))),
+          borderRadius: BorderRadius.all(Radius.circular(20))),
       margin: const EdgeInsets.symmetric(horizontal: 10),
       child: TypeAheadField<String>(
           textFieldConfiguration: TextFieldConfiguration(
             decoration: InputDecoration(
                 labelText: 'Search for Student',
-                border: const OutlineInputBorder(
-                    borderSide: (BorderSide(color: ColorManager.mainBlue))),
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                border:  OutlineInputBorder(
+                    borderSide: (
+                        const BorderSide(color: ColorManager.mainBlue)),
+                  borderRadius: BorderRadius.circular(20),
+                ),
                 labelStyle: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w300,

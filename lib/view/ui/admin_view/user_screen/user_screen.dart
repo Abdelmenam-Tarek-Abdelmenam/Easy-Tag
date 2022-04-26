@@ -1,11 +1,9 @@
 import 'package:auto_id/model/module/students.dart';
-
 import 'package:auto_id/view/resources/color_manager.dart';
 import 'package:auto_id/view/ui/admin_view/user_screen/widgets/field_design.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import '../../../../bloc/admin_bloc/admin_data_bloc.dart';
 import '../../../../model/module/course.dart';
 import '../../../shared/functions/dialogs.dart';

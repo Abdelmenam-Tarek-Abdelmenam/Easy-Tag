@@ -18,7 +18,7 @@ class GroupItemBuilder extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: ColorManager.lightGrey,
+        color: ColorManager.whiteColor,
       ),
       child: InkWell(
         onTap: () {
@@ -46,7 +46,7 @@ class GroupItemBuilder extends StatelessWidget {
                 userIndex < 9 ? '0${userIndex + 1}' : '${userIndex + 1}',
                 style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 25,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold),
               ),
             ),
@@ -59,9 +59,9 @@ class GroupItemBuilder extends StatelessWidget {
                 child: Text(
                   student.name,
                   style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
+                      color: Colors.black87,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),

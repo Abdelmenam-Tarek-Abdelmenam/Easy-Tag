@@ -1,10 +1,12 @@
 import 'package:auto_id/bloc/admin_bloc/admin_data_bloc.dart';
 import 'package:auto_id/view/resources/color_manager.dart';
 import 'package:auto_id/view/shared/functions/navigation_functions.dart';
+import 'package:auto_id/view/shared/widgets/app_bar.dart';
 import 'package:auto_id/view/ui/admin_view/group_screen/widgets/item_builder.dart';
 import 'package:auto_id/view/ui/admin_view/group_screen/widgets/search_bar.dart';
 import 'package:auto_id/view/ui/student_view/details_screen/details_screen.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../shared/functions/dialogs.dart';
 import 'package:flutter/material.dart';
@@ -19,38 +21,71 @@ class GroupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AdminDataBloc, AdminDataStates>(
-      listenWhen: (prev, next) =>
-          (next is LoadGroupDataState) || (next is GetInitialDataState),
-      buildWhen: (prev, next) => next is LoadGroupDataState,
-      listener: (context, state) {
-        if (state is LoadGroupDataState) {
-          if (state.status == AdminDataStatus.error) {
-            Navigator.of(context).pop();
-          }
-        } else if (state is GetInitialDataState &&
-            state.status == AdminDataStatus.loaded) {
-          Navigator.of(context).pop();
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
         }
       },
-      builder: (context, state) {
-        return SafeArea(
-          child: Scaffold(
+      child: BlocConsumer<AdminDataBloc, AdminDataStates>(
+        listenWhen: (prev, next) => (next is LoadGroupDataState) || (next is GetInitialDataState),
+        buildWhen: (prev, next) => next is LoadGroupDataState,
+        listener: (context, state) {
+          if (state is LoadGroupDataState) {
+            if (state.status == AdminDataStatus.error) {
+              Navigator.of(context).pop();
+            }
+          } else if (state is GetInitialDataState &&
+              state.status == AdminDataStatus.loaded) {
+            Navigator.of(context).pop();
+          }
+        },
+        builder: (context, state) {
+          return Scaffold(
+            appBar: appBar(state.groupList[groupIndex].name,
+           actions: [
+             IconButton(
+               onPressed: () {
+                 _copyId(state.groupList[groupIndex].id);
+               },
+               icon: const Icon(Icons.link,color: Colors.green,),
+               iconSize: 30,
+             ),
+             (state is LoadGroupDataState &&
+                 state.loadingDelete )?
+             const CircularProgressIndicator(
+               color: Colors.white,
+             ) : IconButton(
+               onPressed: () {
+                 customChoiceDialog( context,
+                     title: "Warning",
+                     content: "Are you sure you want to delete The group ",
+                     yesFunction: () {
+                       context
+                           .read<AdminDataBloc>()
+                           .add(DeleteGroupIndex(groupIndex));
+                     });
+               },
+               icon:  Icon(Icons.delete,color: Colors.deepOrange[400],),
+               iconSize: 30,
+             ),
+                ]
+            ),
               backgroundColor: ColorManager.lightBlue,
-              floatingActionButton: FloatingActionButton(
+              floatingActionButton: ElevatedButton(
+                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(ColorManager.mainBlue)),
                 onPressed: () => navigateAndPush(
-                    context,
-                    DetailsScreen(
+                    context, DetailsScreen(
                       state.groupList[groupIndex],
                       enableRegister: false,
                     )),
-                child: const Icon(Icons.remove_red_eye_outlined),
+                child: const Text('Group Detail'),
               ),
               body: SmartRefresher(
                   enablePullUp: false,
                   controller: _refreshController,
-                  onRefresh: () {
-                    context
+                  onRefresh: () {context
                         .read<AdminDataBloc>()
                         .add(LoadGroupDataEvent(groupIndex, true));
                     _refreshController.refreshCompleted();
@@ -58,62 +93,6 @@ class GroupScreen extends StatelessWidget {
                   child: ListView(
                     physics: const BouncingScrollPhysics(),
                     children: [
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 20.0),
-                              child: IconButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                icon: const Icon(Icons.arrow_back_rounded),
-                                iconSize: 30,
-                              ),
-                            ),
-                            Text(
-                              state.groupList[groupIndex].name,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: ColorManager.mainBlue,
-                                  fontSize: 18),
-                            ),
-                            Row(
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    _copyId(state.groupList[groupIndex].id);
-                                  },
-                                  icon: const Icon(Icons.link),
-                                  iconSize: 30,
-                                ),
-                                if ((state is LoadGroupDataState) &&
-                                    state.loadingDelete)
-                                  const CircularProgressIndicator(
-                                    color: Colors.white,
-                                  )
-                                else
-                                  IconButton(
-                                    onPressed: () {
-                                      customChoiceDialog(context,
-                                          title: "Warning",
-                                          content:
-                                              "Are you sure you want to delete The group ",
-                                          yesFunction: () {
-                                        context
-                                            .read<AdminDataBloc>()
-                                            .add(DeleteGroupIndex(groupIndex));
-                                      });
-                                    },
-                                    icon: const Icon(
-                                        Icons.restore_from_trash_outlined),
-                                    iconSize: 30,
-                                  )
-                              ],
-                            )
-                          ]),
                       const SizedBox(height: 10),
                       SearchBar(state.groupList[groupIndex].getStudentsNames),
                       Container(
@@ -127,12 +106,13 @@ class GroupScreen extends StatelessWidget {
                                           MainAxisAlignment.center,
                                       children: const [
                                         Icon(
-                                          Icons.notes,
+                                          FontAwesomeIcons.personCircleExclamation,
                                           color: Colors.grey,
                                           size: 100,
                                         ),
+                                        SizedBox(height: 15,),
                                         Text(
-                                          "No students",
+                                          "No Students",
                                           style: TextStyle(
                                               color: Colors.grey,
                                               fontWeight: FontWeight.bold,
@@ -159,9 +139,9 @@ class GroupScreen extends StatelessWidget {
                                         );
                                       }))
                     ],
-                  ))),
-        );
-      },
+                  )));
+        },
+      ),
     );
   }
 
