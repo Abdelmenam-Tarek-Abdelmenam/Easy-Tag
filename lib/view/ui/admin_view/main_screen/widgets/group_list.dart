@@ -20,50 +20,53 @@ class GroupList extends StatelessWidget {
       return Container(
         child: groups.isEmpty
             ? emptyGroups()
-            : ListView.separated(
+            : ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: groups.length,
                 itemBuilder: (context, index) {
                   return groupItemBuilder(index, context);
-                },
-                separatorBuilder: (context, index) {
-                  return const SizedBox(
-                    height: 10,
-                  );
-                }),
+                },),
       );
     }
   }
 
-  Widget groupItemBuilder(int index, BuildContext context) => Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: ColorManager.darkGrey,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: InkWell(
-            onTap: () {
-              context
-                  .read<AdminDataBloc>()
-                  .add(LoadGroupDataEvent(index, false));
-              navigateAndPush(context, GroupScreen(index));
-            },
-            child: Column(
-              children: [
-                Text(
-                  groups[index].name,
-                  style: const TextStyle(
-                      color: ColorManager.lightBlue,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
+  Widget groupItemBuilder(int index, BuildContext context) => Padding(
+    padding: const EdgeInsets.all(2),
+    child: ListTile(
+      //textColor: Colors.black,
+      horizontalTitleGap: 0,
+      leading: Text(
+        (index+1).toString(),
+        style: const TextStyle(
+          //color: ColorManager.lightBlue,
+            fontSize: 30,
+            fontWeight: FontWeight.w100),
+      ),
+      subtitle: Text(
+        groups[index].date,
+        style: const TextStyle(
+          //color: ColorManager.lightBlue,
+            fontSize: 20,
+            fontWeight: FontWeight.bold),
+      ),
+      title: Text(
+        groups[index].name,
+        style: const TextStyle(
+            fontSize: 20,),
+      ),
+      trailing: Text(
+        '${groups[index].students?.length}',
+        style: const TextStyle(
+            fontSize: 20,),
+      ),
+
+      onTap: (){context
+          .read<AdminDataBloc>()
+          .add(LoadGroupDataEvent(index, false));
+      navigateAndPush(context, GroupScreen(index));},
+    ),
+  );
 
   Widget emptyGroups() => Column(
         mainAxisAlignment: MainAxisAlignment.center,

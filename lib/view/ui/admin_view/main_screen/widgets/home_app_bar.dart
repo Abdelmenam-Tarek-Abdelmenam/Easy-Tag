@@ -11,41 +11,12 @@ class HomeAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: 65,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Expanded(child: SearchBar()),
-          const SizedBox(
-            width: 10,
-          ),
-          IconButton(
-              icon: const Icon(Icons.settings),
-              onPressed: () async {
-                navigateAndPush(context, const SendConfigScreen());
-              }),
-          BlocConsumer<AdminDataBloc, AdminDataStates>(
-              buildWhen: (prev, next) => next is SignOutState,
-              listenWhen: (prev, next) => next is SignOutState,
-              builder: (context, state) => IconButton(
-                  icon: (state.status == AdminDataStatus.loaded) &&
-                          (state is SignOutState)
-                      ? const CircularProgressIndicator()
-                      : const Icon(Icons.logout),
-                  onPressed: () {
-                    context.read<AdminDataBloc>().add(SignOutEvent());
-                  }),
-              listener: (context, state) {
-                if ((state.status == AdminDataStatus.loading) &&
-                    (state is SignOutState)) {
-                  navigateAndReplace(context, const LoginView());
-                }
-              })
-        ],
-      ),
-    );
+    return Container(
+      //color: Colors.indigo[100],
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SearchBar(),
+        ));
   }
 }
 
@@ -95,11 +66,11 @@ class SearchBar extends StatelessWidget {
         hintStyle: TextStyle(fontSize: 12),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(12)),
-          borderSide: BorderSide(color: Colors.white),
+          borderSide: BorderSide(color: Colors.blue),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(12)),
-          borderSide: BorderSide(color: Colors.white),
+          borderSide: BorderSide(color: Colors.green),
         ),
       ),
     );
