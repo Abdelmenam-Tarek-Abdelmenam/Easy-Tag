@@ -1,5 +1,6 @@
 import 'package:auto_id/model/module/students.dart';
 import 'package:auto_id/view/resources/color_manager.dart';
+import 'package:auto_id/view/shared/widgets/app_bar.dart';
 import 'package:auto_id/view/ui/admin_view/user_screen/widgets/field_design.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,102 +26,75 @@ class UserScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Stack(
+    return Scaffold(
+      bottomNavigationBar: ElevatedButton(
+          style: ButtonStyle(
+            fixedSize:  MaterialStateProperty.all(const Size(200,55)),
+              backgroundColor:
+              MaterialStateProperty.all(ColorManager.mainBlue),
+              foregroundColor:
+              MaterialStateProperty.all(ColorManager.whiteColor)),
+          child: const Text(
+            "Edit Student",
+            style: TextStyle(fontSize: 18),
+          ),
+          onPressed: () {
+            Course course = context
+                .read<AdminDataBloc>()
+                .state
+                .groupList[groupIndex];
+            navigateAndPush(
+                context,
+                RegisterScreen(
+                    course, student, groupIndex, userIndex));
+          }),
+      appBar: appBar(student.rfId ?? "User Information",
+actions: [
+  BlocConsumer<AdminDataBloc, AdminDataStates>(
+      builder: (_, state) {
+        if (state is DeleteUserState &&
+            (state.status == AdminDataStatus.loading)) {
+          return const CircularProgressIndicator(
+            color: Colors.white,
+          );
+        } else {
+          return IconButton(
+            onPressed: () {
+              customChoiceDialog(context,
+                  title: "Warning",
+                  content:
+                  "Are you sure you want to delete user ",
+                  yesFunction: () {
+                    context.read<AdminDataBloc>().add(
+                        DeleteStudentIndex(
+                            groupIndex, userIndex));
+                  });
+            },
+            icon: Icon(Icons.delete,color: Colors.deepOrange[400],),
+            iconSize: 30,
+          );
+        }
+      }, listener: (context, state) {
+    if (state is LoadGroupDataState &&
+        (state.status == AdminDataStatus.loaded)) {
+      Navigator.of(context).pop();
+    }
+  }),
+]
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: ListView(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: ListView(
-                children: [
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          icon: const Icon(Icons.arrow_back_rounded),
-                          iconSize: 30,
-                        ),
-                        Text(
-                          student.rfId ?? "User Information",
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: ColorManager.mainBlue,
-                              fontSize: 18),
-                        ),
-                        BlocConsumer<AdminDataBloc, AdminDataStates>(
-                            builder: (_, state) {
-                          if (state is DeleteUserState &&
-                              (state.status == AdminDataStatus.loading)) {
-                            return const CircularProgressIndicator(
-                              color: Colors.white,
-                            );
-                          } else {
-                            return IconButton(
-                              onPressed: () {
-                                customChoiceDialog(context,
-                                    title: "Warning",
-                                    content:
-                                        "Are you sure you want to delete user ",
-                                    yesFunction: () {
-                                  context.read<AdminDataBloc>().add(
-                                      DeleteStudentIndex(
-                                          groupIndex, userIndex));
-                                });
-                              },
-                              icon:
-                                  const Icon(Icons.restore_from_trash_outlined),
-                              iconSize: 30,
-                            );
-                          }
-                        }, listener: (context, state) {
-                          if (state is LoadGroupDataState &&
-                              (state.status == AdminDataStatus.loaded)) {
-                            Navigator.of(context).pop();
-                          }
-                        }),
-                      ]),
-                  CircleAvatar(
-                    radius: 60,
-                    backgroundColor: ColorManager.mainBlue,
-                    child: userPhoto(),
-                  ),
-                  ...List.generate(student.getProps.length,
-                      (i) => isHide(student.getProps[i] == null, fields[i])),
-                ],
-              ),
+            CircleAvatar(
+              radius: 60,
+              foregroundColor: Colors.white,
+              backgroundColor: ColorManager.mainBlue,
+              child: userPhoto(),
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(ColorManager.mainBlue),
-                        foregroundColor:
-                            MaterialStateProperty.all(ColorManager.whiteColor)),
-                    child: const Text(
-                      "Edit Student",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    onPressed: () {
-                      Course course = context
-                          .read<AdminDataBloc>()
-                          .state
-                          .groupList[groupIndex];
-                      navigateAndPush(
-                          context,
-                          RegisterScreen(
-                              course, student, groupIndex, userIndex));
-                    }),
-              ),
-            ),
+            const SizedBox(height: 20,),
+            ...List.generate(student.getProps.length,
+                (i) => isHide(student.getProps[i] == null, fields[i])),
           ],
         ),
       ),
@@ -161,6 +135,7 @@ class UserScreen extends StatelessWidget {
           return Image.asset(
             'images/avatar.png',
             width: 100,
+            color: Colors.white,
             fit: BoxFit.fill,
           );
         },

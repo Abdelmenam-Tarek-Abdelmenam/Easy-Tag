@@ -4,6 +4,7 @@ import 'package:auto_id/view/ui/student_view/register_screen/register_screen.dar
 import 'package:flutter/material.dart';
 import '../../../../model/module/course.dart';
 import '../../../resources/color_manager.dart';
+import '../../admin_view/edit_course/edit_course_screen.dart';
 
 class DetailsScreen extends StatelessWidget {
   final Course course;
@@ -33,7 +34,10 @@ class DetailsScreen extends StatelessWidget {
             if (enableRegister) {
               navigateAndPush(
                   context, RegisterScreen(course, null, null, null));
-            } else {}
+            } else {
+              navigateAndPush(
+                  context, EditCourseScreen(course));
+            }
           }),
       appBar: AppBar(title: const Text('Course Details'),
         foregroundColor: Colors.black,

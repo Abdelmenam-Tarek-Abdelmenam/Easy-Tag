@@ -20,11 +20,11 @@ class FieldDesign extends StatelessWidget {
         children: [
           Icon(
             icon,
-            color: Colors.blue,
+            color: ColorManager.mainBlue,
             size: 20,
           ),
           const SizedBox(
-            width: 10,
+            width: 25,
           ),
           Text(
             "$title : ",
@@ -32,6 +32,9 @@ class FieldDesign extends StatelessWidget {
                 color: ColorManager.mainBlue,
                 fontSize: 16,
                 fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(
+            width: 5,
           ),
           Expanded(child: SelectableText(body))
         ],

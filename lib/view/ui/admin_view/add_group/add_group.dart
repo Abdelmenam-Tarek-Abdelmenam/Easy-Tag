@@ -333,8 +333,7 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
                 ),
               )));
 
-  Widget categoryMenu(bool which) =>
-      Container(
+  Widget categoryMenu(bool which) => Container(
         padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),

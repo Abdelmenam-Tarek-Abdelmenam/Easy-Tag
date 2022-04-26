@@ -1,6 +1,6 @@
 import 'dart:io';
-
 import 'package:auto_id/model/module/course.dart';
+import 'package:auto_id/view/shared/widgets/app_bar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +8,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 import '../../../../bloc/admin_bloc/admin_data_bloc.dart';
 import '../../../resources/color_manager.dart';
 import '../../../shared/functions/navigation_functions.dart';
@@ -60,177 +59,166 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
           currentFocus.unfocus();
         }
       },
-      child: SafeArea(
-        child: Scaffold(
-            floatingActionButton: BlocConsumer<AdminDataBloc, AdminDataStates>(
-                buildWhen: (_, state) => state is CreateGroupState,
-                listenWhen: (_, state) => state is CreateGroupState,
-                listener: (context, state) {
-                  if (state.status == AdminDataStatus.loaded) {
-                    Navigator.of(context)
-                      ..pop()
-                      ..pop();
-                  }
-                },
-                builder: (context, state) => state.status ==
-                        AdminDataStatus.loading
-                    ? const CircularProgressIndicator()
-                    : FloatingActionButton(
-                        backgroundColor: ColorManager.darkGrey,
-                        child: const Icon(
-                          Icons.check,
-                          size: 40,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            Map<String, dynamic> data = createMap();
-                            print(data);
-                            context
-                                .read<AdminDataBloc>()
-                                .add(EditGroupEvent(data, widget.course.id));
-                          }
-                        },
-                      )),
-            body: Padding(
-              padding: const EdgeInsets.all(10),
-              child: ListView(
-                physics: const BouncingScrollPhysics(),
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: IconButton(
-                          icon: const Icon(Icons.arrow_back_rounded),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          }),
-                    ),
-                  ),
-                  Form(
-                      key: formKey,
-                      child: DefaultFormField(
-                        border: true,
-                        controller: sheetName,
-                        title: "Group name",
-                        prefix: Icons.drive_file_rename_outline,
-                        validator: (val) =>
-                            val!.isEmpty ? "Name cannot be empty" : null,
-                      )),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: descriptionController(),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text("Price",
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: ColorManager.darkGrey,
-                              fontWeight: FontWeight.bold)),
-                      SizedBox(
-                          width: 200, child: NumericField(priceController)),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text("Number of sessions",
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: ColorManager.darkGrey,
-                              fontWeight: FontWeight.bold)),
-                      SizedBox(
-                          width: 150, child: NumericField(numberOfSessions)),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  startDateButton(),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  photoButton(),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  DefaultFormField(
+      child: Scaffold(
+        appBar: appBar('Edit'),
+          floatingActionButton: BlocConsumer<AdminDataBloc, AdminDataStates>(
+              buildWhen: (_, state) => state is CreateGroupState,
+              listenWhen: (_, state) => state is CreateGroupState,
+              listener: (context, state) {
+                if (state.status == AdminDataStatus.loaded) {
+                  Navigator.of(context)
+                    ..pop()..pop();
+                }
+              },
+              builder: (context, state) => state.status ==
+                      AdminDataStatus.loading
+                  ? const CircularProgressIndicator()
+                  : FloatingActionButton(
+                      backgroundColor: ColorManager.darkGrey,
+                      child: const Icon(
+                        Icons.check,
+                        size: 40,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          Map<String, dynamic> data = createMap();
+                          print(data);
+                          context
+                              .read<AdminDataBloc>()
+                              .add(EditGroupEvent(data, widget.course.id));
+                        }
+                      },
+                    )),
+          body: Padding(
+            padding: const EdgeInsets.all(10),
+            child: ListView(
+              physics: const BouncingScrollPhysics(),
+              children: [
+                Form(
+                    key: formKey,
+                    child: DefaultFormField(
                       border: true,
-                      controller: offer,
-                      title: "Offers",
-                      prefix: FontAwesomeIcons.moneyBill),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text("Group category",
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: ColorManager.darkGrey,
-                              fontWeight: FontWeight.bold)),
-                      categoryMenu(true),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text("Attendance type",
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: ColorManager.darkGrey,
-                              fontWeight: FontWeight.bold)),
-                      categoryMenu(false),
-                    ],
-                  ),
-                ],
-              ),
-            )),
+                      controller: sheetName,
+                      title: "Group name",
+                      prefix: Icons.drive_file_rename_outline,
+                      validator: (val) =>
+                      val!.isEmpty ? "Name cannot be empty" : null,
+                    )),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: descriptionController(),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text("Price",
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: ColorManager.darkGrey,)),
+                    SizedBox(
+                        width: 200, child: NumericField(priceController)),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text("Number of sessions",
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: ColorManager.darkGrey,)),
+                    SizedBox(
+                        width: 150, child: NumericField(numberOfSessions)),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                startDateButton(),
+                const SizedBox(
+                  height: 10,
+                ),
+                photoButton(),
+                const SizedBox(
+                  height: 10,
+                ),
+                DefaultFormField(
+                    border: true,
+                    controller: offer,
+                    title: "Offers",
+                    prefix: FontAwesomeIcons.moneyBill),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text("Group category",
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: ColorManager.darkGrey,
+                            fontWeight: FontWeight.bold)),
+                    categoryMenu(true),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text("Attendance type",
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: ColorManager.darkGrey,
+                            fontWeight: FontWeight.bold)),
+                    categoryMenu(false),
+                  ],
+                ),
+              ],
+            ),
+          )
       ),
     );
   }
 
   //********************************************************************************//
   Widget categoryMenu(bool which) => Container(
-        width: 130,
-        padding: const EdgeInsets.symmetric(horizontal: 5),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            border: Border.all(
-                color: ColorManager.darkGrey.withOpacity(0.4), width: 2.0)),
-        child: DropdownButton<String>(
-          value: which ? category : inPlace,
-          elevation: 0,
-          items: (which
-                  ? ['Course', 'Event', 'Workshop', 'Competition', 'Internship']
-                  : ["in place", "online", "hybrid"])
-              .map((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-          onChanged: (val) {
-            setState(() {
-              if (which) {
-                category = val!;
-              } else {
-                inPlace = val!;
-              }
-            });
-          },
-        ),
-      );
+    padding: const EdgeInsets.all(5),
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(width: 1,color: ColorManager.mainBlue)),
+    width: 120,height: 40,
+    child: DropdownButton<String>(
+      underline: Container(),
+      //alignment: Alignment.center,
+      isExpanded: true,
+      dropdownColor: Colors.blue[100],
+      value: which ? category : inPlace,
+      elevation: 0,
+      items: (
+          which? ['Course', 'Event', 'Workshop', 'Competition', 'Internship']
+              : ['in place', 'online','hybrid'])
+          .map((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+      onChanged: (val) {
+        setState(() {
+          if (which) {
+            category = val!;
+          } else {
+            inPlace = val!;
+          }
+        });
+      },
+    ),
+  );
 
   Widget descriptionController() => TextFormField(
         controller: description,
@@ -292,44 +280,35 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
       );
 
   Widget startDateButton() {
+    startDate = DateTime.now();    /// remove this
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         const Text(
-          'Start date',
+          ' Start date',
           style: TextStyle(
-              fontSize: 18,
-              color: ColorManager.darkGrey,
-              fontWeight: FontWeight.bold),
+            fontSize: 18,
+            color: ColorManager.darkGrey,),
         ),
         AnimatedSwitcher(
           duration: const Duration(milliseconds: 600),
           transitionBuilder: (Widget child, Animation<double> animation) {
             return ScaleTransition(scale: animation, child: child);
           },
-          child: InkWell(
+          child: ElevatedButton(
+            style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all(Colors.white),
+                backgroundColor: MaterialStateProperty.all( ColorManager.mainBlue )),
             key: Key(startDate.toString()),
-            onTap: () async {
+            onPressed: () async {
               startDate = await _selectDate(context: context);
               setState(() {});
-            },
-            child: Container(
-              width: 150,
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  border: Border.all(
-                      width: 2, color: ColorManager.darkGrey.withOpacity(0.4)),
-                  borderRadius: BorderRadius.circular(10)),
-              child: Center(
-                child: Text(
-                  DateFormat('dd-MM-yyyy').format(startDate),
-                  style: const TextStyle(
-                      color: ColorManager.mainBlue,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
+            }, child: Text(
+            DateFormat('dd-MM-yyyy').format(startDate),
+            style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold),
+          ),
           ),
         )
       ],
