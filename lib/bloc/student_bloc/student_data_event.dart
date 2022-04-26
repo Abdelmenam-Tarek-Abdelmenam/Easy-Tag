@@ -17,6 +17,15 @@ class RegisterStudentEvent extends StudentDataEvent {
   List<Object?> get props => [data['ID'], groupId];
 }
 
+class QrReadEvent extends StudentDataEvent {
+  final String groupId;
+
+  const QrReadEvent(this.groupId);
+
+  @override
+  List<Object?> get props => [groupId];
+}
+
 class StartStudentOperations extends StudentDataEvent {
   final AppAdmin user;
   const StartStudentOperations(this.user);

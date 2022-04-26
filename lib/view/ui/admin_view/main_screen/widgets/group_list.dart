@@ -24,47 +24,51 @@ class GroupList extends StatelessWidget {
                 itemCount: groups.length,
                 itemBuilder: (context, index) {
                   return groupItemBuilder(index, context);
-                },),
+                },
+              ),
       );
     }
   }
 
   Widget groupItemBuilder(int index, BuildContext context) => Padding(
-    padding: const EdgeInsets.all(2),
-    child: ListTile(
-      //textColor: Colors.black,
-      horizontalTitleGap: 0,
-      leading: Text(
-        (index+1).toString(),
-        style: const TextStyle(
-          //color: ColorManager.lightBlue,
-            fontSize: 30,
-            fontWeight: FontWeight.w100),
-      ),
-      subtitle: Text(
-        groups[index].date,
-        style: const TextStyle(
-          //color: ColorManager.lightBlue,
-            fontSize: 20,
-            fontWeight: FontWeight.bold),
-      ),
-      title: Text(
-        groups[index].name,
-        style: const TextStyle(
-            fontSize: 20,),
-      ),
-      trailing: Text(
-        '${groups[index].students?.length}',
-        style: const TextStyle(
-            fontSize: 20,),
-      ),
+        padding: const EdgeInsets.all(2),
+        child: ListTile(
+          //textColor: Colors.black,
+          horizontalTitleGap: 0,
+          leading: Text(
+            (index + 1).toString(),
+            style: const TextStyle(
+                //color: ColorManager.lightBlue,
+                fontSize: 30,
+                fontWeight: FontWeight.w100),
+          ),
+          subtitle: Padding(
+            padding: const EdgeInsets.only(top: 4.0),
+            child: Text(
+              groups[index].date,
+              style: const TextStyle(
+                  //color: ColorManager.lightBlue,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w300),
+            ),
+          ),
+          title: Text(
+            groups[index].name,
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          trailing: Text(
+            groups[index].category,
+            style: const TextStyle(
+              fontSize: 20,
+            ),
+          ),
 
-      onTap: (){context
-          .read<AdminDataBloc>()
-          .add(LoadGroupDataEvent(index, false));
-      navigateAndPush(context, GroupScreen(index));},
-    ),
-  );
+          onTap: () {
+            context.read<AdminDataBloc>().add(LoadGroupDataEvent(index, false));
+            navigateAndPush(context, GroupScreen(index));
+          },
+        ),
+      );
 
   Widget emptyGroups() => Column(
         mainAxisAlignment: MainAxisAlignment.center,

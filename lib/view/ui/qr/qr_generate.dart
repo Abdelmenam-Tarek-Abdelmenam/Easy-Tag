@@ -1,9 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:auto_id/view/shared/functions/navigation_functions.dart';
 import 'package:auto_id/view/shared/widgets/app_bar.dart';
-import 'package:auto_id/view/ui/qr/qr_read.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -11,7 +9,8 @@ import 'package:qr_flutter/qr_flutter.dart';
 import '../../resources/color_manager.dart';
 
 class QrGeneratorScreen extends StatefulWidget {
-  const QrGeneratorScreen({Key? key}) : super(key: key);
+  const QrGeneratorScreen(this.id, {Key? key}) : super(key: key);
+  final String id;
 
   @override
   State<QrGeneratorScreen> createState() => _QrGeneratorScreenState();
@@ -25,12 +24,6 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar('Generate QR Code'),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          navigateAndPush(context, const QrReadScreen());
-        },
-        child: const Icon(Icons.qr_code_scanner),
-      ),
       body: Center(
         child: createQrUi(),
       ),
@@ -64,39 +57,50 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
                   );
                 },
               )
-            :  InkWell(
-              onTap: (){
-                _roomsDecodedData();
-                setState(() {
-                  qrReady = true;
-                });
-              },
-              child: Container(
-                width: 120,height: 120,
-                decoration: BoxDecoration(
-                  color: ColorManager.mainBlue,
+            : InkWell(
+                onTap: () {
+                  _roomsDecodedData();
+                  setState(() {
+                    qrReady = true;
+                  });
+                },
+                child: Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    color: ColorManager.mainBlue,
                     borderRadius: BorderRadius.circular(10),
                     //border: Border.all(width: 2,color: ColorManager.mainBlue)
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(FontAwesomeIcons.qrcode,size: 60,color: ColorManager.whiteColor,),
-                    SizedBox(height: 5,),
-                    Text(
-                      "Generate",
-                      style: TextStyle(color: ColorManager.whiteColor,fontSize: 20),
-                    ),
-                  ],
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(
+                        FontAwesomeIcons.qrcode,
+                        size: 60,
+                        color: ColorManager.whiteColor,
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "Generate",
+                        style: TextStyle(
+                            color: ColorManager.whiteColor, fontSize: 20),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
       ),
     );
   }
 
   void _roomsDecodedData() {
-    Map<String, dynamic> registerData = {"Name": "menam"};
+    Map<String, dynamic> registerData = {
+      "id": widget.id,
+      "date": DateTime.now().toString()
+    };
 
     String realData = json.encode(registerData);
     final enCodedJson = utf8.encode(realData);

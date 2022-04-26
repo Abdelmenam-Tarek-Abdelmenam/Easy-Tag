@@ -12,7 +12,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../../shared/functions/navigation_functions.dart';
 import '../../../shared/widgets/dialog.dart';
 import '../../../shared/widgets/powered_by_navigation_bar.dart';
-import '../../admin_view/main_screen/main_screen.dart';
+import '../../qr/qr_read.dart';
 import '../student_screen/student_screen.dart';
 
 class StudentMainScreen extends StatelessWidget {
@@ -33,18 +33,22 @@ class StudentMainScreen extends StatelessWidget {
           }
         },
         child: Scaffold(
-          appBar: appBar('Easy Tag',
-          actions: [
+          appBar: appBar('Easy Tag', actions: [
             ProfileIcon(
               profileHandler: () {
                 navigateAndPush(context, const StudentScreen());
               },
             ),
-            const SizedBox(width: 10,)
+            const SizedBox(
+              width: 10,
+            )
           ]),
-          floatingActionButton: FloatingActionButton(onPressed: (){
-            navigateAndReplace(context,  MainScreen());
-          }),
+          floatingActionButton: FloatingActionButton(
+              child: const Icon(Icons.qr_code_scanner),
+              backgroundColor: ColorManager.mainBlue,
+              onPressed: () {
+                navigateAndPush(context, const QrReadScreen());
+              }),
           bottomNavigationBar: poweredBy(),
           backgroundColor: ColorManager.lightBlue,
           body: Padding(
@@ -53,7 +57,8 @@ class StudentMainScreen extends StatelessWidget {
               enablePullUp: false,
               controller: _refreshController,
               onRefresh: () {
-                context.read<StudentDataBloc>()
+                context
+                    .read<StudentDataBloc>()
                     .add(StartStudentOperations(StudentDataBloc.student));
                 _refreshController.refreshCompleted();
               },
@@ -67,7 +72,11 @@ class StudentMainScreen extends StatelessWidget {
                   Row(
                     children: const [
                       Icon(Icons.search),
-                      Text('Results',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+                      Text(
+                        'Results',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
                     ],
                   ),
                   const SizedBox(
@@ -75,7 +84,8 @@ class StudentMainScreen extends StatelessWidget {
                   ),
                   Expanded(
                     child: BlocBuilder<StudentDataBloc, StudentDataStates>(
-                        buildWhen: (_, state) => state is GetInitialDataState, // check state
+                        buildWhen: (_, state) =>
+                            state is GetInitialDataState, // check state
                         builder: (context, state) {
                           if (state.status == StudentDataStatus.loading) {
                             return Shimmer.fromColors(
@@ -87,7 +97,10 @@ class StudentMainScreen extends StatelessWidget {
                               return Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Image.asset('images/icons/empty_icon.png',width: 60,),
+                                  Image.asset(
+                                    'images/icons/empty_icon.png',
+                                    width: 60,
+                                  ),
                                   const SizedBox(
                                     height: 10,
                                   ),

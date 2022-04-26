@@ -53,6 +53,15 @@ class WebServices {
     return response.trim() == "removed";
   }
 
+  Future<bool> registerStudentAttendance(String userId, String sheetId) async {
+    String url = _funcSheetLinkBase +
+        "func=register" +
+        "&sheetID=$sheetId" +
+        "&uid=$userId";
+    String response = await _doRequest(url);
+    return response.trim() == "done";
+  }
+
   Future<Student> getUserData(String userId, String sheetId) async {
     Map<String, dynamic> userData = {};
     String url = _funcSheetLinkBase +

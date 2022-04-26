@@ -36,6 +36,7 @@ dependencies:
   firebase_storage: ^10.2.7
   firebase_messaging: ^11.2.13
   firebase_analytics: ^9.1.5
+  firebase_crashlytics: ^2.6.3
   #bloc
   bloc: ^8.0.3
   flutter_bloc: ^8.0.1

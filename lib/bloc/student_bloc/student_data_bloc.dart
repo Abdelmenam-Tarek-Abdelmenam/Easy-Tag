@@ -19,6 +19,7 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
     on<RegisterStudentEvent>(_addNewStudentHandler);
     on<ChangeFilterTypeEvent>(_filterUsingType);
     on<ChangeFilterNameEvent>(_filterUsingName);
+    on<QrReadEvent>(_registerUserFromQr);
   }
 
   final WebServices _webServices = WebServices();
@@ -107,6 +108,24 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
       Student student = await _webServices.getUserData(userId, sheetId);
       print(student.name);
     } on DioErrors catch (err) {
+      showToast(err.message, type: ToastType.error);
+    }
+  }
+
+  Future<void> _registerUserFromQr(QrReadEvent event, Emitter emit) async {
+    try {
+      QrReadState.fromOldState(state, StudentDataStatus.loading);
+      bool register = await _webServices.registerStudentAttendance(
+          student.id, event.groupId);
+      if (register) {
+        QrReadState.fromOldState(state, StudentDataStatus.loaded);
+        showToast("Registered Successfully", type: ToastType.success);
+      } else {
+        QrReadState.fromOldState(state, StudentDataStatus.error);
+        showToast("Can't register this Student now");
+      }
+    } on DioErrors catch (err) {
+      QrReadState.fromOldState(state, StudentDataStatus.error);
       showToast(err.message, type: ToastType.error);
     }
   }

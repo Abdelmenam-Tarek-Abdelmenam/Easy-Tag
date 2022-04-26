@@ -12,6 +12,7 @@ import '../../../shared/functions/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../shared/widgets/toast_helper.dart';
+import '../../qr/qr_generate.dart';
 
 class GroupScreen extends StatelessWidget {
   final int groupIndex;
@@ -29,7 +30,8 @@ class GroupScreen extends StatelessWidget {
         }
       },
       child: BlocConsumer<AdminDataBloc, AdminDataStates>(
-        listenWhen: (prev, next) => (next is LoadGroupDataState) || (next is GetInitialDataState),
+        listenWhen: (prev, next) =>
+            (next is LoadGroupDataState) || (next is GetInitialDataState),
         buildWhen: (prev, next) => next is LoadGroupDataState,
         listener: (context, state) {
           if (state is LoadGroupDataState) {
@@ -43,40 +45,59 @@ class GroupScreen extends StatelessWidget {
         },
         builder: (context, state) {
           return Scaffold(
-            appBar: appBar(state.groupList[groupIndex].name,
-           actions: [
-             IconButton(
-               onPressed: () {
-                 _copyId(state.groupList[groupIndex].id);
-               },
-               icon: const Icon(Icons.link,color: Colors.green,),
-               iconSize: 30,
-             ),
-             (state is LoadGroupDataState &&
-                 state.loadingDelete )?
-             const CircularProgressIndicator(
-               color: Colors.white,
-             ) : IconButton(
-               onPressed: () {
-                 customChoiceDialog( context,
-                     title: "Warning",
-                     content: "Are you sure you want to delete The group ",
-                     yesFunction: () {
-                       context
-                           .read<AdminDataBloc>()
-                           .add(DeleteGroupIndex(groupIndex));
-                     });
-               },
-               icon:  Icon(Icons.delete,color: Colors.deepOrange[400],),
-               iconSize: 30,
-             ),
-                ]
-            ),
+              appBar: appBar(state.groupList[groupIndex].name, actions: [
+                IconButton(
+                  onPressed: () {
+                    navigateAndPush(context,
+                        QrGeneratorScreen(state.groupList[groupIndex].id));
+                  },
+                  icon: const Icon(
+                    Icons.qr_code_scanner,
+                    color: Colors.blue,
+                  ),
+                  iconSize: 30,
+                ),
+                IconButton(
+                  onPressed: () {
+                    _copyId(state.groupList[groupIndex].id);
+                  },
+                  icon: const Icon(
+                    Icons.link,
+                    color: Colors.green,
+                  ),
+                  iconSize: 30,
+                ),
+                (state is LoadGroupDataState && state.loadingDelete)
+                    ? const CircularProgressIndicator(
+                        color: Colors.white,
+                      )
+                    : IconButton(
+                        onPressed: () {
+                          customChoiceDialog(context,
+                              title: "Warning",
+                              content:
+                                  "Are you sure you want to delete The group ",
+                              yesFunction: () {
+                            context
+                                .read<AdminDataBloc>()
+                                .add(DeleteGroupIndex(groupIndex));
+                          });
+                        },
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.deepOrange[400],
+                        ),
+                        iconSize: 30,
+                      ),
+              ]),
               backgroundColor: ColorManager.lightBlue,
               floatingActionButton: ElevatedButton(
-                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(ColorManager.mainBlue)),
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(ColorManager.mainBlue)),
                 onPressed: () => navigateAndPush(
-                    context, DetailsScreen(
+                    context,
+                    DetailsScreen(
                       state.groupList[groupIndex],
                       enableRegister: false,
                     )),
@@ -85,7 +106,8 @@ class GroupScreen extends StatelessWidget {
               body: SmartRefresher(
                   enablePullUp: false,
                   controller: _refreshController,
-                  onRefresh: () {context
+                  onRefresh: () {
+                    context
                         .read<AdminDataBloc>()
                         .add(LoadGroupDataEvent(groupIndex, true));
                     _refreshController.refreshCompleted();
@@ -106,11 +128,14 @@ class GroupScreen extends StatelessWidget {
                                           MainAxisAlignment.center,
                                       children: const [
                                         Icon(
-                                          FontAwesomeIcons.personCircleExclamation,
+                                          FontAwesomeIcons
+                                              .personCircleExclamation,
                                           color: Colors.grey,
                                           size: 100,
                                         ),
-                                        SizedBox(height: 15,),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
                                         Text(
                                           "No Students",
                                           style: TextStyle(

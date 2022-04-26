@@ -1,8 +1,6 @@
 import 'package:auto_id/bloc/student_bloc/student_data_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../shared/functions/navigation_functions.dart';
-import '../../student_screen/student_screen.dart';
 
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar({Key? key}) : super(key: key);
@@ -55,7 +53,7 @@ class SearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       enableSuggestions: true,
-        textInputAction: TextInputAction.search,
+      textInputAction: TextInputAction.search,
       onChanged: (value) {
         context.read<StudentDataBloc>().add(ChangeFilterNameEvent(value));
       },
@@ -76,7 +74,6 @@ class SearchBar extends StatelessWidget {
           borderSide: BorderSide(color: Colors.white),
         ),
         //suffixIcon: Icon(Icons.search,color: Colors.red,),
-
       ),
     );
   }

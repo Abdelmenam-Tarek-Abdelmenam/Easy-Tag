@@ -11,6 +11,7 @@ import 'package:auto_id/view/resources/string_manager.dart';
 import 'package:auto_id/view/ui/start_screen/onboarding/on_boarding_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,17 +20,18 @@ import 'bloc/auth_bloc/auth_status_bloc.dart';
 import 'model/local/pref_repository.dart';
 
 Future<void> main() async {
-  SystemChrome.setSystemUIOverlayStyle( SystemUiOverlayStyle(
-    //statusBarColor: ColorManager.mainBlue,
-    statusBarColor: Colors.white.withOpacity(0),
-    statusBarBrightness: Brightness.light,
-    statusBarIconBrightness: Brightness.dark
-  ));
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      //statusBarColor: ColorManager.mainBlue,
+      statusBarColor: Colors.white.withOpacity(0),
+      statusBarBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.dark));
 
   return BlocOverrides.runZoned(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
       await Firebase.initializeApp();
+      FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+      FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
       await PreferenceRepository.initializePreference();
       User? user = FirebaseAuth.instance.currentUser;
       FireNotificationHelper();

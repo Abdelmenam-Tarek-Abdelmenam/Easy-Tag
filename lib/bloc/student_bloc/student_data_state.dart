@@ -69,3 +69,28 @@ class RegisterUserState extends StudentDataStates {
         ids: oldState.registeredId);
   }
 }
+
+class QrReadState extends StudentDataStates {
+  QrReadState(
+      {StudentDataStatus status = StudentDataStatus.initial,
+      List<String> courses = const [],
+      List<Course> all = const [],
+      String category = "ALL",
+      List<String> ids = const []})
+      : super(
+            allCourses: all,
+            status: status,
+            courses: courses,
+            category: category,
+            registeredId: ids);
+
+  factory QrReadState.fromOldState(
+      StudentDataStates oldState, StudentDataStatus status) {
+    return QrReadState(
+        courses: oldState.courses,
+        category: oldState.category,
+        status: status,
+        all: oldState.allCourses,
+        ids: oldState.registeredId);
+  }
+}

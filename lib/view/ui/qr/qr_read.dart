@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:auto_id/bloc/student_bloc/student_data_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_qr_reader/flutter_qr_reader.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -25,9 +27,6 @@ class _QrReadScreenState extends State<QrReadScreen> {
     return Scaffold(
         appBar: appBar(
           "Scan The QR",
-          // backgroundColor: Colors.black,
-          // foregroundColor: Colors.white,
-          //centerTitle: true,
           actions: [
             TextButton(
                 onPressed: () async {
@@ -42,14 +41,15 @@ class _QrReadScreenState extends State<QrReadScreen> {
                       if (data.isEmpty) {
                         showToast("No Data Detected");
                       } else {
-                        showToast(data, type: ToastType.success);
+                        _encodedData(data);
                       }
                     } else {
                       showToast("cannot open gallery");
                     }
                   }
                 },
-                style: ButtonStyle(foregroundColor: MaterialStateProperty.all(Colors.black)),
+                style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.all(Colors.black)),
                 child: Row(
                   children: const [
                     Text('From Files'),
@@ -61,25 +61,28 @@ class _QrReadScreenState extends State<QrReadScreen> {
         floatingActionButton: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(width: 20,),
+            const SizedBox(
+              width: 20,
+            ),
             FloatingActionButton(
               child: const Icon(Icons.highlight_rounded),
               backgroundColor: Colors.white,
-              foregroundColor:  ColorManager.mainBlue,
+              foregroundColor: ColorManager.mainBlue,
               onPressed: () {
                 controller.toggleFlash();
               },
             ),
-            const SizedBox(width: 10,),
+            const SizedBox(
+              width: 10,
+            ),
             FloatingActionButton(
               child: const Icon(Icons.camera_alt_outlined),
               backgroundColor: Colors.white,
-              foregroundColor:  ColorManager.mainBlue,
+              foregroundColor: ColorManager.mainBlue,
               onPressed: () {
                 controller.flipCamera();
               },
             ),
-
           ],
         ),
         body: _createScanUi());
@@ -105,7 +108,21 @@ class _QrReadScreenState extends State<QrReadScreen> {
 
     try {
       Map<String, dynamic> qrData = json.decode(originalJson);
-      print(qrData);
+
+      StudentDataBloc bloc = context.read<StudentDataBloc>();
+      if (bloc.state.registeredId.contains(qrData['id'])) {
+        int qrTimeDifference = DateTime.now()
+            .difference(DateTime.parse(qrData['date']))
+            .inMinutes
+            .abs();
+        if (qrTimeDifference < 5) {
+          bloc.add(QrReadEvent(qrData['id']));
+        } else {
+          showToast("QR expired");
+        }
+      } else {
+        showToast("You are not registered in this course");
+      }
     } catch (err) {
       showToast("invalid Data read,Try again");
       controller.resumeCamera();
