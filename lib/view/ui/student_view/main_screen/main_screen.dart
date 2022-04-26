@@ -8,7 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer/shimmer.dart';
+import '../../../shared/functions/navigation_functions.dart';
 import '../../../shared/widgets/powered_by_navigation_bar.dart';
+import '../../qr/qr_generate.dart';
 
 class StudentMainScreen extends StatelessWidget {
   StudentMainScreen({Key? key}) : super(key: key);
@@ -26,6 +28,9 @@ class StudentMainScreen extends StatelessWidget {
         }
       },
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(onPressed: (){
+          navigateAndPush(context, const QrGeneratorScreen());
+        }),
         bottomNavigationBar: poweredBy(),
         backgroundColor: ColorManager.lightBlue,
         body: SafeArea(

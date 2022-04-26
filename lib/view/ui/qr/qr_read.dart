@@ -1,13 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_qr_reader/flutter_qr_reader.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-
 import '../../resources/color_manager.dart';
+import '../../shared/widgets/app_bar.dart';
 import '../../shared/widgets/toast_helper.dart';
 
 class QrReadScreen extends StatefulWidget {
@@ -23,64 +22,67 @@ class _QrReadScreenState extends State<QrReadScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          appBar: AppBar(
-            // backgroundColor: Colors.black,
-            // foregroundColor: Colors.white,
-            centerTitle: true,
-            actions: [
-              IconButton(
-                  onPressed: () async {
-                    if (await Permission.camera.request().isGranted) {
-                      XFile? xFile = await ImagePicker()
-                          .pickImage(source: ImageSource.gallery);
-                      if (xFile != null) {
-                        // File file = File(xFile.path);
-                        final String data =
-                            await FlutterQrReader.imgScan(xFile.path);
-                        print("here");
-                        if (data.isEmpty) {
-                          showToast("No Data Detected");
-                        } else {
-                          showToast(data, type: ToastType.success);
-                        }
+    return Scaffold(
+        appBar: appBar(
+          "Scan The QR",
+          // backgroundColor: Colors.black,
+          // foregroundColor: Colors.white,
+          //centerTitle: true,
+          actions: [
+            TextButton(
+                onPressed: () async {
+                  if (await Permission.camera.request().isGranted) {
+                    XFile? xFile = await ImagePicker()
+                        .pickImage(source: ImageSource.gallery);
+                    if (xFile != null) {
+                      // File file = File(xFile.path);
+                      final String data =
+                          await FlutterQrReader.imgScan(xFile.path);
+                      print("here");
+                      if (data.isEmpty) {
+                        showToast("No Data Detected");
                       } else {
-                        showToast("cannot open gallery");
+                        showToast(data, type: ToastType.success);
                       }
+                    } else {
+                      showToast("cannot open gallery");
                     }
-                  },
-                  icon: const Icon(Icons.upload_file))
-            ],
-            title: const Text("Scan The QR"),
-          ),
-          floatingActionButton: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              children: [
-                IconButton(
-                  color: ColorManager.mainBlue,
-                  iconSize: 30,
-                  splashRadius: 30,
-                  icon: const Icon(Icons.highlight_rounded),
-                  onPressed: () {
-                    controller.toggleFlash();
-                  },
-                ),
-                IconButton(
-                  color: ColorManager.mainBlue,
-                  iconSize: 30,
-                  splashRadius: 30,
-                  icon: const Icon(Icons.camera_alt_outlined),
-                  onPressed: () {
-                    controller.flipCamera();
-                  },
-                )
-              ],
+                  }
+                },
+                style: ButtonStyle(foregroundColor: MaterialStateProperty.all(Colors.black)),
+                child: Row(
+                  children: const [
+                    Text('From Files'),
+                    Icon(Icons.upload_file),
+                  ],
+                ))
+          ],
+        ),
+        floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(width: 20,),
+            FloatingActionButton(
+              child: const Icon(Icons.highlight_rounded),
+              backgroundColor: Colors.white,
+              foregroundColor:  ColorManager.mainBlue,
+              onPressed: () {
+                controller.toggleFlash();
+              },
             ),
-          ),
-          body: _createScanUi()),
-    );
+            const SizedBox(width: 10,),
+            FloatingActionButton(
+              child: const Icon(Icons.camera_alt_outlined),
+              backgroundColor: Colors.white,
+              foregroundColor:  ColorManager.mainBlue,
+              onPressed: () {
+                controller.flipCamera();
+              },
+            ),
+
+          ],
+        ),
+        body: _createScanUi());
   }
 
   Widget _createScanUi() {

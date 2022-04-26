@@ -2,10 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:auto_id/view/shared/functions/navigation_functions.dart';
+import 'package:auto_id/view/shared/widgets/app_bar.dart';
 import 'package:auto_id/view/ui/qr/qr_read.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+
+import '../../resources/color_manager.dart';
 
 class QrGeneratorScreen extends StatefulWidget {
   const QrGeneratorScreen({Key? key}) : super(key: key);
@@ -20,48 +23,16 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            navigateAndPush(context, const QrReadScreen());
-          },
-          child: const Icon(Icons.qr_code_scanner),
-        ),
-        body: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: SizedBox(
-              width: double.infinity,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: IconButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        icon: const Icon(Icons.arrow_back)),
-                  ),
-                  createQrUi(),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  OutlinedButton.icon(
-                      onPressed: () {
-                        _roomsDecodedData();
-                        setState(() {
-                          qrReady = true;
-                        });
-                      },
-                      style: ButtonStyle(
-                          side: MaterialStateProperty.all(
-                              const BorderSide(color: Colors.blue))),
-                      label: const Text(
-                        "Generate",
-                      ),
-                      icon: const Icon(FontAwesomeIcons.qrcode)),
-                ],
-              ),
-            )),
+    return Scaffold(
+      appBar: appBar('Generate QR Code'),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          navigateAndPush(context, const QrReadScreen());
+        },
+        child: const Icon(Icons.qr_code_scanner),
+      ),
+      body: Center(
+        child: createQrUi(),
       ),
     );
   }
@@ -93,8 +64,33 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
                   );
                 },
               )
-            : const SizedBox(
-                width: 300, height: 300, child: Icon(Icons.qr_code, size: 70)),
+            :  InkWell(
+              onTap: (){
+                _roomsDecodedData();
+                setState(() {
+                  qrReady = true;
+                });
+              },
+              child: Container(
+                width: 120,height: 120,
+                decoration: BoxDecoration(
+                  color: ColorManager.mainBlue,
+                    borderRadius: BorderRadius.circular(10),
+                    //border: Border.all(width: 2,color: ColorManager.mainBlue)
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(FontAwesomeIcons.qrcode,size: 60,color: ColorManager.whiteColor,),
+                    SizedBox(height: 5,),
+                    Text(
+                      "Generate",
+                      style: TextStyle(color: ColorManager.whiteColor,fontSize: 20),
+                    ),
+                  ],
+                ),
+              ),
+            ),
       ),
     );
   }
