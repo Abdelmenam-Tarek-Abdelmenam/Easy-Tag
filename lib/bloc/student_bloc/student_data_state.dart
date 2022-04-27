@@ -70,6 +70,57 @@ class RegisterUserState extends StudentDataStates {
   }
 }
 
+class EditStudentState extends StudentDataStates {
+  EditStudentState(
+      {StudentDataStatus status = StudentDataStatus.initial,
+      List<String> courses = const [],
+      List<Course> all = const [],
+      String category = "ALL",
+      List<String> ids = const []})
+      : super(
+            allCourses: all,
+            status: status,
+            courses: courses,
+            category: category,
+            registeredId: ids);
+  factory EditStudentState.fromOldState(
+      StudentDataStates oldState, StudentDataStatus status) {
+    return EditStudentState(
+        courses: oldState.courses,
+        category: oldState.category,
+        status: status,
+        all: oldState.allCourses,
+        ids: oldState.registeredId);
+  }
+}
+
+class GetStudentDataState extends StudentDataStates {
+  Student? student;
+  GetStudentDataState(
+      {this.student,
+      StudentDataStatus status = StudentDataStatus.initial,
+      List<String> courses = const [],
+      List<Course> all = const [],
+      String category = "ALL",
+      List<String> ids = const []})
+      : super(
+            allCourses: all,
+            status: status,
+            courses: courses,
+            category: category,
+            registeredId: ids);
+  factory GetStudentDataState.fromOldState(
+      StudentDataStates oldState, StudentDataStatus status, Student? student) {
+    return GetStudentDataState(
+        student: student,
+        courses: oldState.courses,
+        category: oldState.category,
+        status: status,
+        all: oldState.allCourses,
+        ids: oldState.registeredId);
+  }
+}
+
 class QrReadState extends StudentDataStates {
   QrReadState(
       {StudentDataStatus status = StudentDataStatus.initial,

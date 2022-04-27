@@ -27,61 +27,62 @@ class UserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: ElevatedButton(
-          style: ButtonStyle(
-            fixedSize:  MaterialStateProperty.all(const Size(200,55)),
-              backgroundColor:
-              MaterialStateProperty.all(ColorManager.mainBlue),
-              foregroundColor:
-              MaterialStateProperty.all(ColorManager.whiteColor)),
-          child: const Text(
-            "Edit Student",
-            style: TextStyle(fontSize: 18),
-          ),
-          onPressed: () {
-            Course course = context
-                .read<AdminDataBloc>()
-                .state
-                .groupList[groupIndex];
-            navigateAndPush(
-                context,
-                RegisterScreen(
-                    course, student, groupIndex, userIndex));
-          }),
+      bottomNavigationBar: groupIndex == -1
+          ? null
+          : ElevatedButton(
+              style: ButtonStyle(
+                  fixedSize: MaterialStateProperty.all(const Size(200, 55)),
+                  backgroundColor:
+                      MaterialStateProperty.all(ColorManager.mainBlue),
+                  foregroundColor:
+                      MaterialStateProperty.all(ColorManager.whiteColor)),
+              child: const Text(
+                "Edit Student",
+                style: TextStyle(fontSize: 18),
+              ),
+              onPressed: () {
+                Course course =
+                    context.read<AdminDataBloc>().state.groupList[groupIndex];
+                navigateAndPush(context,
+                    RegisterScreen(course, student, groupIndex, userIndex));
+              }),
       appBar: appBar(student.rfId ?? "User Information",
-actions: [
-  BlocConsumer<AdminDataBloc, AdminDataStates>(
-      builder: (_, state) {
-        if (state is DeleteUserState &&
-            (state.status == AdminDataStatus.loading)) {
-          return const CircularProgressIndicator(
-            color: Colors.white,
-          );
-        } else {
-          return IconButton(
-            onPressed: () {
-              customChoiceDialog(context,
-                  title: "Warning",
-                  content:
-                  "Are you sure you want to delete user ",
-                  yesFunction: () {
-                    context.read<AdminDataBloc>().add(
-                        DeleteStudentIndex(
-                            groupIndex, userIndex));
-                  });
-            },
-            icon: Icon(Icons.delete,color: Colors.deepOrange[400],),
-            iconSize: 30,
-          );
-        }
-      }, listener: (context, state) {
-    if (state is LoadGroupDataState &&
-        (state.status == AdminDataStatus.loaded)) {
-      Navigator.of(context).pop();
-    }
-  }),
-]
-      ),
+          actions: groupIndex == -1
+              ? null
+              : [
+                  BlocConsumer<AdminDataBloc, AdminDataStates>(
+                      builder: (_, state) {
+                    if (state is DeleteUserState &&
+                        (state.status == AdminDataStatus.loading)) {
+                      return const CircularProgressIndicator(
+                        color: Colors.white,
+                      );
+                    } else {
+                      return IconButton(
+                        onPressed: () {
+                          customChoiceDialog(context,
+                              title: "Warning",
+                              content: "Are you sure you want to delete user ",
+                              yesFunction: () {
+                            context
+                                .read<AdminDataBloc>()
+                                .add(DeleteStudentIndex(groupIndex, userIndex));
+                          });
+                        },
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.deepOrange[400],
+                        ),
+                        iconSize: 30,
+                      );
+                    }
+                  }, listener: (context, state) {
+                    if (state is LoadGroupDataState &&
+                        (state.status == AdminDataStatus.loaded)) {
+                      Navigator.of(context).pop();
+                    }
+                  }),
+                ]),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: ListView(
@@ -92,7 +93,9 @@ actions: [
               backgroundColor: ColorManager.mainBlue,
               child: userPhoto(),
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             ...List.generate(student.getProps.length,
                 (i) => isHide(student.getProps[i] == null, fields[i])),
           ],

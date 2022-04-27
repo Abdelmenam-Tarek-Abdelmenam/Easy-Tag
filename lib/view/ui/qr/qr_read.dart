@@ -85,7 +85,18 @@ class _QrReadScreenState extends State<QrReadScreen> {
             ),
           ],
         ),
-        body: _createScanUi());
+        body: BlocListener<StudentDataBloc, StudentDataStates>(
+          listenWhen: (_, state) => state is QrReadState,
+          listener: (context, state) {
+            if (state.status == StudentDataStatus.loaded) {
+              Navigator.of(context).pop();
+            }
+            if (state.status == StudentDataStatus.error) {
+              controller.resumeCamera();
+            }
+          },
+          child: _createScanUi(),
+        ));
   }
 
   Widget _createScanUi() {
@@ -102,6 +113,7 @@ class _QrReadScreenState extends State<QrReadScreen> {
   }
 
   void _encodedData(String roomsString) async {
+    controller.pauseCamera();
     final decodeBase64Json = base64.decode(roomsString);
     final decodeZipJson = gzip.decode(decodeBase64Json);
     String originalJson = utf8.decode(decodeZipJson);
@@ -116,6 +128,7 @@ class _QrReadScreenState extends State<QrReadScreen> {
             .inMinutes
             .abs();
         if (qrTimeDifference < 5) {
+          showToast("Register you in server please wait", type: ToastType.info);
           bloc.add(QrReadEvent(qrData['id']));
         } else {
           showToast("QR expired");
@@ -137,7 +150,6 @@ class _QrReadScreenState extends State<QrReadScreen> {
         showToast("QR Detected", type: ToastType.info);
         String? readData = scanData.code;
         if (readData != null) {
-          controller.pauseCamera();
           _encodedData(readData);
         }
       });

@@ -31,6 +31,24 @@ class StartStudentOperations extends StudentDataEvent {
   const StartStudentOperations(this.user);
 }
 
+class WantUserDataEvent extends StudentDataEvent {
+  final String groupId;
+  const WantUserDataEvent(this.groupId);
+
+  @override
+  List<Object?> get props => [groupId];
+}
+
+class EditMyStudentEvent extends StudentDataEvent {
+  final Map<String, dynamic> data;
+  final String groupId;
+
+  const EditMyStudentEvent(this.data, this.groupId);
+
+  @override
+  List<Object?> get props => [data, groupId];
+}
+
 class ChangeFilterTypeEvent extends StudentDataEvent {
   final String newType;
   const ChangeFilterTypeEvent(this.newType);

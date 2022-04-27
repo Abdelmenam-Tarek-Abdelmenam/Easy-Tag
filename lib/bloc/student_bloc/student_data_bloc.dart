@@ -20,6 +20,8 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
     on<ChangeFilterTypeEvent>(_filterUsingType);
     on<ChangeFilterNameEvent>(_filterUsingName);
     on<QrReadEvent>(_registerUserFromQr);
+    on<WantUserDataEvent>(_readMyCourseDate);
+    on<EditMyStudentEvent>(_editStudentHandler);
   }
 
   final WebServices _webServices = WebServices();
@@ -63,6 +65,38 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
     }
   }
 
+  Future<void> _editStudentHandler(
+      EditMyStudentEvent event, Emitter emit) async {
+    try {
+      emit(EditStudentState.fromOldState(state, StudentDataStatus.loading));
+      bool response =
+          await _webServices.editStudentData(event.groupId, event.data);
+      if (response) {
+        emit(EditStudentState.fromOldState(state, StudentDataStatus.loaded));
+      } else {
+        emit(EditStudentState.fromOldState(state, StudentDataStatus.error));
+      }
+    } on DioErrors catch (err) {
+      emit(EditStudentState.fromOldState(state, StudentDataStatus.error));
+      showToast(err.message, type: ToastType.error);
+    }
+  }
+
+  Future<void> _readMyCourseDate(WantUserDataEvent event, Emitter emit) async {
+    try {
+      emit(GetStudentDataState.fromOldState(
+          state, StudentDataStatus.loading, null));
+      Student response =
+          await _webServices.getUserData(student.id, event.groupId);
+      emit(GetStudentDataState.fromOldState(
+          state, StudentDataStatus.loaded, response));
+    } on DioErrors catch (err) {
+      emit(GetStudentDataState.fromOldState(
+          state, StudentDataStatus.error, null));
+      showToast(err.message, type: ToastType.error);
+    }
+  }
+
   void _filterUsingType(ChangeFilterTypeEvent event, Emitter emit) {
     if (event.newType == "ALL") {
       state.courses == state.allCourses.map((e) => e.id);
@@ -81,35 +115,37 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
   }
 
   void _filterUsingName(ChangeFilterNameEvent event, Emitter emit) {
+    print(event.subName);
+    emit(GetInitialDataState(
+        category: state.category,
+        status: StudentDataStatus.loading,
+        courses: state.courses,
+        all: state.allCourses,
+        ids: state.registeredId));
+
     if (state.category == "ALL") {
       state.courses = state.allCourses
-          .where((element) => element.name.contains(event.subName))
+          .where((element) =>
+              element.name.toLowerCase().contains(event.subName.toLowerCase()))
           .map((e) => e.id)
           .toList();
     } else {
       state.courses = state.allCourses
           .where((element) =>
               (element.category == state.category) &&
-              (element.name.contains(event.subName)))
+              (element.name
+                  .toLowerCase()
+                  .contains(event.subName.toLowerCase())))
           .map((e) => e.id)
           .toList();
     }
-
+    print(state.courses.length);
     emit(GetInitialDataState(
         category: state.category,
         status: StudentDataStatus.loaded,
         courses: state.courses,
         all: state.allCourses,
         ids: state.registeredId));
-  }
-
-  Future<void> getUserCourseData(String userId, String sheetId) async {
-    try {
-      Student student = await _webServices.getUserData(userId, sheetId);
-      print(student.name);
-    } on DioErrors catch (err) {
-      showToast(err.message, type: ToastType.error);
-    }
   }
 
   Future<void> _registerUserFromQr(QrReadEvent event, Emitter emit) async {

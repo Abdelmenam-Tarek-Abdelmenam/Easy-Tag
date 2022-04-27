@@ -40,7 +40,6 @@ class CourseCardDesign extends StatelessWidget {
                 color: Colors.black12,
                 borderRadius: BorderRadius.circular(30),
               ),
-
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -70,10 +69,10 @@ class CourseCardDesign extends StatelessWidget {
                     textDetails(),
                     ElevatedButton(
                         style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(ColorManager.mainBlue),
-                            foregroundColor:
-                                MaterialStateProperty.all(ColorManager.whiteColor)),
+                            backgroundColor: MaterialStateProperty.all(
+                                ColorManager.mainBlue),
+                            foregroundColor: MaterialStateProperty.all(
+                                ColorManager.whiteColor)),
                         onPressed: () {
                           navigateAndPush(context, DetailsScreen(course));
                         },
@@ -96,7 +95,7 @@ class CourseCardDesign extends StatelessWidget {
 
   Widget textDetails() => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             "${course.price} EGP",
@@ -105,12 +104,15 @@ class CourseCardDesign extends StatelessWidget {
                 color: ColorManager.darkGrey,
                 fontWeight: FontWeight.w800),
           ),
-          Text(
-            course.offer + " offer",
-            style: const TextStyle(
-                fontSize: 25,
-                color: ColorManager.darkGrey,
-                fontWeight: FontWeight.w300),
+          Visibility(
+            visible: course.offer.isNotEmpty,
+            child: Text(
+              course.offer + " offer",
+              style: const TextStyle(
+                  fontSize: 25,
+                  color: ColorManager.darkGrey,
+                  fontWeight: FontWeight.w300),
+            ),
           ),
           Text(
             "${course.category} - ${course.inPlace}",
@@ -140,7 +142,7 @@ class CourseCardDesign extends StatelessWidget {
                 height: 130,
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => Container(
-                      height: 150,
+                      height: 130,
                       color: ColorManager.lightGrey,
                       child: const Icon(
                         Icons.image_not_supported_outlined,
