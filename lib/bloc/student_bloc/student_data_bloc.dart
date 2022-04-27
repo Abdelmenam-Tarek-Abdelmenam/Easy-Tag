@@ -21,7 +21,7 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
     on<ChangeFilterNameEvent>(_filterUsingName);
     on<QrReadEvent>(_registerUserFromQr);
     on<WantUserDataEvent>(_readMyCourseDate);
-    on<EditMyStudentEvent>(_editStudentHandler);
+    // on<EditMyStudentEvent>(_editStudentHandler);
   }
 
   final WebServices _webServices = WebServices();
@@ -65,22 +65,22 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
     }
   }
 
-  Future<void> _editStudentHandler(
-      EditMyStudentEvent event, Emitter emit) async {
-    try {
-      emit(EditStudentState.fromOldState(state, StudentDataStatus.loading));
-      bool response =
-          await _webServices.editStudentData(event.groupId, event.data);
-      if (response) {
-        emit(EditStudentState.fromOldState(state, StudentDataStatus.loaded));
-      } else {
-        emit(EditStudentState.fromOldState(state, StudentDataStatus.error));
-      }
-    } on DioErrors catch (err) {
-      emit(EditStudentState.fromOldState(state, StudentDataStatus.error));
-      showToast(err.message, type: ToastType.error);
-    }
-  }
+  // Future<void> _editStudentHandler(
+  //     EditMyStudentEvent event, Emitter emit) async {
+  //   try {
+  //     emit(EditStudentState.fromOldState(state, StudentDataStatus.loading));
+  //     bool response =
+  //         await _webServices.editStudentData(event.groupId, event.data);
+  //     if (response) {
+  //       emit(EditStudentState.fromOldState(state, StudentDataStatus.loaded));
+  //     } else {
+  //       emit(EditStudentState.fromOldState(state, StudentDataStatus.error));
+  //     }
+  //   } on DioErrors catch (err) {
+  //     emit(EditStudentState.fromOldState(state, StudentDataStatus.error));
+  //     showToast(err.message, type: ToastType.error);
+  //   }
+  // }
 
   Future<void> _readMyCourseDate(WantUserDataEvent event, Emitter emit) async {
     try {

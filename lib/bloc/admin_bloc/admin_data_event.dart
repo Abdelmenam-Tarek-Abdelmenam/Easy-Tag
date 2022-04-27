@@ -63,6 +63,18 @@ class EditStudentEvent extends AdminDataEvent {
   List<Object?> get props => [data, groupIndex, studentIndex];
 }
 
+class AddRfIdEvent extends AdminDataEvent {
+  final Map<String, dynamic> data;
+  final String groupId;
+  final String studentId;
+  final String studentName;
+
+  const AddRfIdEvent(this.data, this.groupId, this.studentId, this.studentName);
+
+  @override
+  List<Object?> get props => [data, groupId, studentId];
+}
+
 class CreateGroupEvent extends AdminDataEvent {
   final Map<String, dynamic> groupData;
 

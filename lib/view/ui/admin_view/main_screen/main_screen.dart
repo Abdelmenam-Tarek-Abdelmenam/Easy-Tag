@@ -32,34 +32,31 @@ class MainScreen extends StatelessWidget {
           }
         },
         child: Scaffold(
-          appBar: appBar(
-            'Easy Tag - admin',
-            actions: [
-              //optionsWidget(context),
-              IconButton(
-                  icon: const Icon(Icons.settings),
-                  onPressed: () async {
-                    navigateAndPush(context, const SendConfigScreen());
-                  }),
-              BlocConsumer<AdminDataBloc, AdminDataStates>(
-                  buildWhen: (prev, next) => next is SignOutState,
-                  listenWhen: (prev, next) => next is SignOutState,
-                  builder: (context, state) => IconButton(
-                      icon: (state.status == AdminDataStatus.loaded) &&
-                          (state is SignOutState)
-                          ? const CircularProgressIndicator()
-                          : const Icon(Icons.logout),
-                      onPressed: () {
-                        context.read<AdminDataBloc>().add(SignOutEvent());
-                      }),
-                  listener: (context, state) {
-                    if ((state.status == AdminDataStatus.loading) &&
-                        (state is SignOutState)) {
-                      navigateAndReplace(context, const LoginView());
-                    }
-                  }),
-            ]
-          ),
+          appBar: appBar('EME-IH - admin', actions: [
+            //optionsWidget(context),
+            IconButton(
+                icon: const Icon(Icons.settings),
+                onPressed: () async {
+                  navigateAndPush(context, const SendConfigScreen());
+                }),
+            BlocConsumer<AdminDataBloc, AdminDataStates>(
+                buildWhen: (prev, next) => next is SignOutState,
+                listenWhen: (prev, next) => next is SignOutState,
+                builder: (context, state) => IconButton(
+                    icon: (state.status == AdminDataStatus.loaded) &&
+                            (state is SignOutState)
+                        ? const CircularProgressIndicator()
+                        : const Icon(Icons.logout),
+                    onPressed: () {
+                      context.read<AdminDataBloc>().add(SignOutEvent());
+                    }),
+                listener: (context, state) {
+                  if ((state.status == AdminDataStatus.loading) &&
+                      (state is SignOutState)) {
+                    navigateAndReplace(context, const LoginView());
+                  }
+                }),
+          ]),
           floatingActionButton: FloatingActionButton(
             backgroundColor: ColorManager.mainBlue,
             child: const Icon(
@@ -69,7 +66,7 @@ class MainScreen extends StatelessWidget {
             ),
             onPressed: () {
               navigateAndPush(context, const AddGroupScreen());
-               //cubit.addGroup(context);
+              //cubit.addGroup(context);
             },
           ),
           bottomNavigationBar: poweredBy(),
@@ -79,7 +76,9 @@ class MainScreen extends StatelessWidget {
                 enablePullUp: false,
                 controller: _refreshController,
                 onRefresh: () {
-                  context.read<AdminDataBloc>().add(StartAdminOperations(AdminDataBloc.admin));
+                  context
+                      .read<AdminDataBloc>()
+                      .add(StartAdminOperations(AdminDataBloc.admin));
                   _refreshController.refreshCompleted();
                 },
                 child: BlocBuilder<AdminDataBloc, AdminDataStates>(
@@ -92,20 +91,25 @@ class MainScreen extends StatelessWidget {
                         return ListView(
                           physics: const BouncingScrollPhysics(),
                           children: [
-
                             UserCard(
                                 (state).cardStudent,
                                 myState &&
                                     (state.status == AdminDataStatus.loading)),
-
                             const Divider(height: 40),
-
                             const HomeAppBar(),
                             const SizedBox(
                               height: 20,
                             ),
-                            const Text('Groups',style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),),
-                            const SizedBox(height: 8,),
+                            const Text(
+                              'Groups',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
                             GroupList(
                                 state.groupList,
                                 myState &&
@@ -135,5 +139,4 @@ class MainScreen extends StatelessWidget {
           )
         ],
       );
-
 }

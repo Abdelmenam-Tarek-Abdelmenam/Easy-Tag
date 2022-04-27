@@ -33,7 +33,7 @@ class StudentMainScreen extends StatelessWidget {
           }
         },
         child: Scaffold(
-          appBar: appBar('Easy Tag', actions: [
+          appBar: appBar('EME-IH', actions: [
             ProfileIcon(
               profileHandler: () {
                 navigateAndPush(context, const StudentScreen());

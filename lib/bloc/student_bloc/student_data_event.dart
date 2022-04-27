@@ -39,15 +39,15 @@ class WantUserDataEvent extends StudentDataEvent {
   List<Object?> get props => [groupId];
 }
 
-class EditMyStudentEvent extends StudentDataEvent {
-  final Map<String, dynamic> data;
-  final String groupId;
-
-  const EditMyStudentEvent(this.data, this.groupId);
-
-  @override
-  List<Object?> get props => [data, groupId];
-}
+// class EditMyStudentEvent extends StudentDataEvent {
+//   final Map<String, dynamic> data;
+//   final String groupId;
+//
+//   const EditMyStudentEvent(this.data, this.groupId);
+//
+//   @override
+//   List<Object?> get props => [data, groupId];
+// }
 
 class ChangeFilterTypeEvent extends StudentDataEvent {
   final String newType;

@@ -27,6 +27,7 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
     on<DeleteGroupIndex>(_deleteGroupHandler);
     on<DeleteStudentIndex>(_deleteStudentHandler);
     on<EditStudentEvent>(_editStudentHandler);
+    on<AddRfIdEvent>(_editStudentRfIdHandler);
     on<SearchByNameEvent>(_searchByNameHandler);
   }
 
@@ -152,17 +153,48 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
         state.allGroupList[state.getGroupIndex(groupId)]
             .students![event.studentIndex] = Student.fromJson(event.data);
         if (student.state == StudentState.newStudent &&
-            student.id == event.data['ID']) {
+            student.name == event.data['Name']) {
           student = student.copyWith(
               name: event.data['Name'],
               groupIndex: event.groupIndex,
               state: StudentState.notRegistered);
-          _adminDataRepository.updateCardState();
         }
         emit(LoadGroupDataState.fromOldState(
             state, AdminDataStatus.loaded, event.groupIndex));
         emit(EditUserState.fromOldState(state, AdminDataStatus.loaded));
       } else {
+        emit(EditUserState.fromOldState(state, AdminDataStatus.error));
+      }
+    } on DioErrors catch (err) {
+      emit(EditUserState.fromOldState(state, AdminDataStatus.error));
+      showToast(err.message, type: ToastType.error);
+    }
+  }
+
+  Future<void> _editStudentRfIdHandler(AddRfIdEvent event, Emitter emit) async {
+    try {
+      emit(EditUserState.fromOldState(state, AdminDataStatus.loading));
+      event.data['ID'] = event.studentId;
+      print(event.data);
+      bool response =
+          await _webServices.editStudentData(event.groupId, event.data);
+      if (response) {
+        CardStudent student = state.cardStudent;
+        int groupIndex = state.allGroupList
+            .indexWhere((element) => element.id == event.groupId);
+        if (student.state == StudentState.newStudent &&
+            student.id == event.data['RFID']) {
+          state.cardStudent = student.copyWith(
+              name: event.studentName,
+              groupIndex: groupIndex,
+              state: StudentState.notRegistered);
+          _adminDataRepository.updateCardState();
+        }
+        emit(LoadGroupDataState.fromOldState(
+            state, AdminDataStatus.loaded, groupIndex));
+        emit(EditUserState.fromOldState(state, AdminDataStatus.loaded));
+      } else {
+        showToast("Can't ADD RFID ", type: ToastType.error);
         emit(EditUserState.fromOldState(state, AdminDataStatus.error));
       }
     } on DioErrors catch (err) {

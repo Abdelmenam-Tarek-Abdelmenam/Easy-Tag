@@ -22,7 +22,7 @@ class Student {
 
   Student.fromJson(Map<String, dynamic> data) {
     id = data['ID'];
-    rfId = data['RFID'];
+    rfId = data['RFID'].toString();
     name = data['Name'];
     age = data['Age'];
     college = data['College'];

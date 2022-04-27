@@ -70,29 +70,29 @@ class RegisterUserState extends StudentDataStates {
   }
 }
 
-class EditStudentState extends StudentDataStates {
-  EditStudentState(
-      {StudentDataStatus status = StudentDataStatus.initial,
-      List<String> courses = const [],
-      List<Course> all = const [],
-      String category = "ALL",
-      List<String> ids = const []})
-      : super(
-            allCourses: all,
-            status: status,
-            courses: courses,
-            category: category,
-            registeredId: ids);
-  factory EditStudentState.fromOldState(
-      StudentDataStates oldState, StudentDataStatus status) {
-    return EditStudentState(
-        courses: oldState.courses,
-        category: oldState.category,
-        status: status,
-        all: oldState.allCourses,
-        ids: oldState.registeredId);
-  }
-}
+// class EditStudentState extends StudentDataStates {
+//   EditStudentState(
+//       {StudentDataStatus status = StudentDataStatus.initial,
+//       List<String> courses = const [],
+//       List<Course> all = const [],
+//       String category = "ALL",
+//       List<String> ids = const []})
+//       : super(
+//             allCourses: all,
+//             status: status,
+//             courses: courses,
+//             category: category,
+//             registeredId: ids);
+//   factory EditStudentState.fromOldState(
+//       StudentDataStates oldState, StudentDataStatus status) {
+//     return EditStudentState(
+//         courses: oldState.courses,
+//         category: oldState.category,
+//         status: status,
+//         all: oldState.allCourses,
+//         ids: oldState.registeredId);
+//   }
+// }
 
 class GetStudentDataState extends StudentDataStates {
   Student? student;

@@ -1,3 +1,4 @@
+import 'package:auto_id/bloc/student_bloc/student_data_bloc.dart';
 import 'package:auto_id/view/resources/color_manager.dart';
 import 'package:auto_id/view/shared/functions/navigation_functions.dart';
 import 'package:auto_id/view/ui/student_view/student_screen/widgets/main_layout.dart';
@@ -13,21 +14,25 @@ class StudentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar('Profile',actions: [
+      appBar: appBar('Profile', actions: [
         Padding(
           padding: const EdgeInsets.all(10),
           child: TextButton.icon(
-            onPressed: () async {
-            await FirebaseAuth.instance.signOut();
-            await GoogleSignIn().signOut();
-            navigateAndReplace(context, const LoginView());
-          },
-              icon: const Icon(Icons.logout,size: 20,),
-              label:  const Text('Logout'),
-          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red),
-              foregroundColor: MaterialStateProperty.all(Colors.white))),
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                await GoogleSignIn().signOut();
+                navigateAndReplace(context, const LoginView());
+              },
+              icon: const Icon(
+                Icons.logout,
+                size: 20,
+              ),
+              label: const Text('Logout'),
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.red),
+                  foregroundColor: MaterialStateProperty.all(Colors.white))),
         ),
-        ]),
+      ]),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -39,42 +44,38 @@ class StudentScreen extends StatelessWidget {
                     color: Colors.black12,
                     height: 80,
                   ),
-                  const Positioned(
-                    left: 10, top: 10,
-                    child: Text("Ahmed Khaled ibrahem",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            color: ColorManager.mainBlue,
-                            fontSize: 22,
-                            fontWeight: FontWeight.w400)),
-                  ),
-                  const Positioned(
-                    left: 10,top: 55,
-                    child: Text("App User",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.w300)),
-                  ),
-                  const Positioned(
-                    left: 10,bottom: 50,
-                    child: Text("ahmedkhaledibrahem@gmail.com",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style:
-                        TextStyle(fontSize: 14, fontWeight: FontWeight.w300)),
+                  Positioned(
+                    left: 10,
+                    top: 10,
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width - 100,
+                      child: Text(StudentDataBloc.student.name ?? "App User",
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                              color: ColorManager.mainBlue,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w400)),
+                    ),
                   ),
                   Positioned(
-                    right: 10,top: 10,
+                    left: 10,
+                    bottom: 50,
+                    child: Text(StudentDataBloc.student.email ?? "App User",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w300)),
+                  ),
+                  Positioned(
+                    right: 10,
+                    top: 10,
                     child: CircleAvatar(
                       radius: 55,
                       backgroundColor: ColorManager.whiteColor,
-                      child: userPhoto(),
+                      child: userPhoto(url: StudentDataBloc.student.photoUrl),
                     ),
                   ),
-
-
                 ],
               ),
             ),
@@ -109,7 +110,4 @@ class StudentScreen extends StatelessWidget {
       ),
     );
   }
-
-
-
 }
