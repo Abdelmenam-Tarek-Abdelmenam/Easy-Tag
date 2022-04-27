@@ -14,25 +14,22 @@ class ViewPhoto extends StatelessWidget {
         foregroundColor: Colors.white,
         backgroundColor: Colors.black,
       ),
-      body: Hero(
-        tag: 'image',
-        child: PhotoView(
-          imageProvider: NetworkImage(photoUrl),
-          loadingBuilder: (_, __) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          },
-          errorBuilder: (_, __, ___) {
-            return const Center(
-              child: Icon(
-                Icons.image_not_supported_outlined,
-                size: 50,
-                color: Colors.grey,
-              ),
-            );
-          },
-        ),
+      body: PhotoView(
+        imageProvider: NetworkImage(photoUrl),
+        loadingBuilder: (_, __) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+        errorBuilder: (_, __, ___) {
+          return const Center(
+            child: Icon(
+              Icons.image_not_supported_outlined,
+              size: 50,
+              color: Colors.grey,
+            ),
+          );
+        },
       ),
     );
   }

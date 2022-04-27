@@ -9,51 +9,60 @@ class DetailsLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-          children: [
+      child: Column(children: [
         coursePhoto(context),
-            const SizedBox(height: 20,),
-            Column(
-              children: [
-                {'title': 'Course','val':course.name},
-                {'title': 'Price', 'val': "${course.price} EGP"},
-                {'title': 'Offer', 'val': course.offer},
-                {'title': 'Description','val':course.description},
-                {'title': 'Category','val':"${course.category} - ${course.inPlace} "},
-                {'title': 'Start Date','val':course.date},
-                {'title': 'Number of sessions','val':course.numberOfSessions.toString()},
-              ].map((e) => Column(
-                        children: [
-                          SizedBox(
-                            width: double.infinity,
-                            child: Wrap(
-                              alignment: WrapAlignment.start,
-                              children: [
-                                Text(
-                                  '${e['title']} : ',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      color: ColorManager.mainBlue,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  e['val']!,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,),
-                                ),
-                              ],
+        const SizedBox(
+          height: 20,
+        ),
+        Column(
+          children: [
+            {'title': 'Course', 'val': course.name},
+            {'title': 'Price', 'val': "${course.price} EGP"},
+            {'title': 'Offer', 'val': course.offer},
+            {'title': 'Description', 'val': course.description},
+            {
+              'title': 'Category',
+              'val': "${course.category} - ${course.inPlace} "
+            },
+            {'title': 'Start Date', 'val': course.date},
+            {
+              'title': 'Number of sessions',
+              'val': course.numberOfSessions.toString()
+            },
+          ]
+              .map((e) => Column(
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        child: Wrap(
+                          alignment: WrapAlignment.start,
+                          children: [
+                            Text(
+                              '${e['title']} : ',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  fontSize: 20,
+                                  color: ColorManager.mainBlue,
+                                  fontWeight: FontWeight.bold),
                             ),
-                          ),
-                          const Divider(),
-                        ],
-                      )
-              ).toList(),
-            ),
+                            Text(
+                              e['val']!,
+                              // maxLines: 1,
+                              // overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Divider(),
+                    ],
+                  ))
+              .toList(),
+        ),
         Visibility(
             visible: course.instructors.isNotEmpty, child: instructorsList()),
       ]),
@@ -80,12 +89,15 @@ class DetailsLayout extends StatelessWidget {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     separatorBuilder: (_, __) => const SizedBox(
-                      height: 2,
-                    ),
-                    itemBuilder: (_, index) =>
-                        Text(" ${course.instructors[index]}", style: const TextStyle(
-                          fontSize: 20,
-                          color: ColorManager.darkGrey,),),
+                          height: 2,
+                        ),
+                    itemBuilder: (_, index) => Text(
+                          " ${course.instructors[index]}",
+                          style: const TextStyle(
+                            fontSize: 20,
+                            color: ColorManager.darkGrey,
+                          ),
+                        ),
                     itemCount: course.instructors.length)
               ],
             ),

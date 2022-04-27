@@ -48,7 +48,7 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
 
   late String? link = widget.course.logo;
 
-  late DateTime startDate = DateTime.parse(widget.course.date);
+  late DateTime startDate = DateFormat('dd-MM-yyyy').parse(widget.course.date);
 
   @override
   Widget build(BuildContext context) {
@@ -60,36 +60,37 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
         }
       },
       child: Scaffold(
-        appBar: appBar('Edit'),
+          appBar: appBar('Edit'),
           floatingActionButton: BlocConsumer<AdminDataBloc, AdminDataStates>(
               buildWhen: (_, state) => state is CreateGroupState,
               listenWhen: (_, state) => state is CreateGroupState,
               listener: (context, state) {
                 if (state.status == AdminDataStatus.loaded) {
                   Navigator.of(context)
-                    ..pop()..pop();
+                    ..pop()
+                    ..pop();
                 }
               },
-              builder: (context, state) => state.status ==
-                      AdminDataStatus.loading
-                  ? const CircularProgressIndicator()
-                  : FloatingActionButton(
-                      backgroundColor: ColorManager.darkGrey,
-                      child: const Icon(
-                        Icons.check,
-                        size: 40,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          Map<String, dynamic> data = createMap();
-                          print(data);
-                          context
-                              .read<AdminDataBloc>()
-                              .add(EditGroupEvent(data, widget.course.id));
-                        }
-                      },
-                    )),
+              builder: (context, state) =>
+                  state.status == AdminDataStatus.loading
+                      ? const CircularProgressIndicator()
+                      : FloatingActionButton(
+                          backgroundColor: ColorManager.darkGrey,
+                          child: const Icon(
+                            Icons.check,
+                            size: 40,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              Map<String, dynamic> data = createMap();
+                              print(data);
+                              context
+                                  .read<AdminDataBloc>()
+                                  .add(EditGroupEvent(data, widget.course.id));
+                            }
+                          },
+                        )),
           body: Padding(
             padding: const EdgeInsets.all(10),
             child: ListView(
@@ -103,7 +104,7 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                       title: "Group name",
                       prefix: Icons.drive_file_rename_outline,
                       validator: (val) =>
-                      val!.isEmpty ? "Name cannot be empty" : null,
+                          val!.isEmpty ? "Name cannot be empty" : null,
                     )),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -114,10 +115,10 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                   children: [
                     const Text("Price",
                         style: TextStyle(
-                            fontSize: 18,
-                            color: ColorManager.darkGrey,)),
-                    SizedBox(
-                        width: 200, child: NumericField(priceController)),
+                          fontSize: 18,
+                          color: ColorManager.darkGrey,
+                        )),
+                    SizedBox(width: 200, child: NumericField(priceController)),
                   ],
                 ),
                 const SizedBox(
@@ -128,10 +129,10 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                   children: [
                     const Text("Number of sessions",
                         style: TextStyle(
-                            fontSize: 18,
-                            color: ColorManager.darkGrey,)),
-                    SizedBox(
-                        width: 150, child: NumericField(numberOfSessions)),
+                          fontSize: 18,
+                          color: ColorManager.darkGrey,
+                        )),
+                    SizedBox(width: 150, child: NumericField(numberOfSessions)),
                   ],
                 ),
                 const SizedBox(
@@ -180,45 +181,45 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                 ),
               ],
             ),
-          )
-      ),
+          )),
     );
   }
 
   //********************************************************************************//
   Widget categoryMenu(bool which) => Container(
-    padding: const EdgeInsets.all(5),
-    decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(width: 1,color: ColorManager.mainBlue)),
-    width: 120,height: 40,
-    child: DropdownButton<String>(
-      underline: Container(),
-      //alignment: Alignment.center,
-      isExpanded: true,
-      dropdownColor: Colors.blue[100],
-      value: which ? category : inPlace,
-      elevation: 0,
-      items: (
-          which? ['Course', 'Event', 'Workshop', 'Competition', 'Internship']
-              : ['in place', 'online','hybrid'])
-          .map((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-      onChanged: (val) {
-        setState(() {
-          if (which) {
-            category = val!;
-          } else {
-            inPlace = val!;
-          }
-        });
-      },
-    ),
-  );
+        padding: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(width: 1, color: ColorManager.mainBlue)),
+        width: 120,
+        height: 40,
+        child: DropdownButton<String>(
+          underline: Container(),
+          //alignment: Alignment.center,
+          isExpanded: true,
+          dropdownColor: Colors.blue[100],
+          value: which ? category : inPlace,
+          elevation: 0,
+          items: (which
+                  ? ['Course', 'Event', 'Workshop', 'Competition', 'Internship']
+                  : ['in place', 'online', 'hybrid'])
+              .map((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
+          onChanged: (val) {
+            setState(() {
+              if (which) {
+                category = val!;
+              } else {
+                inPlace = val!;
+              }
+            });
+          },
+        ),
+      );
 
   Widget descriptionController() => TextFormField(
         controller: description,
@@ -266,21 +267,17 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
             ),
             Visibility(
                 visible: link != null,
-                child: Hero(
-                  tag: 'image',
-                  child: IconButton(
-                    icon: const Icon(Icons.remove_red_eye_outlined),
-                    onPressed: () {
-                      navigateAndPush(context, ViewPhoto(link!));
-                    },
-                  ),
+                child: IconButton(
+                  icon: const Icon(Icons.remove_red_eye_outlined),
+                  onPressed: () {
+                    navigateAndPush(context, ViewPhoto(link!));
+                  },
                 ))
           ],
         ),
       );
 
   Widget startDateButton() {
-    startDate = DateTime.now();    /// remove this
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -288,7 +285,8 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
           ' Start date',
           style: TextStyle(
             fontSize: 18,
-            color: ColorManager.darkGrey,),
+            color: ColorManager.darkGrey,
+          ),
         ),
         AnimatedSwitcher(
           duration: const Duration(milliseconds: 600),
@@ -298,17 +296,17 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
           child: ElevatedButton(
             style: ButtonStyle(
                 foregroundColor: MaterialStateProperty.all(Colors.white),
-                backgroundColor: MaterialStateProperty.all( ColorManager.mainBlue )),
+                backgroundColor:
+                    MaterialStateProperty.all(ColorManager.mainBlue)),
             key: Key(startDate.toString()),
             onPressed: () async {
               startDate = await _selectDate(context: context);
               setState(() {});
-            }, child: Text(
-            DateFormat('dd-MM-yyyy').format(startDate),
-            style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold),
-          ),
+            },
+            child: Text(
+              DateFormat('dd-MM-yyyy').format(startDate),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
           ),
         )
       ],
