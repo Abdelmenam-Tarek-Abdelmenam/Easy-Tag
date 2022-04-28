@@ -88,7 +88,6 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
 
   Future<void> _getGroupDataHandler(
       LoadGroupDataEvent event, Emitter emit) async {
-    print("Start get group data");
     emit(LoadGroupDataState.fromOldState(
         state, AdminDataStatus.loading, event.groupIndex,
         force: event.force));
@@ -175,7 +174,6 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
     try {
       emit(EditUserState.fromOldState(state, AdminDataStatus.loading));
       event.data['ID'] = event.studentId;
-      print(event.data);
       bool response =
           await _webServices.editStudentData(event.groupId, event.data);
       if (response) {
@@ -205,7 +203,6 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
 
   Future<void> _sendEspConfigHandler(
       SendConfigurationEvent event, Emitter emit) async {
-    print("Send configurations");
     emit(SendEspDataState.fromOldState(state, AdminDataStatus.loading));
     try {
       bool success =
@@ -235,14 +232,11 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
   void _searchByNameHandler(SearchByNameEvent event, Emitter emit) {
     emit(GetInitialDataState.fromOldState(state, AdminDataStatus.loading));
 
-    print("Search by ${event.subName}");
     state.usingIds = state.allGroupList
         .where((element) =>
             element.name.toLowerCase().contains(event.subName.toLowerCase()))
         .map((e) => e.id)
         .toList();
-    print(state.allGroupList.length);
-    print(state.usingIds.length);
     emit(GetInitialDataState.fromOldState(state, AdminDataStatus.loaded));
   }
 
@@ -252,7 +246,6 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
     if (await _checkConnectivity()) {
       CardStudent cardStudent = await _adminDataRepository.readAdminData();
       List<GroupDetails> groups = await _adminDataRepository.getGroupsData();
-      print(groups);
       emit(GetInitialDataState(
           status: AdminDataStatus.loaded,
           cardStudent: cardStudent,

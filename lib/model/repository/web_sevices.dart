@@ -29,10 +29,7 @@ class WebServices {
     String url = _funcSheetLinkBase +
         "func=get_all_users"
             "&sheetID=${details.id}";
-    print(url);
-    print("start request");
     List<dynamic> data = await _doRequest(url);
-    print("received $data");
     if (data.isEmpty) {
       details.students = [];
     } else {
@@ -42,14 +39,12 @@ class WebServices {
   }
 
   Future<bool> deleteStudentFromSheet(String userId, String sheetId) async {
-    print(userId);
-    print(userId.trim());
+
     String url = _funcSheetLinkBase +
         "func=delete_user" +
         "&sheetID=$sheetId" +
         "&uid=$userId";
     String response = await _doRequest(url);
-    print(response);
     return response.trim() == "removed";
   }
 
@@ -78,9 +73,7 @@ class WebServices {
         "func=adduser"
             "&sheetID=$groupId"
             "&userData=$dataToSent";
-    print(url);
     String response = await _doRequest(url);
-    print(response);
     return response.trim() == "Done,0";
   }
 
@@ -103,7 +96,6 @@ class WebServices {
 
     String url = 'http://192.168.4.1/data?user=jCekYTPEXmMD7XJWlJdPPtrLBED2'
         '&wifi=$wifiName&pass=$wifiPassword';
-    print("url");
     try {
       String response = await _doRequest(url);
       if (response.trim() != "Failed") {
@@ -121,10 +113,8 @@ class WebServices {
       Response response = await _dio.get(url);
       return response.data;
     } on DioError catch (e) {
-      print("err $e");
       throw DioErrors.fromCode(e);
     } catch (_) {
-      print("err $_");
       throw const DioErrors();
     }
   }

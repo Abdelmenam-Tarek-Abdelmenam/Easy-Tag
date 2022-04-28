@@ -12,7 +12,6 @@ class FieldDesign extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(title);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: Row(

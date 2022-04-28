@@ -23,11 +23,6 @@ class AdminDataRepository {
   Future<List<GroupDetails>> getGroupsData() async {
     DataSnapshot snap = await _dataBase.child(_id).child("groups").get();
     if (snap.exists) {
-      print("data geted");
-      print(snap.children.first.value);
-      print(snap.children.first.value.runtimeType);
-      print(snap.children.first.key);
-      // return [];
       return snap.children
           .map((e) => GroupDetails(json: e.value, id: e.key.toString()))
           .toList();

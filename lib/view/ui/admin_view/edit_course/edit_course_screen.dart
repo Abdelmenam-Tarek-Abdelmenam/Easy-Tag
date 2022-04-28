@@ -84,7 +84,6 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
                               Map<String, dynamic> data = createMap();
-                              print(data);
                               context
                                   .read<AdminDataBloc>()
                                   .add(EditGroupEvent(data, widget.course.id));

@@ -37,7 +37,6 @@ class _QrReadScreenState extends State<QrReadScreen> {
                       // File file = File(xFile.path);
                       final String data =
                           await FlutterQrReader.imgScan(xFile.path);
-                      print("here");
                       if (data.isEmpty) {
                         showToast("No Data Detected");
                       } else {

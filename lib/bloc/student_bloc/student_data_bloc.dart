@@ -115,7 +115,6 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
   }
 
   void _filterUsingName(ChangeFilterNameEvent event, Emitter emit) {
-    print(event.subName);
     emit(GetInitialDataState(
         category: state.category,
         status: StudentDataStatus.loading,
@@ -139,7 +138,6 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
           .map((e) => e.id)
           .toList();
     }
-    print(state.courses.length);
     emit(GetInitialDataState(
         category: state.category,
         status: StudentDataStatus.loaded,

@@ -61,8 +61,6 @@ class _AddUserIdScreenState extends State<AddUserIdScreen> {
                       ),
                 onPressed: () {
                   if (studentId != null && groupId != null) {
-                    print(studentId);
-                    print(groupId);
                     context.read<AdminDataBloc>().add(AddRfIdEvent(
                         {"RFID": widget.id},
                         groupId!,
@@ -149,7 +147,6 @@ class _AddUserIdScreenState extends State<AddUserIdScreen> {
                           } else {
                             students = groups[index].students ?? [];
                           }
-                          print(students.length);
                         });
                       },
                     ),
@@ -163,7 +160,6 @@ class _AddUserIdScreenState extends State<AddUserIdScreen> {
             showToast("Error Happened");
             students = [];
           } else if (state.status == AdminDataStatus.loaded) {
-            print(groupId);
             groups = state.allGroupList;
             students = groups
                     .firstWhere((element) => element.id == groupId)

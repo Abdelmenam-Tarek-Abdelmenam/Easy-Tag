@@ -59,7 +59,6 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(fieldsController.length);
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -89,7 +88,6 @@ class RegisterScreen extends StatelessWidget {
                 ),
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
-                    print(generateMap());
 
                     context.read<StudentDataBloc>().add(
                         RegisterStudentEvent(
@@ -114,7 +112,6 @@ class RegisterScreen extends StatelessWidget {
                 ),
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
-                    print(generateMap());
                     context.read<AdminDataBloc>().add(
                         EditStudentEvent(generateMap(), groupIndex!,
                             courseIndex!));
