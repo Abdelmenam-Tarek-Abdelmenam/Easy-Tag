@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../model/module/course.dart';
 import '../../../resources/color_manager.dart';
+import '../../../shared/widgets/app_bar.dart';
 import '../../admin_view/edit_course/edit_course_screen.dart';
 import '../../admin_view/user_screen/user_screen.dart';
 
@@ -59,13 +60,8 @@ class DetailsScreen extends StatelessWidget {
             )
           : button("Edit Course",
               () => navigateAndPush(context, EditCourseScreen(course))),
-      appBar: AppBar(
-        title: const Text('Course Details'),
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.white.withOpacity(0),
-        elevation: 0,
-      ),
-      backgroundColor: ColorManager.lightBlue,
+      appBar: appBar('Course Details'),
+      backgroundColor: ColorManager.whiteColor,
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: DetailsLayout(course),

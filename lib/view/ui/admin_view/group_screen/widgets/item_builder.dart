@@ -18,7 +18,7 @@ class GroupItemBuilder extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: ColorManager.whiteColor,
+        color: ColorManager.darkWhite,
       ),
       child: InkWell(
         onTap: () {

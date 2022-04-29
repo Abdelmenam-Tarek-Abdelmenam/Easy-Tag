@@ -1,6 +1,7 @@
 import 'package:auto_id/bloc/student_bloc/student_data_bloc.dart';
 import 'package:auto_id/view/resources/color_manager.dart';
 import 'package:auto_id/view/shared/functions/navigation_functions.dart';
+import 'package:auto_id/view/shared/widgets/powered_by_navigation_bar.dart';
 import 'package:auto_id/view/ui/student_view/student_screen/widgets/main_layout.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class StudentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: poweredBy(),
       appBar: appBar('Profile', actions: [
         Padding(
           padding: const EdgeInsets.all(10),

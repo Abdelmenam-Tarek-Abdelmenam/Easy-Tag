@@ -17,23 +17,13 @@ class UserScreenLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      width: double.infinity,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            myCourses(context),
-          ],
-        ),
-      ),
+    return SingleChildScrollView(
+      child: myCourses(context),
     );
   }
   Widget coursePhoto(logo) => Container(
     decoration: BoxDecoration(
-        border: Border.all(color: ColorManager.mainBlue, width: 1),
+        border: Border.all(color: ColorManager.lightBlue, width: 1),
         borderRadius: BorderRadius.circular(10)),
     child: ClipRRect(
       borderRadius: BorderRadius.circular(10.0),
@@ -62,6 +52,7 @@ class UserScreenLayout extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    const SizedBox(width: 5,),
                     const Text(
                       "My courses",
                       style: TextStyle(
@@ -85,7 +76,7 @@ class UserScreenLayout extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(
-                  height: 5,
+                  height: 10,
                 ),
                 Container(
                   width: 350,
@@ -162,6 +153,7 @@ class UserScreenLayout extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      const SizedBox(width: 5,),
                       const Text(
                         "My courses",
                         style: TextStyle(
@@ -188,57 +180,37 @@ class UserScreenLayout extends StatelessWidget {
                     height: 5,
                   ),
                   Container(
-                    decoration: const BoxDecoration(
-                        color: ColorManager.mainBlue,
-                        borderRadius: BorderRadius.all(Radius.circular(15))),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ListView.builder(
-                            itemBuilder: (_, index) {
-                             return Column(
-                               children: [
-                                 ListTile( title: Text(courses[index].name,style: const TextStyle(fontWeight: FontWeight.bold),),
-                                 leading: Text('${index+1}',style: const TextStyle(fontSize: 40),),
-                                 tileColor: Colors.white,
-                                   trailing: coursePhoto(courses[index].logo),
-                                   subtitle: Text(courses[index].category + ' - ' +courses[index].inPlace),
-                                   focusColor: Colors.white,
-                                   textColor: Colors.white,
-                                   //onTap: (){ navigateAndPush(context, DetailsScreen(courses[index]));},
-                                 ),
-                                 ElevatedButton(
-                                     style: ButtonStyle(
-                                         backgroundColor: MaterialStateProperty.all(ColorManager.whiteColor),
-                                         foregroundColor: MaterialStateProperty.all(ColorManager.mainBlue),
-                                     elevation: MaterialStateProperty.all(0),
-                                     fixedSize: MaterialStateProperty.all(const Size(180,20))),
-                                     onPressed: () {
-                                       navigateAndPush(context, DetailsScreen(courses[index]));
-                                     },
-                                     child: const Text("More details")),
-                                 index != courses.length-1? const Divider(color: Colors.white) : Container(),
-                               ],
-                             );
-                            },
-                          shrinkWrap: true,
-                          itemCount: courses.length > 5 ? 5 : courses.length,
-                        ),
+                    color: ColorManager.blackColor.withOpacity(0.8),
 
-                        // Padding(
-                        //   padding: const EdgeInsets.all(8.0),
-                        //   child: SmoothPageIndicator(
-                        //     controller: controller, // PageController
-                        //     count: courses.length > 5 ? 5 : courses.length,
-                        //     effect: const WormEffect(
-                        //         dotHeight: 8,
-                        //         dotWidth: 8,
-                        //         dotColor: ColorManager.whiteColor,
-                        //         activeDotColor: ColorManager
-                        //             .darkGrey), // your preferred effect
-                        //   ),
-                        // )
-                      ],
+                    child: ListView.builder(
+                        itemBuilder: (_, index) {
+                         return Column(
+                           children: [
+                             ListTile( title: Text(courses[index].name,style: const TextStyle(fontWeight: FontWeight.bold),),
+                             leading: Text('${index+1}',style: const TextStyle(fontSize: 40),),
+                             tileColor: Colors.white,
+                               trailing: coursePhoto(courses[index].logo),
+                               subtitle: Text(courses[index].category + ' - ' +courses[index].inPlace),
+                               focusColor: Colors.white,
+                               textColor: Colors.white,
+                               //onTap: (){ navigateAndPush(context, DetailsScreen(courses[index]));},
+                             ),
+                             ElevatedButton(
+                                 style: ButtonStyle(
+                                     backgroundColor: MaterialStateProperty.all(ColorManager.lightBlue),
+                                     foregroundColor: MaterialStateProperty.all(ColorManager.whiteColor),
+                                 elevation: MaterialStateProperty.all(0),
+                                 fixedSize: MaterialStateProperty.all(const Size(180,20))),
+                                 onPressed: () {
+                                   navigateAndPush(context, DetailsScreen(courses[index]));
+                                 },
+                                 child: const Text("More details")),
+                             index != courses.length-1? const Divider(color: Colors.white) : Container(),
+                           ],
+                         );
+                        },
+                      shrinkWrap: true,
+                      itemCount: courses.length > 5 ? 5 : courses.length,
                     ),
                   ),
                 ],

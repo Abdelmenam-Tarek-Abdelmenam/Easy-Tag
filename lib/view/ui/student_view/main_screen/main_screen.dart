@@ -33,7 +33,7 @@ class StudentMainScreen extends StatelessWidget {
           }
         },
         child: Scaffold(
-          appBar: appBar('EME-IH', actions: [
+          appBar: appBar('EME-IH-Borg', actions: [
             ProfileIcon(
               profileHandler: () {
                 navigateAndPush(context, const StudentScreen());
@@ -50,7 +50,7 @@ class StudentMainScreen extends StatelessWidget {
                 navigateAndPush(context, const QrReadScreen());
               }),
           bottomNavigationBar: poweredBy(),
-          backgroundColor: ColorManager.lightBlue,
+          backgroundColor: ColorManager.whiteColor,
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: SmartRefresher(
@@ -66,9 +66,7 @@ class StudentMainScreen extends StatelessWidget {
                 children: [
                   const HomeAppBar(),
                   const CategoryButtonsList(),
-                  const SizedBox(
-                    height: 15,
-                  ),
+                  const SizedBox(height: 15,),
                   Row(
                     children: const [
                       Icon(Icons.search),
@@ -119,7 +117,7 @@ class StudentMainScreen extends StatelessWidget {
                                       state.getCourses[index],
                                     ),
                                 separatorBuilder: (_, __) => const SizedBox(
-                                      height: 15,
+                                      height: 8,
                                     ),
                                 itemCount: state.courses.length);
                           }

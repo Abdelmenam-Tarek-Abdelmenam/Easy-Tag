@@ -15,31 +15,16 @@ class CourseCardDesign extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      margin: const EdgeInsets.only(right: 5),
-      height: 200,
-      decoration: BoxDecoration(
-        color: ColorManager.whiteColor,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
-            spreadRadius: 1,
-            blurRadius: 2,
-            offset: const Offset(2, 3), // changes position of shadow
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 5),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.black12,
-                borderRadius: BorderRadius.circular(30),
-              ),
+    return Card(
+      elevation: 0,
+      color: ColorManager.lightBlue.withOpacity(0.3),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -50,45 +35,45 @@ class CourseCardDesign extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                         fontSize: 22,
-                        color: ColorManager.mainBlue,
+                        color: ColorManager.blackColor,
                         fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
             ),
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    textDetails(),
-                    ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                ColorManager.mainBlue),
-                            foregroundColor: MaterialStateProperty.all(
-                                ColorManager.whiteColor)),
-                        onPressed: () {
-                          navigateAndPush(context, DetailsScreen(course));
-                        },
-                        child: const Text("More details"))
-                  ],
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      textDetails(),
+                      ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  ColorManager.lightBlue),
+                              foregroundColor: MaterialStateProperty.all(
+                                  ColorManager.whiteColor)),
+                          onPressed: () {
+                            navigateAndPush(context, DetailsScreen(course));
+                          },
+                          child: const Text("More details"))
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              Expanded(
-                child: coursePhoto(),
-              )
-            ],
-          ),
-        ],
+                const SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: coursePhoto(),
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -132,7 +117,7 @@ class CourseCardDesign extends StatelessWidget {
       );
   Widget coursePhoto() => Container(
         decoration: BoxDecoration(
-            border: Border.all(color: ColorManager.mainBlue, width: 1),
+            border: Border.all(color: ColorManager.lightBlue, width: 1),
             borderRadius: BorderRadius.circular(10)),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10.0),

@@ -80,7 +80,7 @@ class MyApp extends StatelessWidget {
         // home: const QrGeneratorScreen(),
         home: user.isEmpty
             ? OnBoardingView()
-            : user.isAdmin
+            : true //user.isAdmin
                 ? MainScreen()
                 : StudentMainScreen(),
       ),

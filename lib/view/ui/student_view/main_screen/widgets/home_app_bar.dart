@@ -1,4 +1,5 @@
 import 'package:auto_id/bloc/student_bloc/student_data_bloc.dart';
+import 'package:auto_id/view/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,7 +32,7 @@ class ProfileIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      backgroundColor: Colors.white,
+      backgroundColor: ColorManager.darkWhite,
       radius: 20,
       child: IconButton(
         iconSize: 22,
@@ -62,7 +63,7 @@ class SearchBar extends StatelessWidget {
         filled: true,
         isDense: true,
         contentPadding: EdgeInsets.fromLTRB(12, 2, 10, 10),
-        fillColor: Colors.white,
+        fillColor: ColorManager.darkWhite,
         hintText: 'Search for the course here ',
         hintStyle: TextStyle(fontSize: 12),
         enabledBorder: OutlineInputBorder(

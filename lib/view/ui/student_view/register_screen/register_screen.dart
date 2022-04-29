@@ -120,7 +120,7 @@ class RegisterScreen extends StatelessWidget {
           ),
         ),
         appBar: appBar(course.name),
-        backgroundColor: ColorManager.lightBlue,
+        backgroundColor: ColorManager.whiteColor,
         body: SingleChildScrollView(
           child: Column(
             children: [

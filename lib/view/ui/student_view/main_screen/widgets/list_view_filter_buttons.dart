@@ -34,11 +34,12 @@ class CategoryButtonsList extends StatelessWidget {
       children: [
         Row(
           children: const [
-            Icon(Icons.filter_alt_rounded),
+            Icon(Icons.filter_alt_rounded,color: ColorManager.blackColor,),
             Text('Filter',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
           ],
         ),
 
+const SizedBox(height: 5,),
         SizedBox(
           width: double.infinity,
           child: Wrap(

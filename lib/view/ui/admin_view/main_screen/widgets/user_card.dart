@@ -171,15 +171,15 @@ class UserCard extends StatelessWidget {
             height: 120,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              color: ColorManager.mainBlue,
+              color: ColorManager.lightBlue,
             ),
             child: Padding(
-              padding: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.all(20),
               child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: BorderRadius.circular(5),
                   child: Image.network(
                     "https://cdn.pixabay.com/photo/2016/04/01/10/11/avatar-1299805__340.png",
-                    color: Colors.black54,
+                    color: ColorManager.darkWhite,
                     errorBuilder: (
                       _,
                       __,

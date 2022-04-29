@@ -3,13 +3,14 @@ import '../../resources/color_manager.dart';
 
 Widget poweredBy(){
   return Container(
-      color: ColorManager.mainBlue,
+      color: ColorManager.blackColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: const [
           Padding(
             padding: EdgeInsets.symmetric(vertical: 2),
-            child: Text('by Homation',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
+            child: Text('By EasyTag',
+              style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
           ),
         ],
       ),

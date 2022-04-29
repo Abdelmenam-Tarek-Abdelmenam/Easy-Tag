@@ -32,7 +32,7 @@ class MainScreen extends StatelessWidget {
           }
         },
         child: Scaffold(
-          appBar: appBar('EME-IH - admin', actions: [
+          appBar: appBar('EME-IH-Borg - admin', actions: [
             //optionsWidget(context),
             IconButton(
                 icon: const Icon(Icons.settings),
@@ -76,9 +76,7 @@ class MainScreen extends StatelessWidget {
                 enablePullUp: false,
                 controller: _refreshController,
                 onRefresh: () {
-                  context
-                      .read<AdminDataBloc>()
-                      .add(StartAdminOperations(AdminDataBloc.admin));
+                  context.read<AdminDataBloc>().add(StartAdminOperations(AdminDataBloc.admin));
                   _refreshController.refreshCompleted();
                 },
                 child: BlocBuilder<AdminDataBloc, AdminDataStates>(
@@ -97,9 +95,7 @@ class MainScreen extends StatelessWidget {
                                     (state.status == AdminDataStatus.loading)),
                             const Divider(height: 40),
                             const HomeAppBar(),
-                            const SizedBox(
-                              height: 20,
-                            ),
+                            const SizedBox(height: 20,),
                             const Text(
                               'Groups',
                               style: TextStyle(
