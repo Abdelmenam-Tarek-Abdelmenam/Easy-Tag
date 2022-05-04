@@ -21,7 +21,6 @@ import 'model/local/pref_repository.dart';
 
 Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      //statusBarColor: ColorManager.mainBlue,
       statusBarColor: Colors.white.withOpacity(0),
       statusBarBrightness: Brightness.light,
       statusBarIconBrightness: Brightness.dark));
@@ -39,15 +38,14 @@ Future<void> main() async {
       if (user != null) {
         tempUser = AppAdmin.fromFirebaseUser(user);
       }
-
       runApp(MyApp(tempUser));
     },
     blocObserver: MyBlocObserver(),
   );
 }
 
-// ignore: must_be_immutable
 class MyApp extends StatelessWidget {
+
   final AppAdmin user;
   const MyApp(this.user, {Key? key}) : super(key: key);
   @override
@@ -77,10 +75,9 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           primaryColor: ColorManager.mainBlue,
         ),
-        // home: const QrGeneratorScreen(),
         home: user.isEmpty
             ? OnBoardingView()
-            : true //user.isAdmin
+            : user.isAdmin
                 ? MainScreen()
                 : StudentMainScreen(),
       ),

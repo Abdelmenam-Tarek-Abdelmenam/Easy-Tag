@@ -18,7 +18,7 @@ import '../../../shared/functions/navigation_functions.dart';
 import '../../../shared/widgets/toast_helper.dart';
 
 List<String> columnsNames = const [
-  "ID",
+  "UID",
   "Name",
   "Age",
   "College",
@@ -42,7 +42,8 @@ class AddGroupScreen extends StatefulWidget {
 }
 
 class _AddGroupScreenState extends State<AddGroupScreen> {
-  List<bool> neededColumns = List.generate(columnsNames.length, (index) => index < 2);
+  List<bool> neededColumns =
+      List.generate(columnsNames.length, (index) => index < 2);
 
   var formKey = GlobalKey<FormState>();
   var sheetName = TextEditingController();
@@ -68,7 +69,7 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
         }
       },
       child: Scaffold(
-        appBar: appBar('add Group'),
+          appBar: appBar('add Group'),
           floatingActionButton: BlocConsumer<AdminDataBloc, AdminDataStates>(
               buildWhen: (_, state) => state is CreateGroupState,
               listenWhen: (_, state) => state is CreateGroupState,
@@ -118,10 +119,22 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
                   enableNextPreviousButtons: false,
                   activeStepColor: ColorManager.mainBlue,
                   icons: const [
-                    Icon(Icons.table_rows_outlined,color: Colors.white,),
-                    Icon(Icons.info_outline,color: Colors.white,),
-                    Icon(Icons.add_box_outlined,color: Colors.white,),
-                    Icon(Icons.person_add_alt,color: Colors.white,),
+                    Icon(
+                      Icons.table_rows_outlined,
+                      color: Colors.white,
+                    ),
+                    Icon(
+                      Icons.info_outline,
+                      color: Colors.white,
+                    ),
+                    Icon(
+                      Icons.add_box_outlined,
+                      color: Colors.white,
+                    ),
+                    Icon(
+                      Icons.person_add_alt,
+                      color: Colors.white,
+                    ),
                   ],
                   activeStep: activeStep,
                   onStepReached: (index) {
@@ -142,11 +155,8 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Visibility(
-                          child: previousButton(),
-                      visible: activeStep!=0),
-                      Visibility(
-                          child: nextButton(),
-                          visible: activeStep!=3),
+                          child: previousButton(), visible: activeStep != 0),
+                      Visibility(child: nextButton(), visible: activeStep != 3),
                     ],
                   ),
                 ),
@@ -184,8 +194,9 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
             children: [
               const Text(" Price",
                   style: TextStyle(
-                      fontSize: 18,
-                      color: ColorManager.darkGrey,)),
+                    fontSize: 18,
+                    color: ColorManager.darkGrey,
+                  )),
               SizedBox(width: 200, child: NumericField(priceController)),
             ],
           ),
@@ -197,8 +208,9 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
             children: [
               const Text(" Number of sessions",
                   style: TextStyle(
-                      fontSize: 18,
-                      color: ColorManager.darkGrey,)),
+                    fontSize: 18,
+                    color: ColorManager.darkGrey,
+                  )),
               SizedBox(width: 150, child: NumericField(numberOfSessions)),
             ],
           ),
@@ -231,8 +243,9 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
             children: [
               const Text("Group Category",
                   style: TextStyle(
-                      fontSize: 18,
-                      color: ColorManager.darkGrey,)),
+                    fontSize: 18,
+                    color: ColorManager.darkGrey,
+                  )),
               categoryMenu(true),
             ],
           ),
@@ -244,8 +257,9 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
             children: [
               const Text("Attendance type",
                   style: TextStyle(
-                      fontSize: 18,
-                      color: ColorManager.darkGrey,)),
+                    fontSize: 18,
+                    color: ColorManager.darkGrey,
+                  )),
               categoryMenu(false),
             ],
           ),
@@ -337,8 +351,9 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
         padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(width: 1,color: ColorManager.mainBlue)),
-        width: 120,height: 40,
+            border: Border.all(width: 1, color: ColorManager.mainBlue)),
+        width: 120,
+        height: 40,
         child: DropdownButton<String>(
           underline: Container(),
           //alignment: Alignment.center,
@@ -346,9 +361,9 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
           dropdownColor: Colors.blue[100],
           value: which ? category : inPlace,
           elevation: 0,
-          items: (
-              which? ['Course', 'Event', 'Workshop', 'Competition', 'Internship']
-                  : ['in place', 'online','hybrid'])
+          items: (which
+                  ? ['Course', 'Event', 'Workshop', 'Competition', 'Internship']
+                  : ['in place', 'online', 'hybrid'])
               .map((String value) {
             return DropdownMenuItem<String>(
               value: value,
@@ -405,9 +420,10 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
                   }
                 },
                 style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.all(ColorManager.mainBlue),
-                  side: MaterialStateProperty.all(const BorderSide(color: ColorManager.mainBlue))
-                ),
+                    foregroundColor:
+                        MaterialStateProperty.all(ColorManager.mainBlue),
+                    side: MaterialStateProperty.all(
+                        const BorderSide(color: ColorManager.mainBlue))),
                 icon: photoLoading
                     ? const CircularProgressIndicator()
                     : Icon(link == null ? Icons.image : Icons.check),
@@ -440,11 +456,16 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
       },
       child: Row(
         children: const [
-          Text('Next',style: TextStyle(fontSize: 18),),
-          Icon(Icons.arrow_forward_ios_rounded,size: 30,),
+          Text(
+            'Next',
+            style: TextStyle(fontSize: 18),
+          ),
+          Icon(
+            Icons.arrow_forward_ios_rounded,
+            size: 30,
+          ),
         ],
       ),
-
     );
   }
 
@@ -458,9 +479,15 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
         }
       },
       child: Row(
-        children:  const [
-          Icon(Icons.arrow_back_ios,size: 30,),
-          Text('Back',style: TextStyle(fontSize: 18),),
+        children: const [
+          Icon(
+            Icons.arrow_back_ios,
+            size: 30,
+          ),
+          Text(
+            'Back',
+            style: TextStyle(fontSize: 18),
+          ),
         ],
       ),
     );
@@ -473,8 +500,9 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
         const Text(
           ' Start date',
           style: TextStyle(
-              fontSize: 18,
-              color: ColorManager.darkGrey,),
+            fontSize: 18,
+            color: ColorManager.darkGrey,
+          ),
         ),
         AnimatedSwitcher(
           duration: const Duration(milliseconds: 600),
@@ -483,18 +511,18 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
           },
           child: ElevatedButton(
             style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all(Colors.white),
-                backgroundColor: MaterialStateProperty.all( ColorManager.mainBlue )),
+                foregroundColor: MaterialStateProperty.all(Colors.white),
+                backgroundColor:
+                    MaterialStateProperty.all(ColorManager.mainBlue)),
             key: Key(startDate.toString()),
             onPressed: () async {
-            startDate = await _selectDate(context: context);
-            setState(() {});
-          }, child: Text(
-            DateFormat('dd-MM-yyyy').format(startDate),
-            style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold),
-          ),
+              startDate = await _selectDate(context: context);
+              setState(() {});
+            },
+            child: Text(
+              DateFormat('dd-MM-yyyy').format(startDate),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
           ),
         )
       ],

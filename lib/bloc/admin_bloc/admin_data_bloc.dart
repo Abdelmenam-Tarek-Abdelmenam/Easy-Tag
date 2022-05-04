@@ -9,6 +9,7 @@ import 'package:equatable/equatable.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 import '../../model/module/app_admin.dart';
+import '../../model/repository/fire_store.dart';
 import '../../model/repository/realtime_firebase.dart';
 import '../../model/repository/web_sevices.dart';
 
@@ -128,8 +129,13 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
               .students![event.userIndex].id,
           groupId);
       if (response) {
+        await FireStoreRepository().deleteCourse(
+            groupId,
+            state.allGroupList[state.getGroupIndex(groupId)]
+                .students![event.userIndex].id);
         state.allGroupList[state.getGroupIndex(groupId)].students!
             .removeAt(event.userIndex);
+
         emit(LoadGroupDataState.fromOldState(
             state, AdminDataStatus.loaded, event.groupIndex,
             force: false));
@@ -138,6 +144,10 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
       }
     } on DioErrors catch (err) {
       showToast(err.message, type: ToastType.error);
+      emit(DeleteUserState.fromOldState(state, AdminDataStatus.error));
+    } catch (err) {
+      print(err);
+      showToast("An error happened", type: ToastType.error);
       emit(DeleteUserState.fromOldState(state, AdminDataStatus.error));
     }
   }

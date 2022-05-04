@@ -26,6 +26,7 @@ class UserScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(student.rfId);
     return Scaffold(
       bottomNavigationBar: groupIndex == -1
           ? null
@@ -98,6 +99,10 @@ class UserScreen extends StatelessWidget {
             ),
             ...List.generate(student.getProps.length,
                 (i) => isHide(student.getProps[i] == null, fields[i])),
+            const SizedBox(
+              height: 10,
+            ),
+            attendanceWidget()
           ],
         ),
       ),
@@ -144,6 +149,101 @@ class UserScreen extends StatelessWidget {
         },
         image: url,
       ),
+    );
+  }
+
+  Widget attendanceWidget() {
+    return Column(
+      children: [
+        const Center(
+          child: Text(
+            'Registration States',
+            style: TextStyle(
+                color: ColorManager.mainBlue,
+                fontSize: 20,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        ...student.attendance.isEmpty
+            ? const [
+                SizedBox(
+                  height: 15,
+                ),
+                Icon(
+                  FontAwesomeIcons.calendar,
+                  color: Colors.grey,
+                  size: 50,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  "No records yet",
+                  style: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18),
+                )
+              ]
+            : [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.5),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(20))),
+                    child: ListView.builder(
+                        reverse: true,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                    flex: 2,
+                                    child: Text(
+                                      student.attendance.keys.toList()[index],
+                                      textDirection: TextDirection.rtl,
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15),
+                                    )),
+                                Expanded(
+                                  child: Center(
+                                    child: student.attendance.values
+                                            .toList()[index]
+                                            .toString()
+                                            .contains(':')
+                                        ? const Icon(
+                                            Icons.check,
+                                            size: 35,
+                                            color: Colors.green,
+                                          )
+                                        : const Text(
+                                            'X',
+                                            style: TextStyle(
+                                                fontSize: 22,
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        itemCount: student.attendance.length),
+                  ),
+                )
+              ]
+      ],
     );
   }
 

@@ -72,52 +72,49 @@ class RegisterScreen extends StatelessWidget {
           height: 50,
           child: student == null
               ? BlocConsumer<StudentDataBloc, StudentDataStates>(
-            listenWhen: (_, state) => state is RegisterUserState,
-            buildWhen: (_, state) => state is RegisterUserState,
-            listener: (context, state) => {
-              if (state.status == StudentDataStatus.loaded)
-                Navigator.of(context).pop()
-            },
-            builder: (context, state) => ElevatedButton(
-                style: buttonStyle,
-                child: state.status == StudentDataStatus.loading
-                    ? const CircularProgressIndicator()
-                    : const Text(
-                  "Register",
-                  style: TextStyle(fontSize: 18),
-                ),
-                onPressed: () {
-                  if (formKey.currentState!.validate()) {
-
-                    context.read<StudentDataBloc>().add(
-                        RegisterStudentEvent(
-                            generateMap(), course.id));
-                  }
-                }),
-          )
+                  listenWhen: (_, state) => state is RegisterUserState,
+                  buildWhen: (_, state) => state is RegisterUserState,
+                  listener: (context, state) => {
+                    if (state.status == StudentDataStatus.loaded)
+                      Navigator.of(context).pop()
+                  },
+                  builder: (context, state) => ElevatedButton(
+                      style: buttonStyle,
+                      child: state.status == StudentDataStatus.loading
+                          ? const CircularProgressIndicator()
+                          : const Text(
+                              "Register",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          context.read<StudentDataBloc>().add(
+                              RegisterStudentEvent(generateMap(), course.id));
+                        }
+                      }),
+                )
               : BlocConsumer<AdminDataBloc, AdminDataStates>(
-            listenWhen: (_, state) => state is EditUserState,
-            buildWhen: (_, state) => state is EditUserState,
-            listener: (context, state) => {
-              if (state.status == AdminDataStatus.loaded)
-                Navigator.of(context).pop()
-            },
-            builder: (context, state) => ElevatedButton(
-                style: buttonStyle,
-                child: state.status == AdminDataStatus.loading
-                    ? const CircularProgressIndicator()
-                    : const Text(
-                  "Edit",
-                  style: TextStyle(fontSize: 18),
+                  listenWhen: (_, state) => state is EditUserState,
+                  buildWhen: (_, state) => state is EditUserState,
+                  listener: (context, state) => {
+                    if (state.status == AdminDataStatus.loaded)
+                      Navigator.of(context).pop()
+                  },
+                  builder: (context, state) => ElevatedButton(
+                      style: buttonStyle,
+                      child: state.status == AdminDataStatus.loading
+                          ? const CircularProgressIndicator()
+                          : const Text(
+                              "Edit",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          context.read<AdminDataBloc>().add(EditStudentEvent(
+                              generateMap(), groupIndex!, courseIndex!));
+                        }
+                      }),
                 ),
-                onPressed: () {
-                  if (formKey.currentState!.validate()) {
-                    context.read<AdminDataBloc>().add(
-                        EditStudentEvent(generateMap(), groupIndex!,
-                            courseIndex!));
-                  }
-                }),
-          ),
         ),
         appBar: appBar(course.name),
         backgroundColor: ColorManager.whiteColor,
@@ -134,14 +131,16 @@ class RegisterScreen extends StatelessWidget {
                     itemCount: course.columns.length,
                     itemBuilder: (BuildContext context, int index) =>
                         Visibility(
-                          visible: course.columns[index],
-                          child: Column(
-                            children: [
-                              fields[index],
-                              const SizedBox(height: 10,)
-                            ],
-                          ),
-                        ),
+                      visible: course.columns[index],
+                      child: Column(
+                        children: [
+                          fields[index],
+                          const SizedBox(
+                            height: 10,
+                          )
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -323,9 +322,9 @@ class RegisterScreen extends StatelessWidget {
   Map<String, dynamic> generateMap() {
     Map<String, dynamic> data = {};
     if (student != null) {
-      data['ID'] = student!.id;
+      data['UID'] = student!.id;
     } else {
-      data['ID'] = StudentDataBloc.student.id;
+      data['UID'] = StudentDataBloc.student.id;
     }
     for (int i = 1; i < columnsNames.length - 1; i++) {
       if (course.columns[i]) {

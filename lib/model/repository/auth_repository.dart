@@ -83,8 +83,10 @@ class AuthRepository {
         currUser = AppAdmin.fromFirebaseUser(user);
       }
     } on firebase_auth.FirebaseAuthException catch (e) {
+      print(e);
       throw FireBaseAuthErrors.fromCode(e.code);
     } catch (e) {
+      print(e);
       throw const FireBaseAuthErrors();
     }
   }
@@ -92,7 +94,6 @@ class AuthRepository {
   static Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
     await GoogleSignIn().signOut();
-    await GoogleSignIn().disconnect();
   }
 
   Future<void> forgetPassword(String email) async {

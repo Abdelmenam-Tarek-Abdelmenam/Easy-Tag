@@ -17,6 +17,15 @@ class FireStoreRepository {
         .set({"Date": _now});
   }
 
+  Future<void> deleteCourse(String courseId, String userId) async {
+    await _firestore
+        .collection("students")
+        .doc(userId)
+        .collection("courses")
+        .doc(courseId)
+        .delete();
+  }
+
   Future<void> setUserData(Map<String, dynamic> data) async {
     await _firestore.collection("students").doc(_id).set(data);
   }

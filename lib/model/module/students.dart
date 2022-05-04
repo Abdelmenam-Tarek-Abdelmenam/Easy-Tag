@@ -19,10 +19,13 @@ class Student {
   String? phone2;
   Gender? gender;
   int? age;
+  Map<String, String> attendance = {};
 
   Student.fromJson(Map<String, dynamic> data) {
-    id = data['ID'];
-    rfId = data['RFID'].toString();
+    print(data);
+    attendance = Map<String, String>.from(data['attendance'] ?? {});
+    id = data['UID'] ?? "ID";
+    rfId = data['RFID']?.toString();
     name = data['Name'];
     age = data['Age'];
     college = data['College'];
