@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:auto_id/bloc/admin_bloc/admin_data_bloc.dart';
 import 'package:auto_id/model/module/course.dart';
 import 'package:flutter/material.dart';
@@ -88,8 +90,10 @@ class RegisterScreen extends StatelessWidget {
                             ),
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
-                          context.read<StudentDataBloc>().add(
-                              RegisterStudentEvent(generateMap(), course.id));
+                          print(generateMap());
+
+                          // context.read<StudentDataBloc>().add(
+                          //     RegisterStudentEvent(generateMap(), course.id));
                         }
                       }),
                 )
@@ -110,6 +114,8 @@ class RegisterScreen extends StatelessWidget {
                             ),
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
+                          print(generateMap());
+
                           context.read<AdminDataBloc>().add(EditStudentEvent(
                               generateMap(), groupIndex!, courseIndex!));
                         }
@@ -328,12 +334,24 @@ class RegisterScreen extends StatelessWidget {
     }
     for (int i = 1; i < columnsNames.length - 1; i++) {
       if (course.columns[i]) {
-        data[columnsNames[i]] = fieldsController[i - 1].text;
+        data[columnsNames[i]] = encodedField(fieldsController[i - 1].text, i);
       }
     }
     if (course.columns.last) {
       data['Gender'] = gender;
     }
     return data;
+  }
+
+  String encodedField(String old, int i) {
+    //  fieldsController[10]; // facebook
+    //     fieldsController[9]; //linkedin
+    //     fieldsController[5]; // cv
+    //     fieldsController[4]; // photo
+    if ([4, 5, 9, 10].contains(i - 1)) {
+      final enCodedJson = utf8.encode(old);
+      return base64.encode(enCodedJson);
+    }
+    return old;
   }
 }

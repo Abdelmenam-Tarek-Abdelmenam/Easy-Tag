@@ -45,103 +45,113 @@ class GroupScreen extends StatelessWidget {
         },
         builder: (context, state) {
           return Scaffold(
-            bottomNavigationBar: Container(
-              color: ColorManager.darkWhite,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                      height: 50,
-                      width: 50,
-                      child: InkWell(
-                        onTap: (){
-                          navigateAndPush(
-                              context,
-                              DetailsScreen(
-                                state.groupList[groupIndex],
-                                enableRegister: false,
-                              ));
-                        },
-                        child: Column(children: const [
-                         Icon(
-                            Icons.text_snippet_outlined,
-                            color: Colors.cyan,
-                           size: 30,
+              bottomNavigationBar: Container(
+                color: ColorManager.darkWhite,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: InkWell(
+                          onTap: () {
+                            navigateAndPush(
+                                context,
+                                DetailsScreen(
+                                  state.groupList[groupIndex],
+                                  enableRegister: false,
+                                ));
+                          },
+                          child: Column(
+                            children: const [
+                              Icon(
+                                Icons.text_snippet_outlined,
+                                color: Colors.cyan,
+                                size: 30,
+                              ),
+                              Text('Detail'),
+                            ],
                           ),
-                          Text('Detail'),
-                        ],),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 50,
-                      width: 50,
-                      child: InkWell(
-                        onTap: (){
-                          navigateAndPush(context,
-                              QrGeneratorScreen(state.groupList[groupIndex].id));
-                        },
-                        child: Column(children: const [
-                          Icon(
-                            Icons.qr_code_scanner,
-                            color: Colors.blue,
-                            size: 30,
+                      SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: InkWell(
+                          onTap: () {
+                            navigateAndPush(
+                                context,
+                                QrGeneratorScreen(
+                                    state.groupList[groupIndex].id));
+                          },
+                          child: Column(
+                            children: const [
+                              Icon(
+                                Icons.qr_code_scanner,
+                                color: Colors.blue,
+                                size: 30,
+                              ),
+                              Text('Code'),
+                            ],
                           ),
-                          Text('Code'),
-                        ],),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 50,
-                      width: 50,
-                      child: InkWell(
-                        onTap: (){
-                          _copyId(state.groupList[groupIndex].id);
-                        },
-                        child: Column(children: const [
-                          Icon(
-                            Icons.link,
-                            size: 30,
-                            color: Colors.green,
+                      SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: InkWell(
+                          onTap: () {
+                            _copyId(state.groupList[groupIndex].id);
+                          },
+                          child: Column(
+                            children: const [
+                              Icon(
+                                Icons.link,
+                                size: 30,
+                                color: Colors.green,
+                              ),
+                              Text('Link'),
+                            ],
                           ),
-                          Text('Link'),
-                        ],),
+                        ),
                       ),
-                    ),
-                    (state is LoadGroupDataState && state.loadingDelete)
-                        ? const CircularProgressIndicator(
-                      color: Colors.white,
-                    )
-                        : SizedBox(
-                          height: 50,
-                          width: 50,
-                          child: InkWell(
-                            onTap: (){
-                              customChoiceDialog(context,
-                                  title: "Warning",
-                                  content:
-                                  "Are you sure you want to delete The group ",
-                                  yesFunction: () {
+                      (state is LoadGroupDataState && state.loadingDelete)
+                          ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
+                          : SizedBox(
+                              height: 50,
+                              width: 50,
+                              child: InkWell(
+                                onTap: () {
+                                  customChoiceDialog(context,
+                                      title: "Warning",
+                                      content:
+                                          "Are you sure you want to delete The group ",
+                                      yesFunction: () {
                                     context
                                         .read<AdminDataBloc>()
                                         .add(DeleteGroupIndex(groupIndex));
                                   });
-                            },
-                            child: Column(children: const [
-                              Icon(
-                                Icons.delete,
-                                size: 30,
-                                color: Colors.red,
+                                },
+                                child: Column(
+                                  children: const [
+                                    Icon(
+                                      Icons.delete,
+                                      size: 30,
+                                      color: Colors.red,
+                                    ),
+                                    Text('Delete'),
+                                  ],
+                                ),
                               ),
-                              Text('Delete'),
-                            ],),
-                          ),
-                        ),
-                  ],
+                            ),
+                    ],
+                  ),
                 ),
               ),
-            ),
               appBar: appBar(state.groupList[groupIndex].name),
               backgroundColor: ColorManager.whiteColor,
               body: SmartRefresher(

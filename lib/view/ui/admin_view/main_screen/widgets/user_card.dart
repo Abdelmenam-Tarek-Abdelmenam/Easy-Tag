@@ -28,7 +28,7 @@ class UserCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
               SizedBox(
-                height: 15,
+                height: 5,
               ),
               Icon(
                 Icons.nfc_rounded,
@@ -44,6 +44,9 @@ class UserCard extends StatelessWidget {
                     color: Colors.black54,
                     fontWeight: FontWeight.bold,
                     fontSize: 18),
+              ),
+              SizedBox(
+                height: 10,
               ),
             ],
           ),

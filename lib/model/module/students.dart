@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 enum Gender {
   male,
   female,
@@ -30,19 +32,29 @@ class Student {
     age = data['Age'];
     college = data['College'];
     department = data['Department'];
-    image = _cvtImgLink(data['Image']);
-    cV = data['CV'];
+    image = _cvtImgLink(decodedField(data['Image']));
+    cV = decodedField(data['CV']);
     phone = data['Phone']?.toString();
     phone2 = data['second-Phone']?.toString();
     email = data['Email'];
-    linkedIn = data['LinkedIn'];
-    facebook = data['Facebook'];
+    linkedIn = decodedField(data['LinkedIn']);
+    facebook = decodedField(data['Facebook']);
     address = data['Address'];
     gender = {
       "male": Gender.male,
       "female": Gender.female,
       "null": null
     }[data['Gender'] ?? "null"];
+  }
+
+  String? decodedField(String? old) {
+    if (old == null) return old;
+    try {
+      final decodeBase64Json = base64.decode(old.trim());
+      return utf8.decode(decodeBase64Json);
+    } catch (err) {
+      return "wrong formatted";
+    }
   }
 
   String? _cvtImgLink(String? old) {

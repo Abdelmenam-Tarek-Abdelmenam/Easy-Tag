@@ -27,6 +27,7 @@ class UserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print(student.rfId);
+    print(student.image);
     return Scaffold(
       bottomNavigationBar: groupIndex == -1
           ? null
@@ -132,7 +133,7 @@ class UserScreen extends StatelessWidget {
     return ClipOval(
       child: FadeInImage.assetNetwork(
         fit: BoxFit.fill,
-        fadeInDuration: const Duration(milliseconds: 100),
+        fadeInDuration: const Duration(milliseconds: 1),
         width: 100,
         placeholder: 'images/avatar.png',
         imageErrorBuilder: (

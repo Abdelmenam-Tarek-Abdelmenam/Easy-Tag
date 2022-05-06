@@ -29,7 +29,9 @@ class WebServices {
     String url = _funcSheetLinkBase +
         "func=get_all_users"
             "&sheetID=${details.id}";
+    print(url);
     List<dynamic> data = await _doRequest(url);
+    print(data);
     if (data.isEmpty) {
       details.students = [];
     } else {

@@ -92,7 +92,7 @@ class CourseCardDesign extends StatelessWidget {
           Visibility(
             visible: course.offer.isNotEmpty,
             child: Text(
-              course.offer + " offer",
+              course.offer,
               style: const TextStyle(
                   fontSize: 25,
                   color: ColorManager.darkGrey,

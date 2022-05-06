@@ -76,7 +76,9 @@ class MainScreen extends StatelessWidget {
                 enablePullUp: false,
                 controller: _refreshController,
                 onRefresh: () {
-                  context.read<AdminDataBloc>().add(StartAdminOperations(AdminDataBloc.admin));
+                  context
+                      .read<AdminDataBloc>()
+                      .add(StartAdminOperations(AdminDataBloc.admin));
                   _refreshController.refreshCompleted();
                 },
                 child: BlocBuilder<AdminDataBloc, AdminDataStates>(
@@ -93,9 +95,11 @@ class MainScreen extends StatelessWidget {
                                 (state).cardStudent,
                                 myState &&
                                     (state.status == AdminDataStatus.loading)),
-                            const Divider(height: 40),
+                            const Divider(height: 10),
                             const HomeAppBar(),
-                            const SizedBox(height: 20,),
+                            const SizedBox(
+                              height: 20,
+                            ),
                             const Text(
                               'Groups',
                               style: TextStyle(
