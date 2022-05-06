@@ -41,8 +41,8 @@ class Student {
     facebook = decodedField(data['Facebook']);
     address = data['Address'];
     gender = {
-      "male": Gender.male,
-      "female": Gender.female,
+      " Gender.male": Gender.male,
+      "Gender.female": Gender.female,
       "null": null
     }[data['Gender'] ?? "null"];
   }
