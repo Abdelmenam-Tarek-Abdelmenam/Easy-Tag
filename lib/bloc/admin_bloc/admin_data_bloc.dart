@@ -1,7 +1,6 @@
 import 'package:auto_id/model/fcm/dio_helper.dart';
 import 'package:auto_id/model/module/card_student.dart';
 import 'package:auto_id/model/module/group_details.dart';
-import 'package:auto_id/model/module/students.dart';
 import 'package:auto_id/model/repository/auth_repository.dart';
 import 'package:auto_id/view/shared/widgets/toast_helper.dart';
 import 'package:bloc/bloc.dart';
@@ -146,7 +145,6 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
       showToast(err.message, type: ToastType.error);
       emit(DeleteUserState.fromOldState(state, AdminDataStatus.error));
     } catch (err) {
-      print(err);
       showToast("An error happened", type: ToastType.error);
       emit(DeleteUserState.fromOldState(state, AdminDataStatus.error));
     }
@@ -160,7 +158,8 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
       if (response) {
         CardStudent student = state.cardStudent;
         state.allGroupList[state.getGroupIndex(groupId)]
-            .students![event.studentIndex] = Student.fromJson(event.data);
+            .students![event.studentIndex]
+            .editData(event.data);
         if (student.state == StudentState.newStudent &&
             student.name == event.data['Name']) {
           student = student.copyWith(

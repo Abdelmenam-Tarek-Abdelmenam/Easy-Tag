@@ -24,7 +24,6 @@ class Student {
   Map<String, String> attendance = {};
 
   Student.fromJson(Map<String, dynamic> data) {
-    print(data);
     attendance = Map<String, String>.from(data['attendance'] ?? {});
     id = data['UID'] ?? "ID";
     rfId = data['RFID']?.toString();
@@ -33,7 +32,6 @@ class Student {
     college = data['College'];
     department = data['Department'];
     image = _cvtImgLink(_decodedField(data['Image']));
-    print("image is $image");
     cV = _decodedField(data['CV']);
     phone = data['Phone']?.toString();
     phone2 = data['second-Phone']?.toString();
@@ -46,7 +44,27 @@ class Student {
       "Gender.female": Gender.female,
       "null": null
     }[data['Gender'] ?? "null"];
-    print("gender is $gender");
+  }
+
+  void editData(Map<String, dynamic> data) {
+    name = data['Name'] ?? name;
+    age = data['Age'] ?? age;
+    college = data['College'] ?? college;
+    department = data['Department'] ?? department;
+    image = _cvtImgLink(_decodedField(data['Image'])) ?? image;
+    cV = _decodedField(data['CV']) ?? cV;
+    phone = data['Phone']?.toString() ?? phone;
+    phone2 = data['second-Phone']?.toString() ?? phone2;
+    email = data['Email'] ?? email;
+    linkedIn = _decodedField(data['LinkedIn']) ?? linkedIn;
+    facebook = _decodedField(data['Facebook']) ?? facebook;
+    address = data['Address'] ?? address;
+    gender = {
+          "Gender.male": Gender.male,
+          "Gender.female": Gender.female,
+          "null": null
+        }[data['Gender'] ?? "null"] ??
+        gender;
   }
 
   String? _decodedField(String? old) {
@@ -60,7 +78,6 @@ class Student {
   }
 
   String? _cvtImgLink(String? old) {
-    print(old);
     if ((old ?? '').contains("=view&id=")) {
       return old;
     } else if ((old ?? "").contains("drive.google.com")) {

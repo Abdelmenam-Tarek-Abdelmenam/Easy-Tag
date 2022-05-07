@@ -90,10 +90,8 @@ class RegisterScreen extends StatelessWidget {
                             ),
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
-                          print(generateMap());
-
-                          // context.read<StudentDataBloc>().add(
-                          //     RegisterStudentEvent(generateMap(), course.id));
+                          context.read<StudentDataBloc>().add(
+                              RegisterStudentEvent(generateMap(), course.id));
                         }
                       }),
                 )
@@ -114,8 +112,6 @@ class RegisterScreen extends StatelessWidget {
                             ),
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
-                          print(generateMap());
-
                           context.read<AdminDataBloc>().add(EditStudentEvent(
                               generateMap(), groupIndex!, courseIndex!));
                         }

@@ -29,9 +29,7 @@ class WebServices {
     String url = _funcSheetLinkBase +
         "func=get_all_users"
             "&sheetID=${details.id}";
-    print(url);
     List<dynamic> data = await _doRequest(url);
-    print(data);
     if (data.isEmpty) {
       details.students = [];
     } else {
@@ -45,9 +43,7 @@ class WebServices {
         "func=delete_user" +
         "&sheetID=$sheetId" +
         "&uid=$userId";
-    print(url);
     String response = await _doRequest(url);
-    print(response);
     return response.trim() == "removed";
   }
 
@@ -66,7 +62,6 @@ class WebServices {
         "func=get_user" +
         "&sheetID=$sheetId" +
         "&uid=$userId";
-    print(url);
     userData = await _doRequest(url);
 
     return Student.fromJson(userData);

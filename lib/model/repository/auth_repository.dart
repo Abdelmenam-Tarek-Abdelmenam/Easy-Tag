@@ -83,10 +83,8 @@ class AuthRepository {
         currUser = AppAdmin.fromFirebaseUser(user);
       }
     } on firebase_auth.FirebaseAuthException catch (e) {
-      print(e);
       throw FireBaseAuthErrors.fromCode(e.code);
     } catch (e) {
-      print(e);
       throw const FireBaseAuthErrors();
     }
   }
