@@ -33,6 +33,7 @@ class Student {
     college = data['College'];
     department = data['Department'];
     image = _cvtImgLink(_decodedField(data['Image']));
+    print("image is $image");
     cV = _decodedField(data['CV']);
     phone = data['Phone']?.toString();
     phone2 = data['second-Phone']?.toString();
@@ -59,7 +60,10 @@ class Student {
   }
 
   String? _cvtImgLink(String? old) {
-    if ((old ?? "").contains("drive.google.com")) {
+    print(old);
+    if ((old ?? '').contains("=view&id=")) {
+      return old;
+    } else if ((old ?? "").contains("drive.google.com")) {
       try {
         return "https://drive.google.com/uc?export=view&id=" +
             old!.split('/')[5];

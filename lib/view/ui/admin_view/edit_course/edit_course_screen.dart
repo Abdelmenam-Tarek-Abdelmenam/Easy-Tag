@@ -48,7 +48,7 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
 
   late String? link = widget.course.logo;
 
-  late DateTime startDate = DateFormat('dd-MM-yyyy').parse(widget.course.date);
+  late DateTime startDate = widget.course.getDate;
 
   @override
   Widget build(BuildContext context) {

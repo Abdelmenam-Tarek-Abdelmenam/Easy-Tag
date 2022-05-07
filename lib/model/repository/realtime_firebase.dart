@@ -23,9 +23,11 @@ class AdminDataRepository {
   Future<List<GroupDetails>> getGroupsData() async {
     DataSnapshot snap = await _dataBase.child(_id).child("groups").get();
     if (snap.exists) {
-      return snap.children
+      List<GroupDetails> groups = snap.children
           .map((e) => GroupDetails(json: e.value, id: e.key.toString()))
           .toList();
+      groups.sort((a, b) => b.getDate.difference(a.getDate).inDays);
+      return groups;
     } else {
       return [];
     }
