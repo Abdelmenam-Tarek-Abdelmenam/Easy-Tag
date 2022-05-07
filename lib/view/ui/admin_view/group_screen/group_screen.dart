@@ -167,7 +167,8 @@ class GroupScreen extends StatelessWidget {
                     physics: const BouncingScrollPhysics(),
                     children: [
                       const SizedBox(height: 10),
-                      SearchBar(state.groupList[groupIndex].getStudentsNames),
+                      SearchBar(state.groupList[groupIndex].students ?? [],
+                          groupIndex),
                       Container(
                           padding: const EdgeInsets.all(15),
                           child: (state is LoadGroupDataState) &&

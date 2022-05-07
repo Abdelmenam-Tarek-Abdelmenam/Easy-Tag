@@ -32,28 +32,29 @@ class Student {
     age = data['Age'];
     college = data['College'];
     department = data['Department'];
-    image = _cvtImgLink(decodedField(data['Image']));
-    cV = decodedField(data['CV']);
+    image = _cvtImgLink(_decodedField(data['Image']));
+    cV = _decodedField(data['CV']);
     phone = data['Phone']?.toString();
     phone2 = data['second-Phone']?.toString();
     email = data['Email'];
-    linkedIn = decodedField(data['LinkedIn']);
-    facebook = decodedField(data['Facebook']);
+    linkedIn = _decodedField(data['LinkedIn']);
+    facebook = _decodedField(data['Facebook']);
     address = data['Address'];
     gender = {
-      " Gender.male": Gender.male,
+      "Gender.male": Gender.male,
       "Gender.female": Gender.female,
       "null": null
     }[data['Gender'] ?? "null"];
+    print("gender is $gender");
   }
 
-  String? decodedField(String? old) {
+  String? _decodedField(String? old) {
     if (old == null) return old;
     try {
       final decodeBase64Json = base64.decode(old.trim());
       return utf8.decode(decodeBase64Json);
     } catch (err) {
-      return "wrong formatted";
+      return "Wrong formatted";
     }
   }
 

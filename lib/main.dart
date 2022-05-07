@@ -17,8 +17,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc/auth_bloc/auth_status_bloc.dart';
 
-import 'model/local/pref_repository.dart';
-
 Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.white.withOpacity(0),
@@ -31,7 +29,7 @@ Future<void> main() async {
       await Firebase.initializeApp();
       FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
       FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-      await PreferenceRepository.initializePreference();
+      // await PreferenceRepository.initializePreference();
       User? user = FirebaseAuth.instance.currentUser;
       FireNotificationHelper();
       AppAdmin tempUser = AppAdmin.empty;
@@ -45,7 +43,6 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-
   final AppAdmin user;
   const MyApp(this.user, {Key? key}) : super(key: key);
   @override

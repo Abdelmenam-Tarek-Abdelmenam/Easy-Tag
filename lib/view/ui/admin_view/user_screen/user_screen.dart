@@ -26,8 +26,7 @@ class UserScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(student.rfId);
-    print(student.image);
+    print(student.gender);
     return Scaffold(
       bottomNavigationBar: groupIndex == -1
           ? null
