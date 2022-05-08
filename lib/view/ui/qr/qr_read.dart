@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:auto_id/bloc/student_bloc/student_data_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_qr_reader/flutter_qr_reader.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:r_scan/r_scan.dart';
 import '../../resources/color_manager.dart';
 import '../../shared/widgets/app_bar.dart';
 import '../../shared/widgets/toast_helper.dart';
@@ -35,8 +35,11 @@ class _QrReadScreenState extends State<QrReadScreen> {
                         .pickImage(source: ImageSource.gallery);
                     if (xFile != null) {
                       // File file = File(xFile.path);
-                      final String data =
-                          await FlutterQrReader.imgScan(xFile.path);
+                      final result = await RScan.scanImagePath(xFile.path);
+                      String data = result.message ?? "";
+                      print("data $data");
+                      // final String data =
+                      //     await FlutterQrReader.imgScan(xFile.path);
                       if (data.isEmpty) {
                         showToast("No Data Detected");
                       } else {
@@ -113,11 +116,11 @@ class _QrReadScreenState extends State<QrReadScreen> {
 
   void _encodedData(String roomsString) async {
     controller.pauseCamera();
-    final decodeBase64Json = base64.decode(roomsString);
-    final decodeZipJson = gzip.decode(decodeBase64Json);
-    String originalJson = utf8.decode(decodeZipJson);
 
     try {
+      final decodeBase64Json = base64.decode(roomsString);
+      final decodeZipJson = gzip.decode(decodeBase64Json);
+      String originalJson = utf8.decode(decodeZipJson);
       Map<String, dynamic> qrData = json.decode(originalJson);
 
       StudentDataBloc bloc = context.read<StudentDataBloc>();

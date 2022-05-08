@@ -65,7 +65,8 @@ dependencies:
   # QR Images
   qr_flutter: ^4.0.0
   qr_code_scanner: ^0.7.0
-  flutter_qr_reader: ^1.0.5
+  r_scan: ^0.1.6+1
+#  flutter_qr_reader: ^1.0.5
   # for operation
   intl: ^0.17.0
   permission_handler: ^8.2.4
