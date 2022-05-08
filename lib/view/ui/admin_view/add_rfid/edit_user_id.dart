@@ -73,7 +73,7 @@ class _AddUserIdScreenState extends State<AddUserIdScreen> {
           ),
         ),
         appBar: appBar(widget.id),
-        backgroundColor: ColorManager.lightBlue,
+        backgroundColor: ColorManager.whiteColor,
         body: Padding(
           padding: const EdgeInsets.all(10),
           child: Column(

@@ -182,7 +182,7 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
   Future<void> _editStudentRfIdHandler(AddRfIdEvent event, Emitter emit) async {
     try {
       emit(EditUserState.fromOldState(state, AdminDataStatus.loading));
-      event.data['ID'] = event.studentId;
+      event.data['UID'] = event.studentId;
       bool response =
           await _webServices.editStudentData(event.groupId, event.data);
       if (response) {

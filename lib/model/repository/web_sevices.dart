@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:auto_id/model/module/group_details.dart';
 import 'package:dio/dio.dart';
 
@@ -82,9 +80,7 @@ class WebServices {
             "&sheetID=$groupId"
             "&userData=$dataToSent"
             "&uid=${dataToSent['UID']}";
-    log(url);
     String response = await _doRequest(url);
-    log(response);
     return response.trim() == "Done,0";
   }
 

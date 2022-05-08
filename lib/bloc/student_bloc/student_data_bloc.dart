@@ -99,7 +99,7 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
 
   void _filterUsingType(ChangeFilterTypeEvent event, Emitter emit) {
     if (event.newType == "ALL") {
-      state.courses == state.allCourses.map((e) => e.id);
+      state.courses = state.allCourses.map((e) => e.id).toList();
     } else {
       state.courses = state.allCourses
           .where((element) => element.category == event.newType)
@@ -121,7 +121,6 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
         courses: state.courses,
         all: state.allCourses,
         ids: state.registeredId));
-
     if (state.category == "ALL") {
       state.courses = state.allCourses
           .where((element) =>

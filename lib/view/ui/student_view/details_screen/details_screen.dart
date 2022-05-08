@@ -46,17 +46,21 @@ class DetailsScreen extends StatelessWidget {
                           groupIndex: -1));
                 }
               },
-              builder: (_, state) =>
-                  button(myCourse ? "Show my data" : "Register", () {
-                if (myCourse) {
-                  context
-                      .read<StudentDataBloc>()
-                      .add(WantUserDataEvent(course.id));
-                } else {
-                  navigateAndPush(
-                      context, RegisterScreen(course, null, null, null));
-                }
-              }, loading: state.status == StudentDataStatus.loading),
+              builder: (_, state) => button(
+                  myCourse ? "Show my data" : "Register",
+                  myCourse
+                      ? () {
+                          context
+                              .read<StudentDataBloc>()
+                              .add(WantUserDataEvent(course.id));
+                        }
+                      : (course.getDate.difference(DateTime.now()).isNegative
+                          ? null
+                          : () {
+                              navigateAndPush(context,
+                                  RegisterScreen(course, null, null, null));
+                            }),
+                  loading: state.status == StudentDataStatus.loading),
             )
           : button("Edit Course",
               () => navigateAndPush(context, EditCourseScreen(course))),
@@ -68,29 +72,14 @@ class DetailsScreen extends StatelessWidget {
       ),
     );
   }
-  //  enableRegister
-  //             ? myCourse
-  //             ? "Show my data"
-  //             : "Register"
-  //             :
 
-  // if (enableRegister) {
-  //           if (myCourse) {
-  //             context
-  //                 .read<StudentDataBloc>()
-  //                 .add(WantUserDataEvent(course.id));
-  //           } else {
-  //             navigateAndPush(
-  //                 context, RegisterScreen(course, null, null, null));
-  //           }
-  //         } else {
-  //           navigateAndPush(context, EditCourseScreen(course));
-  //         }
-  Widget button(String text, Function() onPressed, {bool loading = false}) =>
+  Widget button(String text, Function()? onPressed, {bool loading = false}) =>
       ElevatedButton(
           style: ButtonStyle(
               fixedSize: MaterialStateProperty.all(const Size(40, 50)),
-              backgroundColor: MaterialStateProperty.all(ColorManager.mainBlue),
+              backgroundColor: MaterialStateProperty.all(onPressed == null
+                  ? ColorManager.lightGrey
+                  : ColorManager.mainBlue),
               foregroundColor:
                   MaterialStateProperty.all(ColorManager.whiteColor)),
           child: loading

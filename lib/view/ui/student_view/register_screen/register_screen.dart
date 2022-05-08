@@ -78,7 +78,9 @@ class RegisterScreen extends StatelessWidget {
                   buildWhen: (_, state) => state is RegisterUserState,
                   listener: (context, state) => {
                     if (state.status == StudentDataStatus.loaded)
-                      Navigator.of(context).pop()
+                      Navigator.of(context)
+                        ..pop()
+                        ..pop()
                   },
                   builder: (context, state) => ElevatedButton(
                       style: buttonStyle,

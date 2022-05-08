@@ -20,56 +20,44 @@ class CategoryButtonsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> filterTitles = List<Widget>.generate(categories.length, (int index) =>
-        BlocBuilder<StudentDataBloc, StudentDataStates>(
-      builder: (_, StudentDataStates state) => CategoryButton(
-          category: categories[index],
-          isSelected: categories[index] == state.category,
-          onPressed: () {
-            context.read<StudentDataBloc>().add(ChangeFilterTypeEvent(categories[index]));
-          }),
-    ));
+    List<Widget> filterTitles = List<Widget>.generate(
+        categories.length,
+        (int index) => BlocBuilder<StudentDataBloc, StudentDataStates>(
+              builder: (_, StudentDataStates state) => CategoryButton(
+                  category: categories[index],
+                  isSelected: categories[index] == state.category,
+                  onPressed: () {
+                    context
+                        .read<StudentDataBloc>()
+                        .add(ChangeFilterTypeEvent(categories[index]));
+                  }),
+            ));
 
     return Column(
       children: [
         Row(
           children: const [
-            Icon(Icons.filter_alt_rounded,color: ColorManager.blackColor,),
-            Text('Filter',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+            Icon(
+              Icons.filter_alt_rounded,
+              color: ColorManager.blackColor,
+            ),
+            Text(
+              'Filter',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
           ],
         ),
-
-const SizedBox(height: 5,),
+        const SizedBox(
+          height: 5,
+        ),
         SizedBox(
           width: double.infinity,
           child: Wrap(
-            runSpacing: 0,
-            spacing: 0,
-            alignment: WrapAlignment.start,
-            children: filterTitles
-          ),
+              runSpacing: 0,
+              spacing: 0,
+              alignment: WrapAlignment.start,
+              children: filterTitles),
         ),
-
-        // SizedBox(
-        //   height: 70,
-        //   child: ListView.builder(
-        //     scrollDirection: Axis.horizontal,
-        //     itemCount: categories.length,
-        //     physics: const BouncingScrollPhysics(),
-        //     itemBuilder: (BuildContext context, int index) {
-        //       return BlocBuilder<StudentDataBloc, StudentDataStates>(
-        //         builder: (_, StudentDataStates state) => CategoryButton(
-        //             category: categories[index],
-        //             isSelected: categories[index] == state.category,
-        //             onPressed: () {
-        //               context
-        //                   .read<StudentDataBloc>()
-        //                   .add(ChangeFilterTypeEvent(categories[index]));
-        //             }),
-        //       );
-        //     },
-        //   ),
-        // ),
       ],
     );
   }
@@ -82,7 +70,7 @@ class CategoryButton extends StatelessWidget {
 
   const CategoryButton({
     Key? key,
-    this.category = "All",
+    this.category = "ALL",
     required this.isSelected,
     required this.onPressed,
   }) : super(key: key);
@@ -95,18 +83,22 @@ class CategoryButton extends StatelessWidget {
         onTap: onPressed,
         child: Container(
             //margin: const EdgeInsets.only(left: 20),
-          padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 10),
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
-              color: isSelected ? ColorManager.mainBlue : ColorManager.whiteColor,
+              color:
+                  isSelected ? ColorManager.mainBlue : ColorManager.whiteColor,
             ),
             child: Text(
               category,
               textAlign: TextAlign.center,
-              style:  TextStyle(
-                  fontSize: 14, color: isSelected ? ColorManager.whiteColor: ColorManager.mainBlue  , fontWeight: FontWeight.bold),
-            )
-        ),
+              style: TextStyle(
+                  fontSize: 14,
+                  color: isSelected
+                      ? ColorManager.whiteColor
+                      : ColorManager.mainBlue,
+                  fontWeight: FontWeight.bold),
+            )),
       ),
     );
   }

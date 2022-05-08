@@ -1,6 +1,7 @@
 // ignore: must_be_immutable
 import 'package:auto_id/model/module/course.dart';
 import 'package:auto_id/view/resources/color_manager.dart';
+import 'package:auto_id/view/ui/admin_view/add_group/widgets/view_photo.dart';
 import 'package:flutter/material.dart';
 import '../../../../shared/functions/navigation_functions.dart';
 import '../../details_screen/details_screen.dart';
@@ -68,7 +69,7 @@ class CourseCardDesign extends StatelessWidget {
                   width: 5,
                 ),
                 Expanded(
-                  child: coursePhoto(),
+                  child: coursePhoto(context),
                 )
               ],
             ),
@@ -115,26 +116,31 @@ class CourseCardDesign extends StatelessWidget {
           ),
         ],
       );
-  Widget coursePhoto() => Container(
+  Widget coursePhoto(BuildContext context) => Container(
         decoration: BoxDecoration(
             border: Border.all(color: ColorManager.lightBlue, width: 1),
             borderRadius: BorderRadius.circular(10)),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10.0),
-          child: Hero(
-            tag: course.id,
-            child: Image.network(course.logo,
-                height: 130,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(
-                      height: 130,
-                      color: ColorManager.lightGrey,
-                      child: const Icon(
-                        Icons.image_not_supported_outlined,
-                        size: 50,
-                        color: ColorManager.darkGrey,
-                      ),
-                    )),
+          child: InkWell(
+            onTap: () {
+              navigateAndPush(context, ViewPhoto(course.logo));
+            },
+            child: Hero(
+              tag: course.id,
+              child: Image.network(course.logo,
+                  height: 130,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => Container(
+                        height: 130,
+                        color: ColorManager.lightGrey,
+                        child: const Icon(
+                          Icons.image_not_supported_outlined,
+                          size: 50,
+                          color: ColorManager.darkGrey,
+                        ),
+                      )),
+            ),
           ),
         ),
       );
