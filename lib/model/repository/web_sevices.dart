@@ -10,8 +10,6 @@ const _funcSheetLinkBase = _base +
 class WebServices {
   final Dio _dio = Dio();
 
-  // String get _id => AdminDataBloc.admin.id;
-
   Future<String> createSpreadSheet(
       String groupName, List<String> emails, List<String> titles) async {
     String url = _funcSheetLinkBase +

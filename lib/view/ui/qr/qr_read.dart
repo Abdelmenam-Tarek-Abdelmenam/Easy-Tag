@@ -37,9 +37,6 @@ class _QrReadScreenState extends State<QrReadScreen> {
                       // File file = File(xFile.path);
                       final result = await RScan.scanImagePath(xFile.path);
                       String data = result.message ?? "";
-                      print("data $data");
-                      // final String data =
-                      //     await FlutterQrReader.imgScan(xFile.path);
                       if (data.isEmpty) {
                         showToast("No Data Detected");
                       } else {
@@ -134,8 +131,10 @@ class _QrReadScreenState extends State<QrReadScreen> {
           bloc.add(QrReadEvent(qrData['id']));
         } else {
           showToast("QR expired");
+          controller.resumeCamera();
         }
       } else {
+        controller.resumeCamera();
         showToast("You are not registered in this course");
       }
     } catch (err) {

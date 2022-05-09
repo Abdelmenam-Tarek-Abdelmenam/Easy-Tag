@@ -2,13 +2,13 @@ import 'package:auto_id/bloc/admin_bloc/admin_data_bloc.dart';
 import 'package:auto_id/bloc/student_bloc/student_data_bloc.dart';
 import 'package:auto_id/model/fcm/fire_message.dart';
 import 'package:auto_id/view/ui/admin_view/main_screen/main_screen.dart';
+import 'package:auto_id/view/ui/start_screen/signing/login_screen.dart';
 import 'package:auto_id/view/ui/student_view/main_screen/main_screen.dart';
 
 import 'bloc/my_bloc_observer.dart';
 import 'model/module/app_admin.dart';
 import 'package:auto_id/view/resources/color_manager.dart';
 import 'package:auto_id/view/resources/string_manager.dart';
-import 'package:auto_id/view/ui/start_screen/onboarding/on_boarding_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
           primaryColor: ColorManager.mainBlue,
         ),
         home: user.isEmpty
-            ? OnBoardingView()
+            ? const LoginView()
             : user.isAdmin
                 ? MainScreen()
                 : StudentMainScreen(),

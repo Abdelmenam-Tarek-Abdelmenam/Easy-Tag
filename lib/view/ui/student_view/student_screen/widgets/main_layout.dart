@@ -1,4 +1,3 @@
-
 import 'package:auto_id/bloc/student_bloc/student_data_bloc.dart';
 import 'package:auto_id/view/resources/color_manager.dart';
 import 'package:flutter/material.dart';
@@ -13,34 +12,33 @@ import '../../main_screen/widgets/loading_card.dart';
 class UserScreenLayout extends StatelessWidget {
   const UserScreenLayout({Key? key}) : super(key: key);
 
-  //final PageController controller = PageController();
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: myCourses(context),
     );
   }
+
   Widget coursePhoto(logo) => Container(
-    decoration: BoxDecoration(
-        border: Border.all(color: ColorManager.lightBlue, width: 1),
-        borderRadius: BorderRadius.circular(10)),
-    child: ClipRRect(
-      borderRadius: BorderRadius.circular(10.0),
-      child: Image.network(logo,
-          height: 100,
-          fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) => Container(
-            height: 100,
-            color: ColorManager.lightGrey,
-            child: const Icon(
-              Icons.image_not_supported_outlined,
-              size: 50,
-              color: ColorManager.darkGrey,
-            ),
-          )),
-    ),
-  );
+        decoration: BoxDecoration(
+            border: Border.all(color: ColorManager.lightBlue, width: 1),
+            borderRadius: BorderRadius.circular(10)),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10.0),
+          child: Image.network(logo,
+              height: 100,
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) => Container(
+                    height: 100,
+                    color: ColorManager.lightGrey,
+                    child: const Icon(
+                      Icons.image_not_supported_outlined,
+                      size: 50,
+                      color: ColorManager.darkGrey,
+                    ),
+                  )),
+        ),
+      );
 
   Widget myCourses(BuildContext context) {
     return BlocBuilder<StudentDataBloc, StudentDataStates>(
@@ -52,7 +50,9 @@ class UserScreenLayout extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const SizedBox(width: 5,),
+                    const SizedBox(
+                      width: 5,
+                    ),
                     const Text(
                       "My courses",
                       style: TextStyle(
@@ -153,7 +153,9 @@ class UserScreenLayout extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const SizedBox(width: 5,),
+                      const SizedBox(
+                        width: 5,
+                      ),
                       const Text(
                         "My courses",
                         style: TextStyle(
@@ -181,34 +183,49 @@ class UserScreenLayout extends StatelessWidget {
                   ),
                   Container(
                     color: ColorManager.blackColor.withOpacity(0.8),
-
                     child: ListView.builder(
-                        itemBuilder: (_, index) {
-                         return Column(
-                           children: [
-                             ListTile( title: Text(courses[index].name,style: const TextStyle(fontWeight: FontWeight.bold),),
-                             leading: Text('${index+1}',style: const TextStyle(fontSize: 40),),
-                             tileColor: Colors.white,
-                               trailing: coursePhoto(courses[index].logo),
-                               subtitle: Text(courses[index].category + ' - ' +courses[index].inPlace),
-                               focusColor: Colors.white,
-                               textColor: Colors.white,
-                               //onTap: (){ navigateAndPush(context, DetailsScreen(courses[index]));},
-                             ),
-                             ElevatedButton(
-                                 style: ButtonStyle(
-                                     backgroundColor: MaterialStateProperty.all(ColorManager.lightBlue),
-                                     foregroundColor: MaterialStateProperty.all(ColorManager.whiteColor),
-                                 elevation: MaterialStateProperty.all(0),
-                                 fixedSize: MaterialStateProperty.all(const Size(180,20))),
-                                 onPressed: () {
-                                   navigateAndPush(context, DetailsScreen(courses[index]));
-                                 },
-                                 child: const Text("More details")),
-                             index != courses.length-1? const Divider(color: Colors.white) : Container(),
-                           ],
-                         );
-                        },
+                      itemBuilder: (_, index) {
+                        return Column(
+                          children: [
+                            ListTile(
+                              title: Text(
+                                courses[index].name,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              leading: Text(
+                                '${index + 1}',
+                                style: const TextStyle(fontSize: 40),
+                              ),
+                              tileColor: Colors.white,
+                              trailing: coursePhoto(courses[index].logo),
+                              subtitle: Text(courses[index].category +
+                                  ' - ' +
+                                  courses[index].inPlace),
+                              focusColor: Colors.white,
+                              textColor: Colors.white,
+                              //onTap: (){ navigateAndPush(context, DetailsScreen(courses[index]));},
+                            ),
+                            ElevatedButton(
+                                style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                        ColorManager.lightBlue),
+                                    foregroundColor: MaterialStateProperty.all(
+                                        ColorManager.whiteColor),
+                                    elevation: MaterialStateProperty.all(0),
+                                    fixedSize: MaterialStateProperty.all(
+                                        const Size(180, 20))),
+                                onPressed: () {
+                                  navigateAndPush(
+                                      context, DetailsScreen(courses[index]));
+                                },
+                                child: const Text("More details")),
+                            index != courses.length - 1
+                                ? const Divider(color: Colors.white)
+                                : Container(),
+                          ],
+                        );
+                      },
                       shrinkWrap: true,
                       itemCount: courses.length > 5 ? 5 : courses.length,
                     ),
@@ -218,6 +235,5 @@ class UserScreenLayout extends StatelessWidget {
             }
           }
         });
-
   }
 }

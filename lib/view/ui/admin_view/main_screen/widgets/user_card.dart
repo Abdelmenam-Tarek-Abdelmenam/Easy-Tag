@@ -92,7 +92,7 @@ class UserCard extends StatelessWidget {
                     ]),
               ),
             ),
-            cardImage(),
+            cardImage(cardStudent.imgUrl),
           ],
         ));
       default:
@@ -107,6 +107,8 @@ class UserCard extends StatelessWidget {
                     children: [
                       Text(
                         cardStudent.name.toString(),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                             color: ColorManager.mainBlue,
                             fontSize: 20,
@@ -160,46 +162,43 @@ class UserCard extends StatelessWidget {
                     ]),
               ),
             ),
-            cardImage(),
+            cardImage(cardStudent.imgUrl),
           ],
         ));
     }
   }
 
-  Widget cardImage() => Expanded(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            width: 50,
-            height: 120,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: ColorManager.lightBlue,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: Image.network(
-                    "https://cdn.pixabay.com/photo/2016/04/01/10/11/avatar-1299805__340.png",
-                    color: ColorManager.darkWhite,
-                    errorBuilder: (
-                      _,
-                      __,
-                      ___,
-                    ) {
-                      return SizedBox(
-                        width: 50,
-                        child: Center(
-                          child: Image.asset(
-                            'images/avatar.png',
-                            color: Colors.white,
-                          ),
+  Widget cardImage(String url) => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          height: 120,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: ColorManager.lightBlue,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(5),
+                child: Image.network(
+                  url,
+                  fit: BoxFit.fitHeight,
+                  errorBuilder: (
+                    _,
+                    __,
+                    ___,
+                  ) {
+                    return SizedBox(
+                      width: 50,
+                      child: Center(
+                        child: Image.asset(
+                          'images/avatar.png',
+                          color: Colors.white,
                         ),
-                      );
-                    },
-                  )),
-            ),
+                      ),
+                    );
+                  },
+                )),
           ),
         ),
       );

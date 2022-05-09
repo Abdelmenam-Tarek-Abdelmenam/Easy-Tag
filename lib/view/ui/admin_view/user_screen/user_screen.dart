@@ -26,8 +26,6 @@ class UserScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(student.rfId);
-    print(student.image);
     return Scaffold(
       bottomNavigationBar: groupIndex == -1
           ? null
@@ -90,10 +88,10 @@ class UserScreen extends StatelessWidget {
         child: ListView(
           children: [
             CircleAvatar(
-              radius: 60,
+              radius: 55,
               foregroundColor: Colors.white,
               backgroundColor: ColorManager.mainBlue,
-              child: userPhoto(),
+              child: userPhoto(url: student.image),
             ),
             const SizedBox(
               height: 20,
@@ -135,6 +133,7 @@ class UserScreen extends StatelessWidget {
         fit: BoxFit.fill,
         fadeInDuration: const Duration(milliseconds: 1),
         width: 100,
+        height: 100,
         placeholder: 'images/avatar.png',
         imageErrorBuilder: (
           context,
@@ -194,7 +193,7 @@ class UserScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.5),
+                        color: ColorManager.lightGrey.withOpacity(0.3),
                         borderRadius:
                             const BorderRadius.all(Radius.circular(20))),
                     child: ListView.builder(
@@ -206,6 +205,17 @@ class UserScreen extends StatelessWidget {
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               children: [
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  "${student.attendance.length - index}",
+                                  textDirection: TextDirection.rtl,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15),
+                                ),
                                 Expanded(
                                     flex: 2,
                                     child: Text(

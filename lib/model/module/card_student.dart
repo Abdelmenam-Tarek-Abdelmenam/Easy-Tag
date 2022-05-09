@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 
 const String randomPhoto =
@@ -24,16 +26,19 @@ class CardStudent extends Equatable {
     name = rowData['name'].toString();
     id = rowData['lastID'].toString();
     state = _mapState(rowData['state'].toString());
-    imgUrl = _cvtImgLink(rowData['imgUrl'].toString());
+    imgUrl = _cvtImgLink(_decodedField(rowData['imgUrl'].toString())) ?? "";
     groupIndex = rowData['groupIndex'];
   }
 
   CardStudent edit(String key, dynamic value) {
+    print(key);
+    print(value);
     switch (key) {
       case "groupIndex":
         return copyWith(groupIndex: value);
       case "imgUrl":
-        return copyWith(imgUrl: _cvtImgLink(value));
+        return copyWith(
+            imgUrl: _cvtImgLink(_decodedField(value.toString()) ?? ""));
       case "state":
         return copyWith(state: _mapState(value.toString()));
       case "name":
@@ -64,18 +69,35 @@ class CardStudent extends Equatable {
     return {
       "Done": StudentState.registered,
       "problem": StudentState.notRegistered,
-      "new": StudentState.newStudent,
+      "Not Found": StudentState.newStudent,
       "NULL": StudentState.empty
     }[text]!;
   }
 
-  String _cvtImgLink(String old) {
-    if (old.contains("drive.google.com")) {
-      return "https://drive.google.com/uc?export=view&id=" + old.split('/')[5];
-    } else if (!old.contains("http")) {
-      old = randomPhoto;
+  String? _cvtImgLink(String? old) {
+    if ((old ?? '').contains("=view&id=")) {
+      return old;
+    } else if ((old ?? "").contains("drive.google.com")) {
+      try {
+        return "https://drive.google.com/uc?export=view&id=" +
+            old!.split('/')[5];
+      } catch (err) {
+        return null;
+      }
+    } else if (!(old ?? "").contains("http")) {
+      old = null;
     }
     return old;
+  }
+
+  String? _decodedField(String? old) {
+    if (old == null) return old;
+    try {
+      final decodeBase64Json = base64.decode(old.trim());
+      return utf8.decode(decodeBase64Json);
+    } catch (err) {
+      return "Wrong formatted";
+    }
   }
 
   @override

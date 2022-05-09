@@ -147,18 +147,18 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
 
   Future<void> _registerUserFromQr(QrReadEvent event, Emitter emit) async {
     try {
-      QrReadState.fromOldState(state, StudentDataStatus.loading);
+      emit(QrReadState.fromOldState(state, StudentDataStatus.loading));
       bool register = await _webServices.registerStudentAttendance(
           student.id, event.groupId);
       if (register) {
-        QrReadState.fromOldState(state, StudentDataStatus.loaded);
+        emit(QrReadState.fromOldState(state, StudentDataStatus.loaded));
         showToast("Registered Successfully", type: ToastType.success);
       } else {
-        QrReadState.fromOldState(state, StudentDataStatus.error);
+        emit(QrReadState.fromOldState(state, StudentDataStatus.error));
         showToast("Can't register this Student now");
       }
     } on DioErrors catch (err) {
-      QrReadState.fromOldState(state, StudentDataStatus.error);
+      emit(QrReadState.fromOldState(state, StudentDataStatus.error));
       showToast(err.message, type: ToastType.error);
     }
   }
