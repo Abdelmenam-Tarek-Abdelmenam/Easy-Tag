@@ -82,10 +82,10 @@ class _MainLoginWidgetState extends State<MainLoginWidget> {
             ),
           ),
           BlocListener<AuthStatusBloc, AuthStates>(
-            listener: (context, state) {
+            listener: (context, state) async {
               if (state.status == AuthStatus.successLogIn) {
                 AppAdmin appAdmin = context.read<AuthStatusBloc>().user;
-                if (appAdmin.isAdmin) {
+                if (await appAdmin.isAdmin) {
                   context
                       .read<AdminDataBloc>()
                       .add(StartAdminOperations(appAdmin));
@@ -110,7 +110,6 @@ class _MainLoginWidgetState extends State<MainLoginWidget> {
   Widget logInWidget() => ClipPath(
         clipper: LoginClipper(),
         child: Container(
-
           height: 500,
           width: MediaQuery.of(context).size.width * 0.92,
           color: Colors.white,

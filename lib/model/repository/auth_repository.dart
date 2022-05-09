@@ -1,3 +1,4 @@
+import 'package:auto_id/model/local/pref_repository.dart';
 import 'package:auto_id/view/shared/widgets/toast_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:firebase_auth/firebase_auth.dart';
@@ -92,6 +93,7 @@ class AuthRepository {
   static Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
     await GoogleSignIn().signOut();
+    PreferenceRepository.clearAllSharedPreference();
   }
 
   Future<void> forgetPassword(String email) async {

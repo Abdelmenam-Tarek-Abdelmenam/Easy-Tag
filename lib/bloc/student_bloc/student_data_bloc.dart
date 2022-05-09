@@ -32,9 +32,9 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
 
   Future<void> _startGettingDataHandler(
       StartStudentOperations event, Emitter emit) async {
-    if (!event.user.isEmpty || !event.user.isAdmin) {
+    if (!event.user.isEmpty || !(await event.user.isAdmin)) {
       emit(GetInitialDataState(status: StudentDataStatus.loading));
-      if (!event.user.isEmpty && !event.user.isAdmin) {
+      if (!event.user.isEmpty && !(await event.user.isAdmin)) {
         student = event.user;
         await _readInitialFireData(emit);
       }

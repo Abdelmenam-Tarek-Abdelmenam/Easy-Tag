@@ -5,6 +5,7 @@ import 'package:auto_id/view/ui/admin_view/main_screen/main_screen.dart';
 import 'package:auto_id/view/ui/start_screen/signing/login_screen.dart';
 import 'package:auto_id/view/ui/student_view/main_screen/main_screen.dart';
 
+import 'model/local/pref_repository.dart';
 import 'model/module/app_admin.dart';
 import 'package:auto_id/view/resources/color_manager.dart';
 import 'package:auto_id/view/resources/string_manager.dart';
@@ -28,14 +29,16 @@ Future<void> main() async {
       await Firebase.initializeApp();
       FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
       FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-      // await PreferenceRepository.initializePreference();
+      await PreferenceRepository.initializePreference();
       User? user = FirebaseAuth.instance.currentUser;
       FireNotificationHelper();
       AppAdmin tempUser = AppAdmin.empty;
+      bool isAdmin = false;
       if (user != null) {
         tempUser = AppAdmin.fromFirebaseUser(user);
+        isAdmin = await tempUser.isAdmin;
       }
-      runApp(MyApp(tempUser));
+      runApp(MyApp(tempUser, isAdmin));
     },
     // blocObserver: MyBlocObserver(),
   );
@@ -43,7 +46,8 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   final AppAdmin user;
-  const MyApp(this.user, {Key? key}) : super(key: key);
+  final bool isAdmin;
+  const MyApp(this.user, this.isAdmin, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -73,7 +77,7 @@ class MyApp extends StatelessWidget {
         ),
         home: user.isEmpty
             ? const LoginView()
-            : user.isAdmin
+            : isAdmin
                 ? MainScreen()
                 : StudentMainScreen(),
       ),
