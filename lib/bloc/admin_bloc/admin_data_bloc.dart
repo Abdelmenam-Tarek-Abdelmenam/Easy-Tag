@@ -49,7 +49,6 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
   void _cardDataChangesHandler(CardDataChangedEvents event, Emitter emit) {
     emit(GetInitialDataState.fromOldState(state, AdminDataStatus.loading));
     state.cardStudent = state.cardStudent.edit(event.key, event.value);
-    print(state.cardStudent);
     emit(GetInitialDataState.fromOldState(state, AdminDataStatus.loaded));
   }
 

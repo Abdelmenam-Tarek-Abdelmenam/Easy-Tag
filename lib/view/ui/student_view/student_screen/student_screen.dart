@@ -88,12 +88,13 @@ class StudentScreen extends StatelessWidget {
 
   Widget userPhoto({String? url}) {
     url = url ??
-        "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHw%3D";
+        "https://cdn.pixabay.com/photo/2016/04/01/10/11/avatar-1299805__340.png";
     return ClipOval(
       child: FadeInImage.assetNetwork(
         fit: BoxFit.fill,
         fadeInDuration: const Duration(milliseconds: 100),
         width: 100,
+        height: 100,
         placeholder: 'images/avatar.png',
         imageErrorBuilder: (
           context,

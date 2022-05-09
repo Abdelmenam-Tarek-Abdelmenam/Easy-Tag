@@ -14,7 +14,7 @@ class MainConfigWidget extends StatelessWidget {
   final TextEditingController wifiNameController = TextEditingController();
   final TextEditingController passController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  bool hidePassword = false;
+  bool hidePassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -148,19 +148,25 @@ class MainConfigWidget extends StatelessWidget {
                                                 AdminDataStatus.loading)
                                         ? const CircularProgressIndicator()
                                         : Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                          children: const [
-                                            Text(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: const [
+                                              Text(
                                                 "Send",
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.w600,
                                                     fontSize: 18,
                                                     color: Colors.white),
                                               ),
-                                            SizedBox(width: 8,),
-                                            Icon(Icons.send,color: Colors.white,),
-                                          ],
-                                        ), () {
+                                              SizedBox(
+                                                width: 8,
+                                              ),
+                                              Icon(
+                                                Icons.send,
+                                                color: Colors.white,
+                                              ),
+                                            ],
+                                          ), () {
                                   if (formKey.currentState!.validate()) {
                                     context.read<AdminDataBloc>().add(
                                         SendConfigurationEvent(

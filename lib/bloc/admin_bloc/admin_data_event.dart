@@ -15,7 +15,7 @@ class StartAdminOperations extends AdminDataEvent {
 
 class CardDataChangedEvents extends AdminDataEvent {
   final String key;
-  final String value;
+  final dynamic value;
 
   const CardDataChangedEvents(this.key, this.value);
 

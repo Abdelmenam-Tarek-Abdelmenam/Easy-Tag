@@ -188,14 +188,10 @@ class UserCard extends StatelessWidget {
                     __,
                     ___,
                   ) {
-                    return SizedBox(
-                      width: 50,
-                      child: Center(
-                        child: Image.asset(
-                          'images/avatar.png',
-                          color: Colors.white,
-                        ),
-                      ),
+                    return Image.asset(
+                      'images/avatar.png',
+                      width: 100,
+                      color: Colors.white,
                     );
                   },
                 )),

@@ -5,7 +5,6 @@ import 'package:auto_id/view/ui/admin_view/main_screen/main_screen.dart';
 import 'package:auto_id/view/ui/start_screen/signing/login_screen.dart';
 import 'package:auto_id/view/ui/student_view/main_screen/main_screen.dart';
 
-import 'bloc/my_bloc_observer.dart';
 import 'model/module/app_admin.dart';
 import 'package:auto_id/view/resources/color_manager.dart';
 import 'package:auto_id/view/resources/string_manager.dart';
@@ -38,7 +37,7 @@ Future<void> main() async {
       }
       runApp(MyApp(tempUser));
     },
-    blocObserver: MyBlocObserver(),
+    // blocObserver: MyBlocObserver(),
   );
 }
 

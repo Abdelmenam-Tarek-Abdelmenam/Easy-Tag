@@ -49,6 +49,7 @@ dependencies:
   shared_preferences: ^2.0.13
   #widget
   curved_navigation_bar: ^1.0.1
+  syncfusion_flutter_sliders: ^20.1.52
   flutter_typeahead: ^3.2.4
   fluttertoast: ^8.0.8
   pull_to_refresh: ^2.0.0

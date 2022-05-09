@@ -127,10 +127,10 @@ class UserScreen extends StatelessWidget {
 
   Widget userPhoto({String? url}) {
     url = url ??
-        "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHw%3D";
+        "https://cdn.pixabay.com/photo/2016/04/01/10/11/avatar-1299805__340.png";
     return ClipOval(
       child: FadeInImage.assetNetwork(
-        fit: BoxFit.fill,
+        fit: BoxFit.cover,
         fadeInDuration: const Duration(milliseconds: 1),
         width: 100,
         height: 100,

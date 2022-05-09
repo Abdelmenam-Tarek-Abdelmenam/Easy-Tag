@@ -31,14 +31,13 @@ class CardStudent extends Equatable {
   }
 
   CardStudent edit(String key, dynamic value) {
-    print(key);
-    print(value);
     switch (key) {
       case "groupIndex":
         return copyWith(groupIndex: value);
       case "imgUrl":
         return copyWith(
-            imgUrl: _cvtImgLink(_decodedField(value.toString()) ?? ""));
+            imgUrl:
+                _cvtImgLink(_decodedField(value.toString())) ?? randomPhoto);
       case "state":
         return copyWith(state: _mapState(value.toString()));
       case "name":

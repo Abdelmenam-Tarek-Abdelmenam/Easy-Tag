@@ -38,8 +38,9 @@ class GroupScreen extends StatelessWidget {
             if (state.status == AdminDataStatus.error) {
               Navigator.of(context).pop();
             }
-          } else if (state is GetInitialDataState &&
-              state.status == AdminDataStatus.loaded) {
+          } else if ((state is GetInitialDataState) &&
+              state.status == AdminDataStatus.loaded &&
+              Navigator.of(context).canPop()) {
             Navigator.of(context).pop();
           }
         },

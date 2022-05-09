@@ -84,8 +84,8 @@ class WebServices {
 
   Future<bool> sendCredentialsToEsp(
       String wifiName, String wifiPassword) async {
-    wifiPassword = _prepareCredentials(wifiPassword);
-    wifiName = _prepareCredentials(wifiName);
+    // wifiPassword = (wifiPassword);
+    // wifiName = (wifiName);
 
     String url = 'http://192.168.4.1/data?user=jCekYTPEXmMD7XJWlJdPPtrLBED2'
         '&wifi=$wifiName&pass=$wifiPassword';
@@ -112,19 +112,19 @@ class WebServices {
     }
   }
 
-  String _prepareCredentials(String old) {
-    Map<String, dynamic> changedData = {
-      "#": "%23",
-      "&": "%26",
-      "\$": "%24",
-      " ": "%20"
-    };
-    changedData.forEach((key, value) {
-      old = old.replaceAll(key, value);
-    });
-
-    return old;
-  }
+  // String _prepareCredentials(String old) {
+  //   Map<String, dynamic> changedData = {
+  //     "#": "%23",
+  //     "&": "%26",
+  //     "\$": "%24",
+  //     " ": "%20"
+  //   };
+  //   changedData.forEach((key, value) {
+  //     old = old.replaceAll(key, value);
+  //   });
+  //
+  //   return old;
+  // }
 }
 
 class DioErrors implements Exception {

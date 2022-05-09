@@ -50,7 +50,7 @@ class NotificationSender {
     };
 
     return await dio.post(path, data: data).catchError((err) {
-      print(err.type);
+      // print(err.type);
     });
   }
 }

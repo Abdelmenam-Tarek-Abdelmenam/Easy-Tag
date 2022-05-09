@@ -126,7 +126,7 @@ class _QrReadScreenState extends State<QrReadScreen> {
             .difference(DateTime.parse(qrData['date']))
             .inMinutes
             .abs();
-        if (qrTimeDifference < 5) {
+        if (qrTimeDifference < qrData['expire']) {
           showToast("Register you in server please wait", type: ToastType.info);
           bloc.add(QrReadEvent(qrData['id']));
         } else {
