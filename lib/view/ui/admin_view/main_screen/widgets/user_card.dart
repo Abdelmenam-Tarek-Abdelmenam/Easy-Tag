@@ -118,7 +118,7 @@ class UserCard extends StatelessWidget {
                         height: 10,
                       ),
                       Text(
-                          'Group : ${context.read<AdminDataBloc>().state.groupList[cardStudent.groupIndex!].name}'),
+                          'Group : ${context.read<AdminDataBloc>().state.allGroupList[cardStudent.groupIndex!].name}'),
                       const SizedBox(
                         height: 5,
                       ),

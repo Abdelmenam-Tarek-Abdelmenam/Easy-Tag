@@ -270,7 +270,9 @@ class UserScreen extends StatelessWidget {
       title: "Age", body: student.age.toString(), icon: Icons.numbers);
 
   Widget collegeField() => FieldDesign(
-      title: "College", body: student.college!, icon: FontAwesomeIcons.school);
+      title: "College",
+      body: student.college ?? "",
+      icon: FontAwesomeIcons.school);
 
   Widget departmentField() => FieldDesign(
       title: "Department",
