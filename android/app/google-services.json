@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "545450328331",
+    "firebase_url": "https://id-presence-default-rtdb.firebaseio.com",
     "project_id": "id-presence",
     "storage_bucket": "id-presence.appspot.com"
   },
@@ -18,6 +19,43 @@
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.auto_id",
+            "certificate_hash": "90cde396df0839d19a774eedcdb4c9a39b91258c"
+          }
+        },
+        {
+          "client_id": "545450328331-kp1nhjd6j4pn3enab0o225664g8h1bvn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBi7JP1hhmPNCJM3UujPcinrvSx53pGark"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "545450328331-kp1nhjd6j4pn3enab0o225664g8h1bvn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:545450328331:android:8706f3af52ef2c0ed8220e",
+        "android_client_info": {
+          "package_name": "eme.borg.easy_tag"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "545450328331-r2bs3r6ponsr4mc8uh6mrft9gggm2q7u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "eme.borg.easy_tag",
             "certificate_hash": "90cde396df0839d19a774eedcdb4c9a39b91258c"
           }
         },

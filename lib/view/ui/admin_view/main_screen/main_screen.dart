@@ -1,7 +1,6 @@
 import 'package:auto_id/view/shared/widgets/powered_by_navigation_bar.dart';
 import 'package:auto_id/view/ui/admin_view/main_screen/widgets/group_list.dart';
 import 'package:auto_id/view/ui/admin_view/main_screen/widgets/user_card.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';

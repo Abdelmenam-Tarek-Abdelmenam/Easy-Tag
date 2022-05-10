@@ -1,4 +1,4 @@
-package com.example.auto_id
+package eme.borg.easy_tag
 
 import io.flutter.embedding.android.FlutterActivity
 

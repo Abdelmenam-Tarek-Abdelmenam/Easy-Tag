@@ -48,7 +48,7 @@ class Student {
 
   void editData(Map<String, dynamic> data) {
     name = data['Name'] ?? name;
-    age = data['Age'] ?? age;
+    age = int.parse(data['Age'] ?? age.toString());
     college = data['College'] ?? college;
     department = data['Department'] ?? department;
     image = _cvtImgLink(_decodedField(data['Image'])) ?? image;
