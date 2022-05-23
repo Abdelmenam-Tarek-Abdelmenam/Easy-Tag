@@ -2,6 +2,8 @@ import 'package:auto_id/bloc/student_bloc/student_data_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
+import '../module/exam_question.dart';
+
 class FireStoreRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -26,16 +28,6 @@ class FireStoreRepository {
         .delete();
   }
 
-  Future<void> setUserData(Map<String, dynamic> data) async {
-    await _firestore.collection("students").doc(_id).set(data);
-  }
-
-  Future<Map<String, dynamic>> getUserData(Map<String, dynamic> data) async {
-    DocumentSnapshot<Map<String, dynamic>> data =
-        await _firestore.collection("students").doc(_id).get();
-    return data.data() ?? {};
-  }
-
   Future<List<String>> readAllCourses() async {
     QuerySnapshot<Map<String, dynamic>> data = await _firestore
         .collection("students")
@@ -44,4 +36,23 @@ class FireStoreRepository {
         .get();
     return data.docs.map((e) => e.id).toList();
   }
+
+  List<Question> getAllQuestions(String courseId) {
+    return [];
+  }
+
+  void setAllQuestions(String courseId, Map<String, dynamic> question) {}
+
+  void setExamSolved(String courseId, String examId, int grade) {}
+
+  // Future<void> setUserData(Map<String, dynamic> data) async {
+  //   await _firestore.collection("students").doc(_id).set(data);
+  // }
+
+  // Future<Map<String, dynamic>> getUserData(Map<String, dynamic> data) async {
+  //   DocumentSnapshot<Map<String, dynamic>> data =
+  //       await _firestore.collection("students").doc(_id).get();
+  //   return data.data() ?? {};
+  // }
+
 }

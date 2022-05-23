@@ -3,6 +3,7 @@ import 'package:auto_id/model/repository/fire_store.dart';
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../../model/module/course.dart';
 import '../../model/module/students.dart';
@@ -36,6 +37,9 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
       emit(GetInitialDataState(status: StudentDataStatus.loading));
       if (!event.user.isEmpty && !(await event.user.isAdmin)) {
         student = event.user;
+        if (FirebaseMessaging.instance.isSupported()) {
+          FirebaseMessaging.instance.subscribeToTopic(student.id);
+        }
         await _readInitialFireData(emit);
       }
     }

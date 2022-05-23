@@ -8,14 +8,15 @@ class FireNotificationHelper {
   static Future<String?> token() => FirebaseMessaging.instance.getToken();
 
   FireNotificationHelper() {
-    FirebaseMessaging.instance.subscribeToTopic("all").catchError((err) {});
-
-    FirebaseMessaging.onMessage
-        .listen(_firebaseMessagingForegroundHandler)
-        .onError((err) {});
-    FirebaseMessaging.onMessageOpenedApp
-        .listen(_firebaseMessagingBackgroundHandler)
-        .onError((err) {});
+    if (FirebaseMessaging.instance.isSupported()) {
+      FirebaseMessaging.instance.subscribeToTopic("all").catchError((err) {});
+      FirebaseMessaging.onMessage
+          .listen(_firebaseMessagingForegroundHandler)
+          .onError((err) {});
+      FirebaseMessaging.onMessageOpenedApp
+          .listen(_firebaseMessagingBackgroundHandler)
+          .onError((err) {});
+    }
 
     //   FirebaseMessaging.onBackgroundMessage(
     //       _firebaseMessagingBackgroundCloseHandler);
@@ -32,7 +33,11 @@ class FireNotificationHelper {
   }
 
   Future<void> redirectPage(Map<String, dynamic> data) async {
-    showToast("New courses Refresh please", type: ToastType.info);
+    if (data.isEmpty) {
+      showToast("New courses Refresh please", type: ToastType.info);
+    } else {
+      showToast(data['text'], type: ToastType.info);
+    }
   }
 }
 

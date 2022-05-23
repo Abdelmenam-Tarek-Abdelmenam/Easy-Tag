@@ -78,26 +78,26 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
                   Navigator.of(context).pop();
                 }
               },
-              builder: (context, state) =>
-                  state.status == AdminDataStatus.loading
-                      ? const CircularProgressIndicator()
-                      : FloatingActionButton(
-                          backgroundColor: ColorManager.darkGrey,
-                          child: const Icon(
-                            Icons.check,
-                            size: 40,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              Map<String, dynamic> data = createMap();
+              builder: (context, state) => state is CreateGroupState &&
+                      state.status == AdminDataStatus.loading
+                  ? const CircularProgressIndicator()
+                  : FloatingActionButton(
+                      backgroundColor: ColorManager.darkGrey,
+                      child: const Icon(
+                        Icons.check,
+                        size: 40,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          Map<String, dynamic> data = createMap();
 
-                              context
-                                  .read<AdminDataBloc>()
-                                  .add(CreateGroupEvent(data));
-                            }
-                          },
-                        )),
+                          context
+                              .read<AdminDataBloc>()
+                              .add(CreateGroupEvent(data));
+                        }
+                      },
+                    )),
           body: Padding(
             padding: const EdgeInsets.all(10),
             child: ListView(

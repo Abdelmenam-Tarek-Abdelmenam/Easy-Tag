@@ -6,6 +6,7 @@ import 'package:auto_id/view/shared/widgets/toast_helper.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../../model/module/app_admin.dart';
 import '../../model/repository/fire_store.dart';
@@ -42,6 +43,9 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
       emit(GetInitialDataState(
           status: AdminDataStatus.loading, cardStudent: CardStudent.empty));
       admin = event.currentUser;
+      if (FirebaseMessaging.instance.isSupported()) {
+        FirebaseMessaging.instance.subscribeToTopic(admin.id);
+      }
       await _readInitialFireData(emit);
     }
   }
