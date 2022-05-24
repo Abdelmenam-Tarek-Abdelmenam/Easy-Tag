@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../model/module/exam_question.dart';
 import '../../model/repository/fire_store.dart';
 
 part 'admin_exam_event.dart';

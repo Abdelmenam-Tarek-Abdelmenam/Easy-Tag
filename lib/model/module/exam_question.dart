@@ -5,8 +5,15 @@ abstract class Question {
   String? img;
   String? hint;
   List<String> answers;
+  int duration;
 
-  Question({required this.text, required this.answers, this.hint, this.img});
+  Question({
+    required this.text,
+    required this.answers,
+    required this.duration,
+    this.hint,
+    this.img,
+  });
 
   bool get checkQuestion;
   Map<String, dynamic> get toJson;
@@ -20,15 +27,22 @@ class TrueFalseQuestion extends Question {
   TrueFalseQuestion(
       {required String text,
       required List<String> answers,
+      required int duration,
       String? img,
       String? hint,
       required this.rightAnswer})
-      : super(text: text, img: img, hint: hint, answers: answers);
+      : super(
+            text: text,
+            img: img,
+            hint: hint,
+            answers: answers,
+            duration: duration);
 
   factory TrueFalseQuestion.fromJson(Map<String, dynamic> json) {
     return TrueFalseQuestion(
         text: json['text'],
         img: json['img'],
+        duration: json['duration'],
         hint: json['hint'],
         rightAnswer: json['rightAnswer'],
         answers: json['answers']);
@@ -40,6 +54,7 @@ class TrueFalseQuestion extends Question {
         "text": text,
         "img": img,
         "hint": hint,
+        "duration": duration,
         "rightAnswer": rightAnswer,
         "answers": answers
       };
@@ -58,10 +73,16 @@ class OneChoiceQuestion extends Question {
   OneChoiceQuestion(
       {required String text,
       required List<String> answers,
+      required int duration,
       String? img,
       String? hint,
       required this.rightAnswer})
-      : super(text: text, img: img, answers: answers, hint: hint);
+      : super(
+            text: text,
+            img: img,
+            answers: answers,
+            duration: duration,
+            hint: hint);
 
   @override
   bool get checkQuestion => rightAnswer == chosenAnswer;
@@ -69,6 +90,7 @@ class OneChoiceQuestion extends Question {
   factory OneChoiceQuestion.fromJson(Map<String, dynamic> json) {
     return OneChoiceQuestion(
         text: json['text'],
+        duration: json['duration'],
         img: json['img'],
         hint: json['hint'],
         rightAnswer: json['rightAnswer'],
@@ -78,6 +100,7 @@ class OneChoiceQuestion extends Question {
   @override
   Map<String, dynamic> get toJson => {
         "type": "OneChoiceQuestion",
+        "duration": duration,
         "text": text,
         "img": img,
         "hint": hint,
@@ -96,10 +119,16 @@ class MultipleChoiceQuestion extends Question {
   MultipleChoiceQuestion(
       {required String text,
       required List<String> answers,
+      required int duration,
       String? img,
       String? hint,
       required this.rightAnswer})
-      : super(text: text, img: img, answers: answers, hint: hint);
+      : super(
+            text: text,
+            img: img,
+            answers: answers,
+            duration: duration,
+            hint: hint);
 
   @override
   bool get checkQuestion {
@@ -114,6 +143,7 @@ class MultipleChoiceQuestion extends Question {
         text: json['text'],
         img: json['img'],
         hint: json['hint'],
+        duration: json['duration'],
         rightAnswer: json['rightAnswer'],
         answers: json['answers']);
   }
@@ -124,6 +154,7 @@ class MultipleChoiceQuestion extends Question {
         "text": text,
         "img": img,
         "hint": hint,
+        "duration": duration,
         "rightAnswer": rightAnswer,
         "answers": answers
       };

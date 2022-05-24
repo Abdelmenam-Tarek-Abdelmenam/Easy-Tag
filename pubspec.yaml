@@ -69,6 +69,7 @@ dependencies:
   # for operation
   intl: ^0.17.0
   permission_handler: ^8.2.4
+  flutter_windowmanager: ^0.2.0
 
 dev_dependencies:
   flutter_test:
