@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-abstract class Question {
+abstract class Question2 {
   String text;
   String? img;
   String? hint;
   List<String> answers;
   int duration;
 
-  Question({
+  Question2({
     required this.text,
     required this.answers,
     required this.duration,
@@ -20,7 +20,7 @@ abstract class Question {
   Widget get questionWidget;
 }
 
-class TrueFalseQuestion extends Question {
+class TrueFalseQuestion extends Question2 {
   bool rightAnswer;
   bool? chosenAnswer;
 
@@ -66,7 +66,7 @@ class TrueFalseQuestion extends Question {
   Widget get questionWidget => Container();
 }
 
-class OneChoiceQuestion extends Question {
+class OneChoiceQuestion extends Question2 {
   int rightAnswer;
   int? chosenAnswer;
 
@@ -112,7 +112,7 @@ class OneChoiceQuestion extends Question {
   Widget get questionWidget => Container();
 }
 
-class MultipleChoiceQuestion extends Question {
+class MultipleChoiceQuestion extends Question2 {
   List<int> rightAnswer;
   List<int>? chosenAnswer;
 
@@ -162,3 +162,55 @@ class MultipleChoiceQuestion extends Question {
   @override
   Widget get questionWidget => Container();
 }
+
+// ---------------------------------------------------------------
+class Quiz {
+  Quiz({
+    required this.questions,
+    required this.timeout,
+    required this.title,
+    required this.id});
+
+  final List<Question> questions;
+  final Duration timeout;
+  final String title;
+  final String id;
+}
+
+class Question {
+  Question({
+    required this.questionText,
+    required this.image,
+    required this.answers,
+    required this.correctAnswer,
+  });
+
+  final String questionText;
+  final String image;
+  final List<String> answers;
+  final int correctAnswer;
+}
+  //  -------------------------  example of data
+Quiz testQuiz = Quiz(
+  id: 'fe586wf68gf6d6p6l4gr46gs',
+  questions: questions,
+  timeout: const Duration(minutes: 3),
+  title: 'IOT First Session Quiz',);
+
+List<Question> questions = [
+  Question(
+      questionText: 'What is the most easy programming language ?',
+      image: 'none',
+      answers: ['C++', 'Python', 'Java', 'Kotlin'],
+      correctAnswer: 1),
+  Question(
+      questionText: 'Flutter Apps Use ..... programming language.',
+      image: 'https://assets-global.website-files.com/5e469aaf314e562ff1146d3f/5feb0f4527cc9976b63dd88c_big-bang-mockup.png',
+      answers: ['C#', 'Ruby', 'Java', 'Dart', 'Other'],
+      correctAnswer: 3),
+  Question(
+      questionText: 'Solve this equation : \n2+2 = ....',
+      image: 'none',
+      answers: ['4', '6', '8', '10'],
+      correctAnswer: 0),
+] ;

@@ -113,9 +113,12 @@ class StudentMainScreen extends StatelessWidget {
                             }
                             return ListView.separated(
                                 physics: const BouncingScrollPhysics(),
-                                itemBuilder: (_, index) => CourseCardDesign(
-                                      state.getCourses[index],
-                                    ),
+                                itemBuilder: (_, index) {
+                                  print(" ++++++  course number : " + index.toString());
+                                  return CourseCardDesign(
+                                    state.getCourses[index],
+                                  );
+                                },
                                 separatorBuilder: (_, __) => const SizedBox(
                                       height: 8,
                                     ),

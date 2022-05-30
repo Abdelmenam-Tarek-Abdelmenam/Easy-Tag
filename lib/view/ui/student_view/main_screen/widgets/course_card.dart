@@ -116,6 +116,7 @@ class CourseCardDesign extends StatelessWidget {
           ),
         ],
       );
+
   Widget coursePhoto(BuildContext context) => Container(
         decoration: BoxDecoration(
             border: Border.all(color: ColorManager.lightBlue, width: 1),
@@ -126,12 +127,15 @@ class CourseCardDesign extends StatelessWidget {
             onTap: () {
               navigateAndPush(context, ViewPhoto(course.logo));
             },
-            child: Hero(
-              tag: course.id,
-              child: Image.network(course.logo,
-                  height: 130,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => Container(
+            child: Builder(
+              builder: (ctx){
+                print("**********"  + course.id + "name "+course.name);
+                return Hero(
+                  tag: course.id,
+                  child: Image.network(course.logo,
+                      height: 130,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => Container(
                         height: 130,
                         color: ColorManager.lightGrey,
                         child: const Icon(
@@ -140,6 +144,8 @@ class CourseCardDesign extends StatelessWidget {
                           color: ColorManager.darkGrey,
                         ),
                       )),
+                );
+              },
             ),
           ),
         ),

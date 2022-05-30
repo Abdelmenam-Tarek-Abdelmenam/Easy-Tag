@@ -15,8 +15,7 @@ import '../device_config/esp_config.dart';
 import 'widgets/home_app_bar.dart';
 
 class MainScreen extends StatelessWidget {
-  final RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  final RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   MainScreen({Key? key}) : super(key: key);
 

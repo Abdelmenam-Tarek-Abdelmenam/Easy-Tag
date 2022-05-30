@@ -5,8 +5,11 @@ import 'package:auto_id/view/shared/functions/navigation_functions.dart';
 import 'package:auto_id/view/shared/widgets/powered_by_navigation_bar.dart';
 import 'package:auto_id/view/ui/student_view/student_screen/widgets/main_layout.dart';
 import 'package:flutter/material.dart';
+import '../../../../model/module/exam_question.dart';
 import '../../../shared/widgets/app_bar.dart';
 import '../../start_screen/signing/login_screen.dart';
+import '../solve_questions/exam_intro_screen.dart';
+import '../solve_questions/solve_question_screen.dart';
 
 class StudentScreen extends StatelessWidget {
   const StudentScreen({Key? key}) : super(key: key);
@@ -79,7 +82,16 @@ class StudentScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const UserScreenLayout()
+            const UserScreenLayout(),
+            const SizedBox(height: 20,),
+            const Text('Quizes',style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold),),
+            ElevatedButton(
+                onPressed: (){
+                  navigateAndPush(context, IntroExamScreen(testQuiz));
+                },
+                child: const Text('Take the quiz'))
           ],
         ),
       ),

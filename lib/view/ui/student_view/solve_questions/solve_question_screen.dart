@@ -15,13 +15,13 @@ class SolveQuestionsScreen extends StatefulWidget {
 
 class _SolveQuestionsScreenState extends State<SolveQuestionsScreen> {
   @override
-  Future<void> initState() async {
+  initState() {
     FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
     super.initState();
   }
 
   @override
-  Future<void> dispose() async {
+  dispose() {
     super.dispose();
     FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
   }
