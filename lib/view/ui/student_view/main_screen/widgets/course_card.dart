@@ -127,25 +127,20 @@ class CourseCardDesign extends StatelessWidget {
             onTap: () {
               navigateAndPush(context, ViewPhoto(course.logo));
             },
-            child: Builder(
-              builder: (ctx){
-                print("**********"  + course.id + "name "+course.name);
-                return Hero(
-                  tag: course.id,
-                  child: Image.network(course.logo,
-                      height: 130,
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => Container(
-                        height: 130,
-                        color: ColorManager.lightGrey,
-                        child: const Icon(
-                          Icons.image_not_supported_outlined,
-                          size: 50,
-                          color: ColorManager.darkGrey,
-                        ),
-                      )),
-                );
-              },
+            child: Hero(
+              tag: course.id,
+              child: Image.network(course.logo,
+                  height: 130,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => Container(
+                    height: 130,
+                    color: ColorManager.lightGrey,
+                    child: const Icon(
+                      Icons.image_not_supported_outlined,
+                      size: 50,
+                      color: ColorManager.darkGrey,
+                    ),
+                  )),
             ),
           ),
         ),

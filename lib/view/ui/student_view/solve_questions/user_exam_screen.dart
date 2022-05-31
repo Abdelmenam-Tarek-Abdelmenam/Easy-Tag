@@ -3,7 +3,9 @@ import 'package:auto_id/view/ui/student_view/solve_questions/result_screen.dart'
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../model/module/exam_question.dart';
+import '../../../resources/color_manager.dart';
 import '../../../shared/functions/navigation_functions.dart';
+import '../../../shared/widgets/dialog.dart';
 
 class UserExamScreen extends StatefulWidget {
   const UserExamScreen(this.quiz,{Key? key}) : super(key: key);
@@ -16,7 +18,6 @@ class _UserExamScreenState extends State<UserExamScreen> {
   final PageController _controller = PageController(initialPage: 0);
   late List<int> studentAnswers ;
 
-
   @override
   void initState() {
     super.initState();
@@ -26,88 +27,91 @@ class _UserExamScreenState extends State<UserExamScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TimerWidget(widget.quiz.timeout,widget.quiz.title),
-              const SizedBox(height: 20,),
-              Expanded(
-                child: PageView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  onPageChanged: (pageIndex){
-                  },
-                  controller: _controller,
-                  children: List.generate(widget.quiz.questions.length, (page) => SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Visibility(
-                            visible: widget.quiz.questions[page].image != 'none',
-                            child: InteractiveViewer(
-                              child: CachedNetworkImage(
-                                imageUrl: widget.quiz.questions[page].image ,
-                                progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                    CircularProgressIndicator(
-                                        value: downloadProgress.progress),
-                                errorWidget: (context, url, error) =>
-                                const Icon(Icons.error, size: 30,),
+      body: WillPopScope(
+        onWillPop: () => dialog(context),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TimerWidget(widget.quiz.timeout,widget.quiz.title),
+                const SizedBox(height: 20,),
+                Expanded(
+                  child: PageView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    controller: _controller,
+                    children: List.generate(widget.quiz.questions.length, (page) => SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Visibility(
+                              visible: widget.quiz.questions[page].image != 'none',
+                              child: InteractiveViewer(
+                                child: CachedNetworkImage(
+                                  imageUrl: widget.quiz.questions[page].image ,
+                                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                      CircularProgressIndicator(
+                                          value: downloadProgress.progress),
+                                  errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error, size: 30,),
+                                ),
                               ),
                             ),
-                          ),
-                          Container(
-                            color: Colors.white30,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(widget.quiz.questions[page].questionText,
-                                style: const TextStyle(fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.blue),),
+                            Container(
+                              color: Colors.white30,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(widget.quiz.questions[page].questionText,
+                                  style: const TextStyle(fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blue),),
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 20,),
-                          ListView.builder(
-                            shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: widget.quiz.questions[page].answers.length,
-                              itemBuilder: (ctx,index){
-                                return InkWell(
-                                  onTap: (){
-                                    setState(() {
-                                      studentAnswers[page] = index;
-                                    });
-                                  },
-                                  child: Card(
-                                    //color: selectedIndex == index? Colors.black45.withOpacity(0.2) : null,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                        side: BorderSide(
-                                            width: studentAnswers[page] == index? 2:1,
-                                            color: studentAnswers[page] == index? Colors.blue :Colors.black45
-                                        )),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(10),
-                                      child: Text(
-                                        widget.quiz.questions[page].answers[index]
-                                        ,style:  TextStyle(fontSize: 18,
-                                          color: studentAnswers[page] == index? Colors.blue : Colors.black),),
+                            const SizedBox(height: 20,),
+                            ListView.builder(
+                              shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: widget.quiz.questions[page].answers.length,
+                                itemBuilder: (ctx,index){
+                                  return InkWell(
+                                    onTap: (){
+                                      setState(() {
+                                        studentAnswers[page] = index;
+                                      });
+                                    },
+                                    child: Card(
+                                      //color: selectedIndex == index? Colors.black45.withOpacity(0.2) : null,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                          side: BorderSide(
+                                              width: studentAnswers[page] == index? 2:1,
+                                              color: studentAnswers[page] == index? Colors.blue :Colors.black45
+                                          )),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10),
+                                        child: Text(
+                                          widget.quiz.questions[page].answers[index]
+                                          ,style:  TextStyle(fontSize: 18,
+                                            color: studentAnswers[page] == index? Colors.blue : Colors.black),),
+                                      ),
                                     ),
-                                  ),
-                                );
-                              }),
-                        ],
-                      ),
-                    ))
-                ),
-              )
-            ],
+                                  );
+                                }),
+                          ],
+                        ),
+                      ))
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
       bottomNavigationBar: BottomNavigation(_controller,widget.quiz.questions.length,studentAnswers)
     );
   }
+
+
 }
 
 class TimerWidget extends StatefulWidget {
@@ -142,6 +146,7 @@ class _TimerWidgetState extends State<TimerWidget> {
           if(timer.tick >= widget.timeOut.inSeconds){
             timer.cancel();
             txt = 'Timeout';
+            //gotoResults(context, studentAnswers);
           }
         });
     });
@@ -185,7 +190,6 @@ class BottomNavigation extends StatefulWidget {
   @override
   _BottomNavigationState createState() => _BottomNavigationState();
 }
-
 class _BottomNavigationState extends State<BottomNavigation> {
   late List<int> questionsCircles ; // 0 'NotAnswered' ,  1 'Active' ,  2 'Answered',
 
@@ -198,52 +202,55 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                TextButton.icon(
-                    onPressed: () => backButton(),
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.blue.withOpacity(0.1))),
-                    icon: const Icon(Icons.arrow_back_ios),
-                    label:  Text( widget._controller.page == 0  ? 'Exit':'Back',style: TextStyle(fontSize: 20),)),
-                Text('Question ${(widget._controller.page??0).ceil() + 1 }/${widget.quizLength}'),
-                Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: TextButton.icon(
-                      onPressed: () => nextButton(),
+      child: Container(
+        color: const Color(0xff205375),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton.icon(
+                      onPressed: () => backButton(),
                       style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Colors.blue.withOpacity(0.1))),
+                          backgroundColor: MaterialStateProperty.all(Colors.white)),
                       icon: const Icon(Icons.arrow_back_ios),
-                      label: Text( widget.quizLength-1 == widget._controller.page ? 'Submit':'Next',style: const TextStyle(fontSize: 20),)),
-                ),
-
-
-              ],),
-
-            Wrap(
-              children:
-              List.generate(widget.quizLength,
-                      (index) => InkWell(
-                    onTap: () => onQuestionTap(index),
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Icon(Icons.circle,size: 30,
-                          // 0 'NotAnswered' ,  1 'Active' ,  2 'Answered',
-                          //color:  [Colors.black,Colors.blue,Colors.green][ questionsCircles[index] ],),
-                          color:  index == (widget._controller.page??0) ? Colors.blue :
-                          widget.studentAnswers[index] == -1 ? Colors.black: Colors.indigo,
-                        ),
-                        Text('${index+1}',style: const TextStyle(color: Colors.white,fontSize: 12),),
-                      ],),
-                  ))
-              ,)
-          ],
+                      label:  Text( (widget._controller.page?? 0) == 0  ? 'Exit':'Back',
+                        style: const TextStyle(fontSize: 20),)),
+                  Text('Question ${(widget._controller.page??0).ceil() + 1 }/${widget.quizLength}',
+                    style: const TextStyle(color: Colors.white),),
+                  Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: TextButton.icon(
+                        onPressed: () => nextButton(),
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Colors.white)),
+                        icon: const Icon(Icons.arrow_back_ios),
+                        label: Text( widget.quizLength-1 == widget._controller.page ? 'Submit':'Next',style: const TextStyle(fontSize: 20),)),
+                  ),
+                ],),
+              Wrap(
+                children:
+                List.generate(widget.quizLength,
+                        (index) => InkWell(
+                      onTap: () => onQuestionTap(index),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          //index == (widget._controller.page??0) ? Colors.blue :
+                          Icon(Icons.circle,size: 35,
+                            color: index == (widget._controller.page??0) ? const Color(0xffEFEFEF) : Colors.blue.withOpacity(0),
+                          ),
+                          Icon(Icons.circle,size: 30,
+                            color: widget.studentAnswers[index] == -1 ? const Color(0xff112B3C): const Color(0xffFF8C32),
+                          ),
+                          Text('${index+1}',style: const TextStyle(color: Colors.white,fontSize: 12),),
+                        ],),
+                    ))
+                ,)
+            ],
+          ),
         ),
       ),
     );
@@ -255,13 +262,19 @@ class _BottomNavigationState extends State<BottomNavigation> {
         curve: Curves.easeIn).then((value) => setState(() {}));
 
     if( widget._controller.page  == widget.quizLength - 1 ){
-      navigateAndReplace(context,ResultScreen(testQuiz,widget.studentAnswers));
+      gotoResults(context,widget.studentAnswers);
     }
   }
 
   void backButton(){
     widget._controller.previousPage(duration: const Duration(milliseconds: 400),
         curve: Curves.easeIn).then((value) => setState(() {}));
+
+    if( widget._controller.page  == 0 ){
+      dialog(context).then((value){
+       if(value){Navigator.pop(context);}
+      });
+    }
   }
 
   void onQuestionTap(index) {
@@ -269,6 +282,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
         duration: const Duration(milliseconds: 400),
         curve: Curves.easeIn).then((value) =>  setState(() {
     }));
-
   }
+}
+
+void gotoResults(context,studentAnswers){
+  navigateAndReplaceNormal(context, ResultScreen(testQuiz,studentAnswers));
 }

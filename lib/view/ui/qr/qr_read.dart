@@ -11,6 +11,7 @@ import '../../resources/color_manager.dart';
 import '../../shared/widgets/app_bar.dart';
 import '../../shared/widgets/toast_helper.dart';
 
+
 class QrReadScreen extends StatefulWidget {
   const QrReadScreen({Key? key}) : super(key: key);
 
@@ -64,6 +65,7 @@ class _QrReadScreenState extends State<QrReadScreen> {
               width: 20,
             ),
             FloatingActionButton(
+              heroTag: 'tag1',
               child: const Icon(Icons.highlight_rounded),
               backgroundColor: Colors.white,
               foregroundColor: ColorManager.mainBlue,
@@ -75,6 +77,7 @@ class _QrReadScreenState extends State<QrReadScreen> {
               width: 10,
             ),
             FloatingActionButton(
+              heroTag: 'tag2',
               child: const Icon(Icons.camera_alt_outlined),
               backgroundColor: Colors.white,
               foregroundColor: ColorManager.mainBlue,
@@ -95,7 +98,8 @@ class _QrReadScreenState extends State<QrReadScreen> {
             }
           },
           child: _createScanUi(),
-        ));
+        )
+    );
   }
 
   Widget _createScanUi() {

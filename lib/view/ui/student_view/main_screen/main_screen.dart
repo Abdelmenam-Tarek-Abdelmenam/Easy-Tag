@@ -18,8 +18,7 @@ import '../student_screen/student_screen.dart';
 class StudentMainScreen extends StatelessWidget {
   StudentMainScreen({Key? key}) : super(key: key);
 
-  final RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  final RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +113,6 @@ class StudentMainScreen extends StatelessWidget {
                             return ListView.separated(
                                 physics: const BouncingScrollPhysics(),
                                 itemBuilder: (_, index) {
-                                  print(" ++++++  course number : " + index.toString());
                                   return CourseCardDesign(
                                     state.getCourses[index],
                                   );

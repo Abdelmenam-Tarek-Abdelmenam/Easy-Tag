@@ -10,6 +10,10 @@ void navigateAndReplace(BuildContext context, Widget newScreen) {
   );
 }
 
+void navigateAndReplaceNormal(BuildContext context, Widget newScreen) {
+  Navigator.pushReplacement(context,createRoute(newScreen));
+}
+
 void navigateAndPush(BuildContext context, Widget newScreen) {
   Navigator.of(context).push( createRoute(newScreen) );
  }
