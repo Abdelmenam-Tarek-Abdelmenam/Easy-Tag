@@ -4,7 +4,7 @@ enum AdminExamStatus { initial, loading, loaded, error }
 
 class AdminExamStates extends Equatable {
   final AdminExamStatus status;
-  final List<Question> questions;
+  final List<Question2> questions;
 
   const AdminExamStates({
     required this.status,
@@ -18,7 +18,7 @@ class AdminExamStates extends Equatable {
 class GetInitialExamState extends AdminExamStates {
   const GetInitialExamState(
       {required AdminExamStatus status,
-      required List<Question> questions,
+      required List<Question2> questions,
       required int activeIndex})
       : super(status: status, questions: questions);
 

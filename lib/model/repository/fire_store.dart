@@ -37,7 +37,7 @@ class FireStoreRepository {
     return data.docs.map((e) => e.id).toList();
   }
 
-  List<Question> getAllQuestions(String courseId) {
+  List<Question2> getAllQuestions(String courseId) {
     return [];
   }
 

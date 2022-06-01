@@ -9,7 +9,6 @@ import '../../../../model/module/exam_question.dart';
 import '../../../shared/widgets/app_bar.dart';
 import '../../start_screen/signing/login_screen.dart';
 import '../solve_questions/exam_intro_screen.dart';
-import '../solve_questions/solve_question_screen.dart';
 
 class StudentScreen extends StatelessWidget {
   const StudentScreen({Key? key}) : super(key: key);
@@ -89,6 +88,7 @@ class StudentScreen extends StatelessWidget {
                 fontWeight: FontWeight.bold),),
             ElevatedButton(
                 onPressed: (){
+                  // give screen loaded data
                   navigateAndPush(context, IntroExamScreen(testQuiz));
                 },
                 child: const Text('Take the quiz'))

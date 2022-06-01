@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:auto_id/view/shared/widgets/app_bar.dart';
 import 'package:auto_id/view/ui/student_view/solve_questions/user_exam_screen.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +14,7 @@ class IntroExamScreen extends StatefulWidget {
   _IntroExamScreenState createState() => _IntroExamScreenState();
 }
 
-class _IntroExamScreenState extends State<IntroExamScreen> with TickerProviderStateMixin{
+class _IntroExamScreenState extends State<IntroExamScreen> {
   bool startCounter = false;
 
   @override
@@ -27,9 +26,7 @@ class _IntroExamScreenState extends State<IntroExamScreen> with TickerProviderSt
         transitionBuilder: (Widget child, Animation<double> animation) {
           return ScaleTransition(scale: animation, child: child);
         },
-        child: startCounter? Lottie.asset('images/lottie/counter.json',
-         repeat: false,
-        )
+        child: startCounter? Lottie.asset('images/lottie/counter.json', repeat: false,)
             :Wrap(
           spacing: 20,
           runSpacing: 20,
@@ -71,13 +68,15 @@ class _IntroExamScreenState extends State<IntroExamScreen> with TickerProviderSt
   }
 
   void startButton(){
+
     setState(() {
       startCounter = true;
     });
     Timer(const Duration(seconds: 3),(){
-      navigateAndReplaceNormal(context,UserExamScreen(testQuiz));
+      navigateAndReplaceNormal(context,UserExamScreen(widget.quiz));
     });
 
+    // confirmation here
     // write the id of the quiz to user to not attend again
   }
 }

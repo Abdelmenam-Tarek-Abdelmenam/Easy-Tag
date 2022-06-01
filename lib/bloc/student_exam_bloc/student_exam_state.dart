@@ -4,7 +4,7 @@ enum StudentExamStatus { initial, loading, loaded, error }
 
 class StudentExamStates extends Equatable {
   final StudentExamStatus status;
-  final List<Question> questions;
+  final List<Question2> questions;
   final int activeIndex;
 
   const StudentExamStates(
@@ -19,7 +19,7 @@ class StudentExamStates extends Equatable {
 class GetInitialExamState extends StudentExamStates {
   const GetInitialExamState(
       {required StudentExamStatus status,
-      required List<Question> questions,
+      required List<Question2> questions,
       required int activeIndex})
       : super(status: status, questions: questions, activeIndex: activeIndex);
 
