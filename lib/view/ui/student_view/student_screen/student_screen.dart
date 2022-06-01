@@ -7,6 +7,7 @@ import 'package:auto_id/view/ui/student_view/student_screen/widgets/main_layout.
 import 'package:flutter/material.dart';
 import '../../../../model/module/exam_question.dart';
 import '../../../shared/widgets/app_bar.dart';
+import '../../admin_view/add_questions/instructor_exam_screen.dart';
 import '../../start_screen/signing/login_screen.dart';
 import '../solve_questions/exam_intro_screen.dart';
 
@@ -91,7 +92,12 @@ class StudentScreen extends StatelessWidget {
                   // give screen loaded data
                   navigateAndPush(context, IntroExamScreen(testQuiz));
                 },
-                child: const Text('Take the quiz'))
+                child: const Text('Take the stored quiz')),
+            ElevatedButton(
+                onPressed: (){
+                  navigateAndPush(context, const InstructorExamScreen());
+                },
+                child: const Text('Create other quiz')),
           ],
         ),
       ),

@@ -141,7 +141,6 @@ class _ResultScreenState extends State<ResultScreen> {
                                       children: [
                                         Icon(
                                           Icons.circle, size: 30,
-                                          //widget.quiz.questions[index].correctAnswer == widget.studentAnswers[index]
                                           color: widget.quiz.questions[index]
                                                   .checkQuestion
                                               ? const Color(0xff6BCB77)

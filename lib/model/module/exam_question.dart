@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 abstract class Question2 {
@@ -124,10 +125,11 @@ class MultipleChoiceQuestion extends Question2 {
 
   @override
   bool get checkQuestion{
-    Set<int> rightAnswerSet = rightAnswer.toSet();
-    Set<int> chosenAnswerSet = chosenAnswer.toSet();
-    int rightAnswersLen = chosenAnswerSet.intersection(rightAnswerSet).length;
-    return rightAnswersLen == rightAnswerSet.length;
+    // Set<int> rightAnswerSet = rightAnswer.toSet();
+    // Set<int> chosenAnswerSet = chosenAnswer.toSet();
+    // int rightAnswersLen = chosenAnswerSet.intersection(rightAnswerSet).length;
+    // return rightAnswersLen == rightAnswerSet.length;
+    return  const ListEquality().equals(rightAnswer,chosenAnswer);
   }
 
   factory MultipleChoiceQuestion.fromJson(Map<String, dynamic> json) {
