@@ -161,14 +161,20 @@ class Quiz {
     required this.questions,
     required timeOutMinutes,
     required this.title,
-    required this.id}){
+    this.description,
+    required this.id,}){
     timeout = Duration(minutes: timeOutMinutes);
   }
 
-  final List<MultipleChoiceQuestion> questions;
-  late final Duration timeout;
-  final String title;
+  late  List<MultipleChoiceQuestion> questions;
+  late  Duration timeout;
+  late  String title;
   final String id;
+  late  String? description;
+
+  set setTimeout(int minutes) {
+   timeout = Duration(minutes: minutes) ;
+  }
 
 }
 
@@ -214,6 +220,7 @@ Quiz testQuiz = Quiz(
     id: 'fe586wf68gf6d6p6l4gr46gs',
     questions: questions,
     timeOutMinutes:  2,
+
     title: 'IOT First Session Quiz');
 
 

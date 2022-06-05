@@ -95,7 +95,8 @@ class StudentScreen extends StatelessWidget {
                 child: const Text('Take the stored quiz')),
             ElevatedButton(
                 onPressed: (){
-                  navigateAndPush(context, const InstructorExamScreen());
+                  //navigateAndPush(context, InstructorExamScreen()); // new quiz
+                  navigateAndPush(context, InstructorExamScreen(quiz: testQuiz));  // edit existing one
                 },
                 child: const Text('Create other quiz')),
           ],
