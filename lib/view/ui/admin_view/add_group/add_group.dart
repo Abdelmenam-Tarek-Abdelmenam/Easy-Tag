@@ -1,21 +1,19 @@
 import 'dart:io';
+import 'package:auto_id/view/shared/functions/image_functions.dart';
 import 'package:auto_id/view/shared/widgets/app_bar.dart';
 import 'package:auto_id/view/shared/widgets/form_field.dart';
 import 'package:auto_id/view/ui/admin_view/add_group/models.dart';
 import 'package:auto_id/view/ui/admin_view/add_group/widgets/numeric_field.dart';
 import 'package:auto_id/view/ui/admin_view/add_group/widgets/view_photo.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:permission_handler/permission_handler.dart';
 import '../../../../bloc/admin_bloc/admin_data_bloc.dart';
 import '../../../resources/color_manager.dart';
 import '../../../shared/functions/navigation_functions.dart';
-import '../../../shared/widgets/toast_helper.dart';
 
 List<String> columnsNames = const [
   "UID",
@@ -42,6 +40,8 @@ class AddGroupScreen extends StatefulWidget {
 }
 
 class _AddGroupScreenState extends State<AddGroupScreen> {
+  ImageHelper imageHelper = ImageHelper();
+
   List<bool> neededColumns =
       List.generate(columnsNames.length, (index) => index < 2);
 
@@ -408,12 +408,12 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
             Expanded(
               child: OutlinedButton.icon(
                 onPressed: () async {
-                  XFile? photo = await takePhoto(context);
+                  XFile? photo = await imageHelper.takePhoto(context);
                   if (photo != null) {
                     setState(() {
                       photoLoading = true;
                     });
-                    link = await uploadFile(File(photo.path));
+                    link = await imageHelper.uploadFile(File(photo.path));
                     setState(() {
                       photoLoading = false;
                     });
@@ -527,30 +527,6 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
         )
       ],
     );
-  }
-
-  Future<XFile?> takePhoto(BuildContext context) async {
-    if (await Permission.camera.request().isGranted) {
-      XFile? pickedFile =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
-      return pickedFile;
-    } else {
-      showToast("cannot open gallery");
-    }
-    return null;
-  }
-
-  Future<String> uploadFile(File file) async {
-    FirebaseStorage storage = FirebaseStorage.instance;
-    Reference ref =
-        storage.ref().child("Logos").child("file" + DateTime.now().toString());
-    UploadTask uploadTask = ref.putFile(file);
-
-    TaskSnapshot task = await uploadTask.catchError((err) {
-      showToast("Error while uploading the photo..");
-    });
-    String link = await task.ref.getDownloadURL();
-    return link;
   }
 
   Future<DateTime> _selectDate({required BuildContext context}) async {

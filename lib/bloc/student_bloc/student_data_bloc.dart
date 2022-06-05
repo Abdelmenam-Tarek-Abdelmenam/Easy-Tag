@@ -54,6 +54,7 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
 
       if (response) {
         await _fireStoreRepository.addCourse(event.groupId);
+        _fireStoreRepository.setUserData(event.data);
         state.registeredId.insert(0, event.groupId);
         emit(RegisterUserState.fromOldState(state, StudentDataStatus.loaded));
       } else {

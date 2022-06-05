@@ -5,8 +5,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../../../../model/module/exam_question.dart';
 
 class ResultScreen extends StatefulWidget {
-  const ResultScreen(this.quiz, this.timeScore, {Key? key})
-      : super(key: key);
+  const ResultScreen(this.quiz, this.timeScore, {Key? key}) : super(key: key);
   final Quiz quiz;
   final int timeScore;
 
@@ -140,7 +139,8 @@ class _ResultScreenState extends State<ResultScreen> {
                                       alignment: Alignment.center,
                                       children: [
                                         Icon(
-                                          Icons.circle, size: 30,
+                                          Icons.circle,
+                                          size: 30,
                                           color: widget.quiz.questions[index]
                                                   .checkQuestion
                                               ? const Color(0xff6BCB77)
@@ -200,10 +200,10 @@ class _ResultScreenState extends State<ResultScreen> {
   }
 
   void calcScore() {
-    widget.quiz.questions.forEach((element) {
+    for (Question element in widget.quiz.questions) {
       if (element.checkQuestion) {
         studentScore++;
       }
-    });
+    }
   }
 }

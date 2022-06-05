@@ -37,22 +37,27 @@ class FireStoreRepository {
     return data.docs.map((e) => e.id).toList();
   }
 
-  List<Question2> getAllQuestions(String courseId) {
-    return [];
+  Future<Quiz> getAllQuestions(String courseId) async {
+    DocumentSnapshot<Map<String, dynamic>> snap =
+        await _firestore.collection("Exams").doc(courseId).get();
+    return Quiz.fromJson(snap.data());
   }
 
-  void setAllQuestions(String courseId, Map<String, dynamic> question) {}
+  Future<void> setAllQuestions(String courseId, Quiz quiz) async {
+    await _firestore.collection("Exams").doc(courseId).set(quiz.toJson);
+  }
 
-  void setExamSolved(String courseId, String examId, int grade) {}
+  Future<void> setExamSolved(String courseId, int grade) async {
+    await _firestore.collection("Exams").doc(courseId).update({_id: grade});
+  }
 
-  // Future<void> setUserData(Map<String, dynamic> data) async {
-  //   await _firestore.collection("students").doc(_id).set(data);
-  // }
+  Future<void> setUserData(Map<String, dynamic> data) async {
+    await _firestore.collection("students").doc(_id).set(data);
+  }
 
-  // Future<Map<String, dynamic>> getUserData(Map<String, dynamic> data) async {
-  //   DocumentSnapshot<Map<String, dynamic>> data =
-  //       await _firestore.collection("students").doc(_id).get();
-  //   return data.data() ?? {};
-  // }
-
+  Future<Map<String, dynamic>> getUserData(Map<String, dynamic> data) async {
+    DocumentSnapshot<Map<String, dynamic>> data =
+        await _firestore.collection("students").doc(_id).get();
+    return data.data() ?? {};
+  }
 }

@@ -4,26 +4,32 @@ enum AdminExamStatus { initial, loading, loaded, error }
 
 class AdminExamStates extends Equatable {
   final AdminExamStatus status;
-  final List<Question2> questions;
+  final Quiz quiz;
+  final String id;
 
   const AdminExamStates({
     required this.status,
-    required this.questions,
+    required this.id,
+    required this.quiz,
   });
 
   @override
-  List<Object?> get props => [status, questions.length];
+  List<Object?> get props => [status, quiz.questions.length];
 }
 
 class GetInitialExamState extends AdminExamStates {
   const GetInitialExamState(
       {required AdminExamStatus status,
-      required List<Question2> questions,
+      required Quiz quiz,
+      required String id,
       required int activeIndex})
-      : super(status: status, questions: questions);
+      : super(status: status, quiz: quiz, id: id);
 
   factory GetInitialExamState.initial() {
-    return const GetInitialExamState(
-        status: AdminExamStatus.initial, questions: [], activeIndex: 0);
+    return GetInitialExamState(
+        status: AdminExamStatus.initial,
+        id: '',
+        quiz: Quiz.empty(),
+        activeIndex: 0);
   }
 }

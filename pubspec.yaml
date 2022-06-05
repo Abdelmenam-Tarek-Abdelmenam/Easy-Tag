@@ -1,5 +1,5 @@
 name: auto_id
-description: A new Flutter application.
+description: Application for EME-IH Borg.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -28,7 +28,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   font_awesome_flutter: ^10.1.0
   #firebase
-  firebase_core: ^1.14.0
+  firebase_core: ^1.17.1
   firebase_auth: ^3.3.12
   firebase_database: ^9.0.4
   cloud_firestore: ^3.1.11
@@ -36,21 +36,20 @@ dependencies:
   firebase_storage: ^10.2.7
   firebase_messaging: ^11.2.13
   firebase_analytics: ^9.1.5
-  firebase_crashlytics: ^2.6.3
+  firebase_crashlytics: ^2.8.1
   #bloc
   bloc: ^8.0.3
   flutter_bloc: ^8.0.1
   equatable: ^2.0.3
   # web services
   dio: ^4.0.6
-  http: ^0.13.3 # will be removed
   connectivity_plus: ^2.2.1
   #local data
   shared_preferences: ^2.0.13
   #widget
   curved_navigation_bar: ^1.0.1
   syncfusion_flutter_sliders: ^20.1.52
-  flutter_typeahead: ^3.2.4
+  flutter_typeahead: ^4.0.0
   fluttertoast: ^8.0.8
   pull_to_refresh: ^2.0.0
   flutter_native_splash: ^1.2.4
@@ -67,11 +66,11 @@ dependencies:
     git: https://github.com/bluefireteam/photo_view
   # QR Images
   qr_flutter: ^4.0.0
-  qr_code_scanner: ^0.7.0
+  qr_code_scanner: ^1.0.0
   r_scan: ^0.1.6+1
   # for operation
   intl: ^0.17.0
-  permission_handler: ^8.2.4
+  permission_handler: ^9.2.0
   flutter_windowmanager: ^0.2.0
 
 dev_dependencies:

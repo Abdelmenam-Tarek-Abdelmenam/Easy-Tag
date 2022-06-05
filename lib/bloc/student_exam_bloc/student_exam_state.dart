@@ -4,27 +4,25 @@ enum StudentExamStatus { initial, loading, loaded, error }
 
 class StudentExamStates extends Equatable {
   final StudentExamStatus status;
-  final List<Question2> questions;
+  final Quiz quiz;
   final int activeIndex;
 
   const StudentExamStates(
-      {required this.status,
-      required this.questions,
-      required this.activeIndex});
+      {required this.status, required this.quiz, required this.activeIndex});
 
   @override
-  List<Object?> get props => [status, activeIndex, questions.length];
+  List<Object?> get props => [status, activeIndex, quiz.questions.length];
 }
 
 class GetInitialExamState extends StudentExamStates {
   const GetInitialExamState(
       {required StudentExamStatus status,
-      required List<Question2> questions,
+      required Quiz quiz,
       required int activeIndex})
-      : super(status: status, questions: questions, activeIndex: activeIndex);
+      : super(status: status, quiz: quiz, activeIndex: activeIndex);
 
   factory GetInitialExamState.initial() {
-    return const GetInitialExamState(
-        status: StudentExamStatus.initial, questions: [], activeIndex: 0);
+    return GetInitialExamState(
+        status: StudentExamStatus.initial, quiz: Quiz.empty(), activeIndex: 0);
   }
 }

@@ -83,20 +83,24 @@ class StudentScreen extends StatelessWidget {
               ),
             ),
             const UserScreenLayout(),
-            const SizedBox(height: 20,),
-            const Text('Quizes',style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold),),
+            const SizedBox(
+              height: 20,
+            ),
+            const Text(
+              'Quizes',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
             ElevatedButton(
-                onPressed: (){
+                onPressed: () {
                   // give screen loaded data
                   navigateAndPush(context, IntroExamScreen(testQuiz));
                 },
                 child: const Text('Take the stored quiz')),
             ElevatedButton(
-                onPressed: (){
+                onPressed: () {
                   //navigateAndPush(context, InstructorExamScreen()); // new quiz
-                  navigateAndPush(context, InstructorExamScreen(quiz: testQuiz));  // edit existing one
+                  navigateAndPush(context,
+                      const InstructorExamScreen()); // edit existing one
                 },
                 child: const Text('Create other quiz')),
           ],
