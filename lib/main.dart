@@ -1,5 +1,4 @@
 import 'package:auto_id/bloc/admin_bloc/admin_data_bloc.dart';
-import 'package:auto_id/bloc/admin_exam_bloc/admin_exam_bloc.dart';
 import 'package:auto_id/bloc/student_bloc/student_data_bloc.dart';
 import 'package:auto_id/bloc/student_exam_bloc/student_exam_bloc.dart';
 import 'package:auto_id/model/fcm/fire_message.dart';
@@ -67,9 +66,6 @@ class MyApp extends StatelessWidget {
               )),
         BlocProvider(
           create: (_) => StudentExamBloc(),
-        ),
-        BlocProvider(
-          create: (_) => AdminExamBloc(),
         ),
       ],
       child: MaterialApp(

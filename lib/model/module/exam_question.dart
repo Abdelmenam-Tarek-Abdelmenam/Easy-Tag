@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Question {
-  List<int> rightAnswer;
-  late List<int> chosenAnswer;
+  List<bool> rightAnswer;
+  late List<bool> chosenAnswer;
   String text;
   String? img;
   String? hint;
@@ -15,12 +15,21 @@ class Question {
       this.img,
       this.hint,
       required this.rightAnswer}) {
-    chosenAnswer = List.filled(rightAnswer.length, 0);
+    chosenAnswer = List.filled(rightAnswer.length, false);
   }
 
   bool get checkQuestion {
     return const ListEquality().equals(rightAnswer, chosenAnswer);
   }
+
+  factory Question.empty() {
+    return Question(
+        text: "",
+        answers: List.generate(4, (index) => ''),
+        rightAnswer: List.generate(4, (index) => false));
+  }
+
+  bool get isEmpty => !rightAnswer.contains(true);
 
   factory Question.fromJson(Map<String, dynamic> json) {
     return Question(
@@ -49,8 +58,8 @@ class Quiz {
   late String title;
   late String? description;
 
-  set setTimeout(int minutes) {
-    timeout = Duration(minutes: minutes);
+  set setTimeout(int? minutes) {
+    if (minutes != null) timeout = Duration(minutes: minutes);
   }
 
   Quiz({
@@ -74,6 +83,7 @@ class Quiz {
         description: json['description'],
         timeOutMinutes: json['timeOutMinutes']);
   }
+
   factory Quiz.empty() {
     return Quiz(
       questions: [],
@@ -83,6 +93,8 @@ class Quiz {
     );
   }
   bool get isEmpty => questions.isEmpty;
+  int get minutes => timeout.inMinutes;
+  int get length => questions.length;
 
   Map<String, dynamic> get toJson => {
         "questions": questions.map((e) => e.toJson).toList(),
@@ -110,25 +122,25 @@ List<Question> _questions = [
       text: 'What is the most easy programming language ?',
       hint: 'from simple point of view',
       answers: ['C++', 'Python', 'Java', 'Kotlin'],
-      rightAnswer: [0, 1, 0, 0]),
+      rightAnswer: [false, true, false, false]),
   Question(
       text: 'Flutter Apps Use ..... programming language.',
       img:
           'https://assets-global.website-files.com/5e469aaf314e562ff1146d3f/5feb0f4527cc9976b63dd88c_big-bang-mockup.png',
       answers: ['C#', 'Ruby', 'Java', 'Dart', 'Other'],
-      rightAnswer: [0, 0, 0, 1, 0]),
+      rightAnswer: [false, false, false, true, false]),
   Question(
       text: 'Solve this equation : \n2+2 = ....',
       hint: 'Do not use calculator',
       answers: ['4', '6', '8', '10'],
-      rightAnswer: [1, 0, 0, 0]),
+      rightAnswer: [true, false, false, false]),
   Question(
       text: 'HTML consider as Programming Language',
       answers: ['Yes', 'No'],
-      rightAnswer: [0, 1]),
+      rightAnswer: [false, true]),
   Question(
       text: 'Select all numbers can divide by 3 !',
       hint: 'Do not use calculator',
       answers: ['3', '4', '9', '12'],
-      rightAnswer: [1, 0, 1, 1]),
+      rightAnswer: [true, false, true, true]),
 ];

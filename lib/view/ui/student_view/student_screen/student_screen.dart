@@ -100,7 +100,7 @@ class StudentScreen extends StatelessWidget {
                 onPressed: () {
                   //navigateAndPush(context, InstructorExamScreen()); // new quiz
                   navigateAndPush(context,
-                      const InstructorExamScreen()); // edit existing one
+                      InstructorExamScreen("123")); // edit existing one
                 },
                 child: const Text('Create other quiz')),
           ],
