@@ -6,26 +6,17 @@ import '../../../../model/module/exam_question.dart';
 
 class ResultScreen extends StatefulWidget {
   const ResultScreen(this.quiz, this.timeScore, {Key? key}) : super(key: key);
+
   final Quiz quiz;
   final int timeScore;
 
   @override
-  _ResultScreenState createState() => _ResultScreenState();
+  State<ResultScreen> createState() => _ResultScreenState();
 }
 
 class _ResultScreenState extends State<ResultScreen> {
+  late final int studentScore = widget.quiz.calculateScore;
   bool showResult = false;
-  int studentScore = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    calcScore();
-
-    // here upload result to firebase
-    // use shared preferences if no network state
-    // take considerations for this : user start the quiz but close the app before upload the result
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,44 +76,41 @@ class _ResultScreenState extends State<ResultScreen> {
                             return ScaleTransition(
                                 scale: animation, child: child);
                           },
-                          child: showResult
-                              ? Column(
+                          child: Visibility(
+                            visible: showResult,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          studentScore.toString(),
-                                          style: const TextStyle(
-                                            fontSize: 80,
-                                            color: ColorManager.blackColor,
-                                          ),
-                                        ),
-                                        Text(
-                                          '/${widget.quiz.questions.length}',
-                                          style: const TextStyle(
-                                              fontSize: 30,
-                                              color: Colors.black87),
-                                        ),
-                                      ],
+                                    Text(
+                                      studentScore.toString(),
+                                      style: const TextStyle(
+                                        fontSize: 80,
+                                        color: ColorManager.blackColor,
+                                      ),
                                     ),
                                     Text(
-                                      '${((studentScore / widget.quiz.questions.length) * 100).toStringAsFixed(2)}%',
+                                      '/${widget.quiz.questions.length}',
                                       style: const TextStyle(
-                                          fontSize: 25,
-                                          color: Color(0xff143F6B)),
-                                    ),
-                                    Text(
-                                      '${widget.timeScore ~/ 60} min, ${widget.timeScore % 60} sec',
-                                      style: const TextStyle(
-                                          fontSize: 18,
-                                          color: Color(0xff143F6B)),
+                                          fontSize: 30, color: Colors.black87),
                                     ),
                                   ],
-                                )
-                              : Container(),
+                                ),
+                                Text(
+                                  '${((studentScore / widget.quiz.questions.length) * 100).toStringAsFixed(2)}%',
+                                  style: const TextStyle(
+                                      fontSize: 25, color: Color(0xff143F6B)),
+                                ),
+                                Text(
+                                  '${widget.timeScore ~/ 60} min, ${widget.timeScore % 60} sec',
+                                  style: const TextStyle(
+                                      fontSize: 18, color: Color(0xff143F6B)),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                         //progressColor: Colors.green,
                       ),
@@ -141,8 +129,9 @@ class _ResultScreenState extends State<ResultScreen> {
                                         Icon(
                                           Icons.circle,
                                           size: 30,
-                                          color: widget.quiz.questions[index]
-                                                  .checkQuestion
+                                          color: (widget.quiz.questions[index]
+                                                  .chosenAnswer
+                                                  .contains(true))
                                               ? const Color(0xff6BCB77)
                                               : Colors.deepOrange,
                                         ),
@@ -197,13 +186,5 @@ class _ResultScreenState extends State<ResultScreen> {
         ),
       ),
     );
-  }
-
-  void calcScore() {
-    for (Question element in widget.quiz.questions) {
-      if (element.checkQuestion) {
-        studentScore++;
-      }
-    }
   }
 }
