@@ -15,7 +15,7 @@ class Question {
       this.img,
       this.hint,
       required this.rightAnswer}) {
-    chosenAnswer = List.filled(rightAnswer.length, false);
+    resetAnswers;
   }
 
   bool get checkQuestion {
@@ -30,6 +30,16 @@ class Question {
   }
 
   bool get isEmpty => !rightAnswer.contains(true);
+  void get resetAnswers {
+    chosenAnswer = List.filled(rightAnswer.length, false);
+  }
+
+  bool get isSingleAnswer =>
+      rightAnswer.where((element) => element).length == 1;
+
+  void changeAnswer(int index) {
+    chosenAnswer[index] = !chosenAnswer[index];
+  }
 
   factory Question.fromJson(Map<String, dynamic> json) {
     return Question(
@@ -113,34 +123,3 @@ class Quiz {
     return score;
   }
 }
-
-Quiz testQuiz = Quiz(
-    questions: _questions, timeOutMinutes: 2, title: 'IOT First Session Quiz');
-
-List<Question> _questions = [
-  Question(
-      text: 'What is the most easy programming language ?',
-      hint: 'from simple point of view',
-      answers: ['C++', 'Python', 'Java', 'Kotlin'],
-      rightAnswer: [false, true, false, false]),
-  Question(
-      text: 'Flutter Apps Use ..... programming language.',
-      img:
-          'https://assets-global.website-files.com/5e469aaf314e562ff1146d3f/5feb0f4527cc9976b63dd88c_big-bang-mockup.png',
-      answers: ['C#', 'Ruby', 'Java', 'Dart', 'Other'],
-      rightAnswer: [false, false, false, true, false]),
-  Question(
-      text: 'Solve this equation : \n2+2 = ....',
-      hint: 'Do not use calculator',
-      answers: ['4', '6', '8', '10'],
-      rightAnswer: [true, false, false, false]),
-  Question(
-      text: 'HTML consider as Programming Language',
-      answers: ['Yes', 'No'],
-      rightAnswer: [false, true]),
-  Question(
-      text: 'Select all numbers can divide by 3 !',
-      hint: 'Do not use calculator',
-      answers: ['3', '4', '9', '12'],
-      rightAnswer: [true, false, true, true]),
-];

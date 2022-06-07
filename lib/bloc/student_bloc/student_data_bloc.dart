@@ -56,6 +56,9 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
         await _fireStoreRepository.addCourse(event.groupId);
         _fireStoreRepository.setUserData(event.data);
         state.registeredId.insert(0, event.groupId);
+        if (FirebaseMessaging.instance.isSupported()) {
+          FirebaseMessaging.instance.subscribeToTopic(event.groupId);
+        }
         emit(RegisterUserState.fromOldState(state, StudentDataStatus.loaded));
       } else {
         showToast("Data handling error", type: ToastType.error);
@@ -173,6 +176,9 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
       List<Course> all = await _adminDataRepository.getGroupsData();
       List<String> registeredCourses =
           await _fireStoreRepository.readAllCourses();
+      for (String id in registeredCourses) {
+        FirebaseMessaging.instance.unsubscribeFromTopic(id);
+      }
       emit(GetInitialDataState(
           status: StudentDataStatus.loaded,
           all: all,
@@ -181,6 +187,13 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
     } else {
       showToast("Please Check your internet connection");
       emit(GetInitialDataState(status: StudentDataStatus.error));
+    }
+  }
+
+  Future<void> signOutHandler() async {
+    FirebaseMessaging.instance.unsubscribeFromTopic(student.id);
+    for (String id in state.registeredId) {
+      FirebaseMessaging.instance.unsubscribeFromTopic(id);
     }
   }
 

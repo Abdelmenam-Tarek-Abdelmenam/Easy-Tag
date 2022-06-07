@@ -21,57 +21,66 @@ class InstructorExamScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => AdminExamBloc(id),
-      child: Scaffold(
-        appBar: appBar('Add Quiz', actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-            child: OutlinedButton.icon(
-                onPressed: () =>
-                    context.read<AdminExamBloc>().addQuizToFireStore,
-                icon: const Icon(Icons.done),
-                label: const Text(
-                  'Done',
-                  style: TextStyle(fontSize: 18),
-                )),
-          ),
-        ]),
-        body: GestureDetector(
-          onTap: () {
-            FocusScopeNode currentFocus = FocusScope.of(context);
-            if (!currentFocus.hasPrimaryFocus) {
-              currentFocus.unfocus();
-            }
-          },
-          child: BlocConsumer<AdminExamBloc, AdminExamStates>(
-            listener: (context, state) {
-              if (state.status == AdminExamStatus.addQuestion) {
-                _pageController.animateToPage(state.quiz.questions.length,
-                    duration: const Duration(seconds: 1), curve: Curves.ease);
+      lazy: false,
+      create: (_) => AdminExamBloc(id)..getCourseQuestion(id),
+      child: BlocConsumer<AdminExamBloc, AdminExamStates>(
+        listener: (context, state) {
+          if (state.status == AdminExamStatus.addQuestion) {
+            _pageController.animateToPage(state.quiz.questions.length,
+                duration: const Duration(seconds: 1), curve: Curves.ease);
+          }
+        },
+        builder: (context, state) => Scaffold(
+          appBar: appBar('Add Quiz', actions: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              child: OutlinedButton.icon(
+                  onPressed: () =>
+                      context.read<AdminExamBloc>().addQuizToFireStore(),
+                  icon: state.status == AdminExamStatus.uploadingQuiz
+                      ? const CircularProgressIndicator()
+                      : const Icon(Icons.done),
+                  label: const Text(
+                    'Done',
+                    style: TextStyle(fontSize: 18),
+                  )),
+            ),
+          ]),
+          body: GestureDetector(
+            onTap: () {
+              FocusScopeNode currentFocus = FocusScope.of(context);
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
               }
-
-              /// on add question
             },
-            builder: (context, state) {
-              AdminExamBloc cubit = context.read<AdminExamBloc>();
-
-              return Column(
-                children: [
-                  _getTitle(context, state.activePage, state.quiz.length),
-                  Expanded(
-                    child: PageView(
-                      controller: _pageController,
-                      onPageChanged: (index) => cubit.changePage(index),
+            child: Builder(
+              builder: (context) {
+                AdminExamBloc cubit = context.read<AdminExamBloc>();
+                switch (state.status) {
+                  case AdminExamStatus.quizLoading:
+                    return const Center(child: CircularProgressIndicator());
+                  case AdminExamStatus.error:
+                    return const Text("An Error happened ");
+                  default:
+                    return Column(
                       children: [
-                        QuizDetailsPage(state.quiz),
-                        ...List.generate(state.quiz.length, (i) => i)
-                            .map((i) => questionDesign(context, cubit, i))
+                        _getTitle(context, state.activePage, state.quiz.length),
+                        Expanded(
+                          child: PageView(
+                            controller: _pageController,
+                            onPageChanged: (index) => cubit.changePage(index),
+                            children: [
+                              QuizDetailsPage(state.quiz),
+                              ...List.generate(state.quiz.length, (i) => i)
+                                  .map((i) => questionDesign(context, cubit, i))
+                            ],
+                          ),
+                        ),
                       ],
-                    ),
-                  ),
-                ],
-              );
-            },
+                    );
+                }
+              },
+            ),
           ),
         ),
       ),

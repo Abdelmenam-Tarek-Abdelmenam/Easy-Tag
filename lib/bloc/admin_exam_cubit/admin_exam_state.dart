@@ -5,6 +5,7 @@ enum AdminExamStatus {
   idle,
   error,
   changeUi,
+  quizLoading,
   uploadingQuiz,
   addQuestion,
   uploaded
@@ -25,7 +26,10 @@ class AdminExamStates {
 
   factory AdminExamStates.initial(String id) {
     return AdminExamStates(
-        status: AdminExamStatus.idle, id: id, quiz: testQuiz, activePage: -1);
+        status: AdminExamStatus.idle,
+        id: id,
+        quiz: Quiz.empty(),
+        activePage: -1);
   }
 
   AdminExamStates copyWith({

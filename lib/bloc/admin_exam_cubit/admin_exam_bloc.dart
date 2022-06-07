@@ -12,10 +12,18 @@ class AdminExamBloc extends Cubit<AdminExamStates> {
   final FireStoreRepository _fireStoreRepository = FireStoreRepository();
 
   void addQuizToFireStore() async {
+    if (state.status == AdminExamStatus.uploadingQuiz) return;
+    if (state.quiz.isEmpty) {
+      showToast("This is an empty quiz");
+      return;
+    }
+    emit(state.copyWith(status: AdminExamStatus.uploadingQuiz));
     try {
       print(state.quiz.toJson);
-      // await _fireStoreRepository.setAllQuestions(state.id, state.quiz);
+      await _fireStoreRepository.setAllQuestions(state.id, state.quiz);
+      emit(state.copyWith(status: AdminExamStatus.idle));
     } catch (e) {
+      emit(state.copyWith(status: AdminExamStatus.error));
       print(e);
     }
   }
@@ -38,8 +46,15 @@ class AdminExamBloc extends Cubit<AdminExamStates> {
     emit(state.copyWith(status: AdminExamStatus.loadingImage));
   }
 
-  void getCourseQuestion(String id) {
-    _fireStoreRepository.getAllQuestions(id);
+  Future<void> getCourseQuestion(String id) async {
+    emit(state.copyWith(status: AdminExamStatus.quizLoading, id: id));
+    try {
+      Quiz quiz = await _fireStoreRepository.getAllQuestions(id);
+      emit(state.copyWith(status: AdminExamStatus.idle, quiz: quiz));
+    } catch (err) {
+      showToast("sorry,An error happened");
+      emit(state.copyWith(status: AdminExamStatus.error));
+    }
   }
 
   void removeQuestion() {
