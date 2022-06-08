@@ -22,7 +22,9 @@ class _ResultScreenState extends State<ResultScreen> {
 
   @override
   void initState() {
-    context.read<StudentExamBloc>().publishResults(widget.quiz.calculateScore);
+    context
+        .read<StudentExamBloc>()
+        .publishResults(widget.quiz.calculateScore, duration: widget.timeScore);
     super.initState();
   }
 

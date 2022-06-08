@@ -4,7 +4,6 @@ import 'package:auto_id/view/shared/widgets/app_bar.dart';
 import 'package:auto_id/view/ui/student_view/solve_questions/user_exam_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../model/module/exam_question.dart';
 import '../../../shared/functions/navigation_functions.dart';
 import 'package:lottie/lottie.dart';
 
@@ -29,17 +28,26 @@ class _IntroExamScreenState extends State<IntroExamScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar('Quiz'),
-      body: BlocBuilder<StudentExamBloc, StudentExamStates>(
+      body: BlocConsumer<StudentExamBloc, StudentExamStates>(
+        listener: (_, state) {
+          if (state.status == StudentExamStatus.loadedUpload) {
+            navigateAndReplaceNormal(context, UserExamScreen(state.quiz));
+          } else if (state.status == StudentExamStatus.error) {
+            startCounter = false;
+          }
+        },
         builder: (context, state) {
           switch (state.status) {
             case StudentExamStatus.quizLoading:
               return const Center(child: CircularProgressIndicator());
             case StudentExamStatus.noExam:
-              return const Text("No Exam for this course");
+              return const Center(child: Text("No Exam for this course"));
             case StudentExamStatus.error:
-              return const Text("An Error happened ");
+              return const Center(child: Text("An Error happened "));
             case StudentExamStatus.getBefore:
-              return Text("You get this exam before with score ${state.score}");
+              return Center(
+                  child: Text(
+                      "You get this exam before with score ${state.score}"));
             default:
               return AnimatedSwitcher(
                 duration: const Duration(milliseconds: 500),
@@ -47,10 +55,12 @@ class _IntroExamScreenState extends State<IntroExamScreen> {
                   return ScaleTransition(scale: animation, child: child);
                 },
                 child: startCounter
-                    ? Lottie.asset(
-                        'images/lottie/counter.json',
-                        repeat: false,
-                      )
+                    ? state.status == StudentExamStatus.loadingUpload
+                        ? const Center(child: CircularProgressIndicator())
+                        : Lottie.asset(
+                            'images/lottie/counter.json',
+                            repeat: false,
+                          )
                     : Wrap(
                         spacing: 20,
                         runSpacing: 20,
@@ -94,7 +104,7 @@ class _IntroExamScreenState extends State<IntroExamScreen> {
                               ],
                             ),
                           ),
-                          startButton(state.quiz),
+                          startButton(),
                         ],
                       ),
               );
@@ -104,7 +114,7 @@ class _IntroExamScreenState extends State<IntroExamScreen> {
     );
   }
 
-  Widget startButton(Quiz quiz) => TextButton(
+  Widget startButton() => TextButton(
       style: ButtonStyle(
         fixedSize: MaterialStateProperty.all(const Size(120, 120)),
         shape: MaterialStateProperty.all(
@@ -116,18 +126,18 @@ class _IntroExamScreenState extends State<IntroExamScreen> {
           ),
         ),
       ),
-      onPressed: () => start(quiz),
+      onPressed: () => start(context),
       child: const Text(
         'Start',
         style: TextStyle(fontSize: 30),
       ));
 
-  void start(Quiz quiz) {
+  void start(BuildContext context) {
     setState(() {
       startCounter = true;
     });
     Timer(const Duration(seconds: 3), () {
-      navigateAndReplaceNormal(context, UserExamScreen(quiz));
+      context.read<StudentExamBloc>().publishResults(0);
     });
   }
 }

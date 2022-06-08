@@ -4,6 +4,7 @@ enum StudentExamStatus {
   idle,
   quizLoading,
   loadingUpload,
+  loadedUpload,
   noExam,
   error,
   getBefore

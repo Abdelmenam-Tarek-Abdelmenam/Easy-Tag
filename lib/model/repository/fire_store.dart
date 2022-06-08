@@ -37,10 +37,18 @@ class FireStoreRepository {
     return data.docs.map((e) => e.id).toList();
   }
 
-  Future<Quiz> getAllQuestions(String courseId) async {
+  Future<AdminQuiz> getAllQuestions(String courseId) async {
     DocumentSnapshot<Map<String, dynamic>> snap =
         await _firestore.collection("Exams").doc(courseId).get();
-    return Quiz.fromJson(snap.data());
+    return AdminQuiz.fromJson(snap.data());
+  }
+
+  Future<StudentQuiz> getExamForStudent(String courseId) async {
+    DocumentSnapshot<Map<String, dynamic>> snap =
+        await _firestore.collection("Exams").doc(courseId).get();
+    bool takesBefore = snap.data()?.keys.contains(_id) ?? false;
+    return StudentQuiz(
+        Quiz.fromJson(snap.data()), takesBefore, (snap.data() ?? {})[_id]);
   }
 
   Future<void> setAllQuestions(String courseId, Quiz quiz) async {

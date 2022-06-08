@@ -46,12 +46,11 @@ class Question {
         text: json['text'],
         img: json['img'],
         hint: json['hint'],
-        rightAnswer: json['rightAnswer'],
-        answers: json['answers']);
+        rightAnswer: List<bool>.from(json['rightAnswer']),
+        answers: List<String>.from(json['answers']));
   }
 
   Map<String, dynamic> get toJson => {
-        "type": "MultipleChoiceQuestion",
         "text": text,
         "img": img,
         "hint": hint,
@@ -71,6 +70,8 @@ class Quiz {
   set setTimeout(int? minutes) {
     if (minutes != null) timeout = Duration(minutes: minutes);
   }
+
+  String get getRandomText => questions[0].answers[0].split(' ')[0];
 
   Quiz({
     required int timeOutMinutes,
@@ -103,6 +104,14 @@ class Quiz {
     );
   }
   bool get isEmpty => questions.isEmpty;
+  bool get checkWrongQuiz {
+    if (questions.isEmpty) return true;
+    for (Question question in questions) {
+      if (question.isEmpty) return true;
+    }
+    return false;
+  }
+
   int get minutes => timeout.inMinutes;
   int get length => questions.length;
 
@@ -121,5 +130,39 @@ class Quiz {
       }
     }
     return score;
+  }
+}
+
+class StudentQuiz {
+  Quiz quiz;
+  bool takenBefore;
+  int? score;
+
+  StudentQuiz(this.quiz, this.takenBefore, this.score);
+}
+
+class AdminQuiz {
+  Quiz quiz;
+  List<int> scores;
+
+  AdminQuiz(this.quiz, this.scores);
+
+  factory AdminQuiz.empty() {
+    return AdminQuiz(Quiz.empty(), []);
+  }
+
+  factory AdminQuiz.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return AdminQuiz.empty();
+
+    Quiz quiz = Quiz.fromJson(json);
+    List<String> removes = [
+      'questions',
+      'title',
+      'description',
+      'timeOutMinutes'
+    ];
+    json.removeWhere((key, value) => removes.contains(key));
+
+    return AdminQuiz(quiz, List<int>.from(json.values));
   }
 }

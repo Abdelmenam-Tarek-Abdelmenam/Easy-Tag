@@ -101,15 +101,18 @@ class StudentScreen extends StatelessWidget {
         ),
         ElevatedButton(
             onPressed: () {
-              // give screen loaded data
-              navigateAndPush(context, const IntroExamScreen("123"));
+              navigateAndPush(
+                  context,
+                  const IntroExamScreen(
+                      "1ar8i-uuFhbRjQrJEXaqJ1N90N14DVZ9R-iCl9NKYAWc"));
             },
             child: const Text('Take the stored quiz')),
         ElevatedButton(
             onPressed: () {
-              //navigateAndPush(context, InstructorExamScreen()); // new quiz
               navigateAndPush(
-                  context, InstructorExamScreen("123")); // edit existing one
+                  context,
+                  InstructorExamScreen(
+                      "1ar8i-uuFhbRjQrJEXaqJ1N90N14DVZ9R-iCl9NKYAWc")); // edit existing one
             },
             child: const Text('Create other quiz')),
       ];

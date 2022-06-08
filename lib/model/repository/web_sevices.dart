@@ -52,6 +52,26 @@ class WebServices {
     return response.trim() == "Done";
   }
 
+  Future<bool> saveUserScore({
+    required String userId,
+    required String sheetId,
+    required String quizId,
+    required int score,
+    required int len,
+    required int time,
+  }) async {
+    String url = _funcSheetLinkBase +
+        "func=add_result" +
+        "&quiz_id=$quizId" +
+        "&marks=$score,$len,$time" +
+        "&sheetID=$sheetId" +
+        "&uid=$userId";
+    print(url);
+    String response = await _doRequest(url);
+    print(response);
+    return response.trim() == "Done";
+  }
+
   Future<Student> getUserData(String userId, String sheetId) async {
     Map<String, dynamic> userData = {};
     String url = _funcSheetLinkBase +

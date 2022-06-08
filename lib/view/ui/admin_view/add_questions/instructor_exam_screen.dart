@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:auto_id/model/module/exam_question.dart';
 import 'package:auto_id/view/resources/color_manager.dart';
+import 'package:auto_id/view/ui/admin_view/add_questions/widgets/histogram.dart';
 import 'package:auto_id/view/ui/admin_view/add_questions/widgets/quiz_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,9 +29,47 @@ class InstructorExamScreen extends StatelessWidget {
           if (state.status == AdminExamStatus.addQuestion) {
             _pageController.animateToPage(state.quiz.questions.length,
                 duration: const Duration(seconds: 1), curve: Curves.ease);
+          } else if (state.status == AdminExamStatus.uploadedQuiz) {
+            Navigator.of(context).pop();
           }
         },
         builder: (context, state) => Scaffold(
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+          floatingActionButton: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FloatingActionButton(
+                child: const Icon(Icons.file_copy_outlined),
+                onPressed: () {
+                  context.read<AdminExamBloc>().getQuestionFromFile();
+                },
+              ),
+              FloatingActionButton(
+                child: const Icon(Icons.save_outlined),
+                onPressed: () {
+                  context.read<AdminExamBloc>().saveQuiz();
+                },
+              ),
+              FloatingActionButton(
+                child: const Icon(Icons.remove_red_eye_outlined),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (_) {
+                        return Dialog(
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
+                          child: Histogram(state.scores,
+                              'Scores for ${state.scores.length} students'),
+                          //  contentPadding: const EdgeInsets.all(0.0),
+                        );
+                      });
+                },
+              )
+            ],
+          ),
           appBar: appBar('Add Quiz', actions: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),

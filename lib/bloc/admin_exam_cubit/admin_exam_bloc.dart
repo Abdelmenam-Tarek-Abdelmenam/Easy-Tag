@@ -2,6 +2,7 @@ import 'package:auto_id/view/shared/widgets/toast_helper.dart';
 import 'package:bloc/bloc.dart';
 
 import '../../model/module/exam_question.dart';
+import '../../model/repository/files_handling.dart';
 import '../../model/repository/fire_store.dart';
 
 part 'admin_exam_state.dart';
@@ -13,15 +14,15 @@ class AdminExamBloc extends Cubit<AdminExamStates> {
 
   void addQuizToFireStore() async {
     if (state.status == AdminExamStatus.uploadingQuiz) return;
-    if (state.quiz.isEmpty) {
-      showToast("This is an empty quiz");
+    if (state.quiz.checkWrongQuiz) {
+      showToast("Please check your quiz");
       return;
     }
     emit(state.copyWith(status: AdminExamStatus.uploadingQuiz));
     try {
-      print(state.quiz.toJson);
       await _fireStoreRepository.setAllQuestions(state.id, state.quiz);
-      emit(state.copyWith(status: AdminExamStatus.idle));
+      showToast("Quiz Uploaded successfully", type: ToastType.success);
+      emit(state.copyWith(status: AdminExamStatus.uploadedQuiz));
     } catch (e) {
       emit(state.copyWith(status: AdminExamStatus.error));
       print(e);
@@ -49,11 +50,35 @@ class AdminExamBloc extends Cubit<AdminExamStates> {
   Future<void> getCourseQuestion(String id) async {
     emit(state.copyWith(status: AdminExamStatus.quizLoading, id: id));
     try {
-      Quiz quiz = await _fireStoreRepository.getAllQuestions(id);
-      emit(state.copyWith(status: AdminExamStatus.idle, quiz: quiz));
+      AdminQuiz quiz = await _fireStoreRepository.getAllQuestions(id);
+      emit(state.copyWith(
+          status: AdminExamStatus.idle, quiz: quiz.quiz, scores: quiz.scores));
     } catch (err) {
       showToast("sorry,An error happened");
       emit(state.copyWith(status: AdminExamStatus.error));
+    }
+  }
+
+  Future<void> getQuestionFromFile() async {
+    emit(state.copyWith(status: AdminExamStatus.quizLoading));
+    try {
+      Quiz? quiz = await DbFileHandling().importQuiz();
+      emit(state.copyWith(status: AdminExamStatus.idle, quiz: quiz));
+    } catch (err, stack) {
+      showToast("sorry,An error happened");
+      print(err);
+      print(stack);
+      emit(state.copyWith(status: AdminExamStatus.idle));
+    }
+  }
+
+  Future<void> saveQuiz() async {
+    try {
+      await DbFileHandling().exportQuiz(state.quiz);
+      showToast("File Export successfully at EME Quizzes",
+          type: ToastType.success);
+    } catch (err) {
+      showToast("sorry,An error happened");
     }
   }
 

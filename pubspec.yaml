@@ -48,6 +48,7 @@ dependencies:
   shared_preferences: ^2.0.13
   #widget
   curved_navigation_bar: ^1.0.1
+  syncfusion_flutter_charts: ^20.1.59
   syncfusion_flutter_sliders: ^20.1.52
   flutter_typeahead: ^4.0.0
   fluttertoast: ^8.0.8
@@ -72,6 +73,7 @@ dependencies:
   intl: ^0.17.0
   permission_handler: ^9.2.0
   flutter_windowmanager: ^0.2.0
+  file_picker: ^4.6.1
 
 dev_dependencies:
   flutter_test:
