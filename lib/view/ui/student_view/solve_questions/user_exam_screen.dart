@@ -6,6 +6,7 @@ import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import '../../../../model/module/exam_question.dart';
 import '../../../shared/functions/navigation_functions.dart';
 import '../../../shared/widgets/dialog.dart';
+import '../../../shared/platforms.dart';
 
 class UserExamScreen extends StatefulWidget {
   const UserExamScreen(this.quiz, {Key? key}) : super(key: key);
@@ -23,7 +24,12 @@ class _UserExamScreenState extends State<UserExamScreen> {
 
   @override
   void initState() {
-    FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+    Platform.execute(
+      web: () {},
+      mobile: () {
+        FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+      },
+    );
     super.initState();
     _timer = Timer.periodic(
         const Duration(seconds: 1), (timer) => timerTick(timer, context));
@@ -32,7 +38,12 @@ class _UserExamScreenState extends State<UserExamScreen> {
   @override
   dispose() {
     _timer.cancel();
-    FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
+    Platform.execute(
+      web: () {},
+      mobile: () {
+        FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
+      },
+    );
     super.dispose();
   }
 

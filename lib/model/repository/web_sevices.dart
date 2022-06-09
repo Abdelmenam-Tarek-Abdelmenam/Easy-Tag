@@ -4,8 +4,14 @@ import 'package:dio/dio.dart';
 import '../module/students.dart';
 
 const _base = "https://script.google.com/macros/s/";
-const _funcSheetLinkBase = _base +
-    "AKfycbyEazGuwCLyFwut7WXoDQqovSmpNeP_GesKoWXJbiLFxBepDYoPPTZiFQ3YsOaxnkI/exec?";
+
+const _testBase =
+    "AKfycbwSR9MQxRv3OADvW8pl6hab0s4Rx2fXinMPYL2jkXYEsFlEg3MgPpW0TEGdXcxXXTZttQ";
+
+const _stableBase =
+    "AKfycbyEazGuwCLyFwut7WXoDQqovSmpNeP_GesKoWXJbiLFxBepDYoPPTZiFQ3YsOaxnkI";
+
+const _funcSheetLinkBase = _base + _testBase + "/exec?";
 
 class WebServices {
   final Dio _dio = Dio();
@@ -120,6 +126,7 @@ class WebServices {
   }
 
   Future<dynamic> _doRequest(String url) async {
+    print(url);
     try {
       Response response = await _dio.get(url);
       return response.data;
