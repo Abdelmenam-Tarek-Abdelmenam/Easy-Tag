@@ -66,9 +66,7 @@ class WebServices {
         "&marks=$score,$len,$time" +
         "&sheetID=$sheetId" +
         "&uid=$userId";
-    print(url);
     String response = await _doRequest(url);
-    print(response);
     return response.trim() == "Done";
   }
 
@@ -127,7 +125,7 @@ class WebServices {
       return response.data;
     } on DioError catch (e) {
       throw DioErrors.fromCode(e);
-    } catch (_) {
+    } catch (e) {
       throw const DioErrors();
     }
   }

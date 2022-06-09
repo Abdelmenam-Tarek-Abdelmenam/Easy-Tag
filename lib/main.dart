@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc/auth_bloc/auth_status_bloc.dart';
+import 'view/shared/platforms.dart';
 
 Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -27,12 +28,30 @@ Future<void> main() async {
   return BlocOverrides.runZoned(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
-      await Firebase.initializeApp();
-      FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
-      FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+      await Platform.execute(
+        mobile: () async {
+          await Firebase.initializeApp();
+          FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+          FlutterError.onError =
+              FirebaseCrashlytics.instance.recordFlutterError;
+          FireNotificationHelper();
+        },
+        web: () async {
+          await Firebase.initializeApp(
+              options: const FirebaseOptions(
+                  apiKey: "AIzaSyA8sWc0zInh0HX6NdZboODIV0QgqaBVmZ4",
+                  authDomain: "id-presence.firebaseapp.com",
+                  databaseURL:
+                      "https://id-presence-default-rtdb.firebaseio.com",
+                  projectId: "id-presence",
+                  storageBucket: "id-presence.appspot.com",
+                  messagingSenderId: "545450328331",
+                  appId: "1:545450328331:web:88f680a8579dff26d8220e",
+                  measurementId: "G-M3ETBGJ21H"));
+        },
+      );
       await PreferenceRepository.initializePreference();
       User? user = FirebaseAuth.instance.currentUser;
-      FireNotificationHelper();
       AppAdmin tempUser = AppAdmin.empty;
       bool isAdmin = false;
       if (user != null) {

@@ -12,6 +12,7 @@ import '../../model/module/app_admin.dart';
 import '../../model/repository/fire_store.dart';
 import '../../model/repository/realtime_firebase.dart';
 import '../../model/repository/web_sevices.dart';
+import '../../view/shared/platforms.dart';
 
 part 'admin_data_event.dart';
 part 'admin_data_state.dart';
@@ -43,9 +44,14 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
       emit(GetInitialDataState(
           status: AdminDataStatus.loading, cardStudent: CardStudent.empty));
       admin = event.currentUser;
-      if (FirebaseMessaging.instance.isSupported()) {
-        FirebaseMessaging.instance.subscribeToTopic(admin.id);
-      }
+      Platform.execute(
+          mobile: () async {
+            if (FirebaseMessaging.instance.isSupported()) {
+              FirebaseMessaging.instance.subscribeToTopic(admin.id);
+            }
+          },
+          web: () async {});
+
       await _readInitialFireData(emit);
     }
   }
@@ -105,6 +111,11 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
             state, AdminDataStatus.loaded, event.groupIndex));
       } on DioErrors catch (err) {
         showToast(err.message, type: ToastType.error);
+        emit(LoadGroupDataState.fromOldState(
+            state, AdminDataStatus.error, event.groupIndex,
+            force: event.force));
+      } catch (err) {
+        showToast("An handling error happened", type: ToastType.error);
         emit(LoadGroupDataState.fromOldState(
             state, AdminDataStatus.error, event.groupIndex,
             force: event.force));
@@ -240,6 +251,14 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
     emit(SignOutState.fromOldState(state, AdminDataStatus.loading));
     await _adminDataRepository.cancelListener();
     await AuthRepository.signOut();
+    Platform.execute(
+        mobile: () async {
+          if (FirebaseMessaging.instance.isSupported()) {
+            FirebaseMessaging.instance.unsubscribeFromTopic(admin.id);
+          }
+        },
+        web: () async {});
+
     emit(SignOutState(status: AdminDataStatus.loaded));
   }
 

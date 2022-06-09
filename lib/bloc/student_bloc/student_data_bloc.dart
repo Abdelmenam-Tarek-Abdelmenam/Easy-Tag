@@ -10,6 +10,7 @@ import '../../model/module/students.dart';
 import '../../model/repository/realtime_firebase.dart';
 import '../../model/repository/web_sevices.dart';
 import '../../view/shared/widgets/toast_helper.dart';
+import '../../view/shared/platforms.dart';
 
 part 'student_data_event.dart';
 part 'student_data_state.dart';
@@ -37,9 +38,14 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
       emit(GetInitialDataState(status: StudentDataStatus.loading));
       if (!event.user.isEmpty && !(await event.user.isAdmin)) {
         student = event.user;
-        if (FirebaseMessaging.instance.isSupported()) {
-          FirebaseMessaging.instance.subscribeToTopic(student.id);
-        }
+        Platform.execute(
+            mobile: () async {
+              if (FirebaseMessaging.instance.isSupported()) {
+                FirebaseMessaging.instance.subscribeToTopic(student.id);
+              }
+            },
+            web: () async {});
+
         await _readInitialFireData(emit);
       }
     }
@@ -56,9 +62,13 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
         await _fireStoreRepository.addCourse(event.groupId);
         _fireStoreRepository.setUserData(event.data);
         state.registeredId.insert(0, event.groupId);
-        if (FirebaseMessaging.instance.isSupported()) {
-          FirebaseMessaging.instance.subscribeToTopic(event.groupId);
-        }
+        Platform.execute(
+            mobile: () async {
+              if (FirebaseMessaging.instance.isSupported()) {
+                FirebaseMessaging.instance.subscribeToTopic(event.groupId);
+              }
+            },
+            web: () async {});
         emit(RegisterUserState.fromOldState(state, StudentDataStatus.loaded));
       } else {
         showToast("Data handling error", type: ToastType.error);
@@ -102,6 +112,10 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
       emit(GetStudentDataState.fromOldState(
           state, StudentDataStatus.error, null));
       showToast(err.message, type: ToastType.error);
+    } catch (err) {
+      emit(GetStudentDataState.fromOldState(
+          state, StudentDataStatus.error, null));
+      showToast("Data handling error", type: ToastType.error);
     }
   }
 
@@ -176,9 +190,17 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
       List<Course> all = await _adminDataRepository.getGroupsData();
       List<String> registeredCourses =
           await _fireStoreRepository.readAllCourses();
-      for (String id in registeredCourses) {
-        FirebaseMessaging.instance.unsubscribeFromTopic(id);
-      }
+      Platform.execute(
+          mobile: () async {
+            if (FirebaseMessaging.instance.isSupported()) {
+              for (String id in registeredCourses) {
+                FirebaseMessaging.instance.subscribeToTopic(id);
+              }
+              FirebaseMessaging.instance.unsubscribeFromTopic(student.id);
+            }
+          },
+          web: () async {});
+
       emit(GetInitialDataState(
           status: StudentDataStatus.loaded,
           all: all,
@@ -191,10 +213,16 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
   }
 
   Future<void> signOutHandler() async {
-    FirebaseMessaging.instance.unsubscribeFromTopic(student.id);
-    for (String id in state.registeredId) {
-      FirebaseMessaging.instance.unsubscribeFromTopic(id);
-    }
+    Platform.execute(
+        mobile: () async {
+          if (FirebaseMessaging.instance.isSupported()) {
+            for (String id in state.registeredId) {
+              FirebaseMessaging.instance.unsubscribeFromTopic(id);
+            }
+            FirebaseMessaging.instance.unsubscribeFromTopic(student.id);
+          }
+        },
+        web: () async {});
   }
 
   Future<bool> _checkConnectivity() async {

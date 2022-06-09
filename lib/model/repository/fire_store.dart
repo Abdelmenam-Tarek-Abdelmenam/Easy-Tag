@@ -55,8 +55,19 @@ class FireStoreRepository {
     await _firestore.collection("Exams").doc(courseId).set(quiz.toJson);
   }
 
+  Future<void> deleteExamFor(String courseId) async {
+    await _firestore.collection("Exams").doc(courseId).delete();
+  }
+
   Future<void> setExamSolved(String courseId, int grade) async {
     await _firestore.collection("Exams").doc(courseId).update({_id: grade});
+  }
+
+  Future<void> resetExamSolved(String courseId, String userId) async {
+    await _firestore
+        .collection("Exams")
+        .doc(courseId)
+        .update({userId: FieldValue.delete()});
   }
 
   Future<void> setUserData(Map<String, dynamic> data) async {

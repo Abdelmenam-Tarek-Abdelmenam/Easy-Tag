@@ -47,10 +47,9 @@ dependencies:
   #local data
   shared_preferences: ^2.0.13
   #widget
-  curved_navigation_bar: ^1.0.1
   syncfusion_flutter_charts: ^20.1.59
   syncfusion_flutter_sliders: ^20.1.52
-  flutter_typeahead: ^4.0.0
+  flutter_typeahead: ^4.0.0 # not web supported
   fluttertoast: ^8.0.8
   pull_to_refresh: ^2.0.0
   flutter_native_splash: ^1.2.4
@@ -60,19 +59,19 @@ dependencies:
   percent_indicator: ^4.2.0
   # for images
   image_picker: ^0.8.4+4
-  path_provider: ^2.0.8
-  cached_network_image: ^3.2.0
+  path_provider: ^2.0.8 # not web supported
+  cached_network_image: ^3.2.0 # not web supported
   lottie: ^1.3.0
   photo_view:
     git: https://github.com/bluefireteam/photo_view
   # QR Images
   qr_flutter: ^4.0.0
-  qr_code_scanner: ^1.0.0
-  r_scan: ^0.1.6+1
+  qr_code_scanner: ^1.0.0  # not web supported
+  r_scan: ^0.1.6+1 # not web supported
   # for operation
   intl: ^0.17.0
-  permission_handler: ^9.2.0
-  flutter_windowmanager: ^0.2.0
+  permission_handler: ^9.2.0 # not web supported
+  flutter_windowmanager: ^0.2.0 # not web supported
   file_picker: ^4.6.1
 
 dev_dependencies:

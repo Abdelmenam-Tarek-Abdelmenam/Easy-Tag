@@ -6,16 +6,15 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../module/app_admin.dart';
 
+const String kGoogleClientId =
+    '545450328331-kp1nhjd6j4pn3enab0o225664g8h1bvn.apps.googleusercontent.com';
+
 class AuthRepository {
   final FirebaseAuth _auth;
-  final GoogleSignIn _googleSignIn;
+  static final GoogleSignIn _googleSignIn = GoogleSignIn();
   AppAdmin currUser = AppAdmin.empty;
 
-  AuthRepository({
-    FirebaseAuth? auth,
-    GoogleSignIn? googleSignIn,
-  })  : _auth = auth ?? firebase_auth.FirebaseAuth.instance,
-        _googleSignIn = googleSignIn ?? GoogleSignIn.standard();
+  AuthRepository() : _auth = firebase_auth.FirebaseAuth.instance;
 
   Future<void> signUpWithEmailAndPassword({
     required String email,
@@ -33,7 +32,7 @@ class AuthRepository {
       }
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw FireBaseAuthErrors.fromCode(e.code);
-    } catch (_) {
+    } catch (e) {
       throw const FireBaseAuthErrors();
     }
   }
@@ -58,7 +57,7 @@ class AuthRepository {
       }
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw FireBaseAuthErrors.fromCode(e.code);
-    } catch (_) {
+    } catch (e) {
       throw const FireBaseAuthErrors();
     }
   }
@@ -92,7 +91,7 @@ class AuthRepository {
 
   static Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
-    await GoogleSignIn().signOut();
+    await _googleSignIn.signOut();
     PreferenceRepository.clearAllSharedPreference();
   }
 

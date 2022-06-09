@@ -35,7 +35,8 @@ class GroupScreen extends StatelessWidget {
         buildWhen: (prev, next) => next is LoadGroupDataState,
         listener: (context, state) {
           if (state is LoadGroupDataState) {
-            if (state.status == AdminDataStatus.error) {
+            if (state.status == AdminDataStatus.error &&
+                Navigator.of(context).canPop()) {
               Navigator.of(context).pop();
             }
           } else if ((state is GetInitialDataState) &&

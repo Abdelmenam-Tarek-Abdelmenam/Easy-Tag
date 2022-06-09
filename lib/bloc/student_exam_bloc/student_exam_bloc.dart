@@ -25,9 +25,7 @@ class StudentExamBloc extends Cubit<StudentExamStates> {
       } else {
         emit(state.copyWith(status: StudentExamStatus.idle, quiz: quiz.quiz));
       }
-    } catch (err, stack) {
-      print(stack);
-      print(err);
+    } catch (err) {
       showToast("sorry,An error happened");
       emit(state.copyWith(status: StudentExamStatus.error));
     }

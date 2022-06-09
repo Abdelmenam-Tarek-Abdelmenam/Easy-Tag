@@ -25,7 +25,6 @@ class AdminExamBloc extends Cubit<AdminExamStates> {
       emit(state.copyWith(status: AdminExamStatus.uploadedQuiz));
     } catch (e) {
       emit(state.copyWith(status: AdminExamStatus.error));
-      print(e);
     }
   }
 
@@ -64,10 +63,9 @@ class AdminExamBloc extends Cubit<AdminExamStates> {
     try {
       Quiz? quiz = await DbFileHandling().importQuiz();
       emit(state.copyWith(status: AdminExamStatus.idle, quiz: quiz));
-    } catch (err, stack) {
+    } catch (err) {
       showToast("sorry,An error happened");
-      print(err);
-      print(stack);
+
       emit(state.copyWith(status: AdminExamStatus.idle));
     }
   }
