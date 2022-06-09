@@ -28,35 +28,31 @@ Future<void> main() async {
   return BlocOverrides.runZoned(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
-      await Platform.execute(
-        mobile: () async {
-          await Firebase.initializeApp();
-          FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
-          FlutterError.onError =
-              FirebaseCrashlytics.instance.recordFlutterError;
-          FireNotificationHelper();
-        },
-        web: () async {
-          try {
-            WidgetsFlutterBinding.ensureInitialized();
-            await Firebase.initializeApp(
-                name: 'auto-id',
-                options: const FirebaseOptions(
-                    apiKey: "AIzaSyA8sWc0zInh0HX6NdZboODIV0QgqaBVmZ4",
-                    authDomain: "id-presence.firebaseapp.com",
-                    databaseURL:
-                        "https://id-presence-default-rtdb.firebaseio.com",
-                    projectId: "id-presence",
-                    storageBucket: "id-presence.appspot.com",
-                    messagingSenderId: "545450328331",
-                    appId: "1:545450328331:web:88f680a8579dff26d8220e",
-                    measurementId: "G-M3ETBGJ21H"));
-          } catch (e) {
-            print("already initialize");
-          }
-        },
-      );
       await PreferenceRepository.initializePreference();
+
+      await Platform.execute(mobile: () async {
+        await Firebase.initializeApp();
+        FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+        FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+        FireNotificationHelper();
+      }, web: () async {
+        PreferenceRepository.clearDataFromSharedPreference(
+            key: PreferenceKey.isAdmin);
+        if (Firebase.apps.isEmpty) {
+          await Firebase.initializeApp(
+              name: 'auto-id',
+              options: const FirebaseOptions(
+                  apiKey: "AIzaSyA8sWc0zInh0HX6NdZboODIV0QgqaBVmZ4",
+                  authDomain: "id-presence.firebaseapp.com",
+                  databaseURL:
+                      "https://id-presence-default-rtdb.firebaseio.com",
+                  projectId: "id-presence",
+                  storageBucket: "id-presence.appspot.com",
+                  messagingSenderId: "545450328331",
+                  appId: "1:545450328331:web:88f680a8579dff26d8220e",
+                  measurementId: "G-M3ETBGJ21H"));
+        }
+      });
       User? user = FirebaseAuth.instance.currentUser;
       AppAdmin tempUser = AppAdmin.empty;
       bool isAdmin = false;

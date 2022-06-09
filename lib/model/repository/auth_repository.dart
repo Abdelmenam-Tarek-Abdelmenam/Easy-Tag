@@ -90,6 +90,7 @@ class AuthRepository {
   }
 
   static Future<void> signOut() async {
+    PreferenceRepository.clearAllSharedPreference();
     await FirebaseAuth.instance.signOut();
     await _googleSignIn.signOut();
     PreferenceRepository.clearAllSharedPreference();

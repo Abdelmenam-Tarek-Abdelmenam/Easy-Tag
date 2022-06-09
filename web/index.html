@@ -44,7 +44,14 @@
   };
 
   // Initialize Firebase
-   const app = firebase.initializeApp(firebaseConfig);
+  if (!firebase.apps.length) {
+      console.log("1");
+     const app = firebase.initializeApp(firebaseConfig);
+  }else{
+     console.log("2");
+    const app = firebase.app();
+  }
+
    const analytics = firebase.analytics();
 </script>
 
