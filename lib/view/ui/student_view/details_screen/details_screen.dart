@@ -50,47 +50,55 @@ class DetailsScreen extends StatelessWidget {
                 }
               },
               builder: (_, state) => myCourse
-                  ? SizedBox(
-                      height: 50,
-                      child: Row(
-                        children: [
-                          state.status == StudentDataStatus.loading
-                              ? const Expanded(
-                                  child: Center(
-                                      child: CircularProgressIndicator()))
-                              : Expanded(
-                                  child: ElevatedButton.icon(
-                                    onPressed: () {
-                                      context
-                                          .read<StudentDataBloc>()
-                                          .add(WantUserDataEvent(course.id));
-                                    },
-                                    label: const Text('My Data'),
-                                    icon: const Icon(
-                                      Icons.person,
-                                      size: 30,
+                  ? Container(
+                color: Colors.black.withOpacity(0.1),
+                    child: SizedBox(
+                        height: 50,
+                        child: Row(
+                          children: [
+                            state.status == StudentDataStatus.loading
+                                ? const Expanded(
+                                    child: Center(
+                                        child: CircularProgressIndicator()))
+                                : Expanded(
+                                    child: TextButton.icon(
+                                      style: ButtonStyle(
+                                          foregroundColor: MaterialStateProperty.all(Colors.blue)),
+                                      onPressed: () {
+                                        context
+                                            .read<StudentDataBloc>()
+                                            .add(WantUserDataEvent(course.id));
+                                      },
+                                      label: const Text('My Data'),
+                                      icon: const Icon(
+                                        Icons.person,
+                                        size: 30,
+                                      ),
                                     ),
                                   ),
-                                ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: ElevatedButton.icon(
-                              onPressed: () {
-                                navigateAndPush(
-                                    context, IntroExamScreen(course.id));
-                              },
-                              label: const Text('Quiz'),
-                              icon: const Icon(
-                                Icons.question_mark,
-                                size: 30,
-                              ),
+                            const SizedBox(
+                              width: 10,
                             ),
-                          )
-                        ],
+                            Expanded(
+                              child: TextButton.icon(
+                                style: ButtonStyle(
+                                    foregroundColor: MaterialStateProperty.all(Colors.blue)),
+                                onPressed: () {
+                                  navigateAndPush(
+
+                                      context, IntroExamScreen(course.id));
+                                },
+                                label: const Text('Quiz'),
+                                icon: const Icon(
+                                  Icons.question_mark,
+                                  size: 30,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    )
+                  )
                   : button(
                       "Register",
                       (course.getDate.difference(DateTime.now()).isNegative

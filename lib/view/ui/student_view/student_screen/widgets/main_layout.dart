@@ -182,6 +182,7 @@ class UserScreenLayout extends StatelessWidget {
                     height: 5,
                   ),
                   Container(
+                    margin: const EdgeInsets.all(10),
                     color: ColorManager.blackColor.withOpacity(0.8),
                     child: ListView.builder(
                       itemBuilder: (_, index) {
@@ -198,7 +199,23 @@ class UserScreenLayout extends StatelessWidget {
                                 style: const TextStyle(fontSize: 40),
                               ),
                               tileColor: Colors.white,
-                              trailing: coursePhoto(courses[index].logo),
+                              trailing: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ElevatedButton(
+                                    style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all(
+                                            ColorManager.lightBlue),
+                                        foregroundColor: MaterialStateProperty.all(
+                                            ColorManager.whiteColor),
+                                        elevation: MaterialStateProperty.all(0),
+                                        fixedSize: MaterialStateProperty.all(
+                                            const Size(180, 20))),
+                                    onPressed: () {
+                                      navigateAndPush(
+                                          context, DetailsScreen(courses[index]));
+                                    },
+                                    child: const Text("More details")),
+                              ),
                               subtitle: Text(courses[index].category +
                                   ' - ' +
                                   courses[index].inPlace),
@@ -206,20 +223,7 @@ class UserScreenLayout extends StatelessWidget {
                               textColor: Colors.white,
                               //onTap: (){ navigateAndPush(context, DetailsScreen(courses[index]));},
                             ),
-                            ElevatedButton(
-                                style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(
-                                        ColorManager.lightBlue),
-                                    foregroundColor: MaterialStateProperty.all(
-                                        ColorManager.whiteColor),
-                                    elevation: MaterialStateProperty.all(0),
-                                    fixedSize: MaterialStateProperty.all(
-                                        const Size(180, 20))),
-                                onPressed: () {
-                                  navigateAndPush(
-                                      context, DetailsScreen(courses[index]));
-                                },
-                                child: const Text("More details")),
+
                             index != courses.length - 1
                                 ? const Divider(color: Colors.white)
                                 : Container(),

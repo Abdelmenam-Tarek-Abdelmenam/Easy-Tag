@@ -14,29 +14,32 @@ class FieldDesign extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Icon(
-            icon,
-            color: ColorManager.mainBlue,
-            size: 20,
-          ),
-          const SizedBox(
-            width: 25,
-          ),
-          Text(
-            "$title : ",
-            style: const TextStyle(
-                color: ColorManager.mainBlue,
-                fontSize: 16,
-                fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(
-            width: 5,
-          ),
-          Expanded(child: SelectableText(body))
-        ],
+      child: SizedBox(
+        width: 400,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Icon(
+              icon,
+              color: ColorManager.mainBlue,
+              size: 20,
+            ),
+            const SizedBox(
+              width: 25,
+            ),
+            Text(
+              "$title : ",
+              style: const TextStyle(
+                  color: ColorManager.mainBlue,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            SelectableText(body)
+          ],
+        ),
       ),
     );
   }

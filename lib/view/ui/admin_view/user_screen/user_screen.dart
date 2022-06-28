@@ -85,24 +85,27 @@ class UserScreen extends StatelessWidget {
                 ]),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: ListView(
-          children: [
-            CircleAvatar(
-              radius: 55,
-              foregroundColor: Colors.white,
-              backgroundColor: ColorManager.mainBlue,
-              child: userPhoto(url: student.image),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            ...List.generate(student.getProps.length,
-                (i) => isHide(student.getProps[i] == null, fields[i])),
-            const SizedBox(
-              height: 10,
-            ),
-            attendanceWidget()
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                radius: 55,
+                foregroundColor: Colors.white,
+                backgroundColor: ColorManager.mainBlue,
+                child: userPhoto(url: student.image),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ...List.generate(student.getProps.length,
+                  (i) => isHide(student.getProps[i] == null, fields[i])),
+              const SizedBox(
+                height: 10,
+              ),
+              attendanceWidget()
+            ],
+          ),
         ),
       ),
     );
