@@ -22,7 +22,7 @@ class _LoginViewState extends State<LoginView> {
       },
       child: Scaffold(
         bottomNavigationBar: Image.asset('images/eme_logo.png',height: 50,),
-        backgroundColor: ColorManager.whiteColor,
+        backgroundColor: ColorManager.blackColor.withOpacity(0.1),
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(
@@ -43,19 +43,9 @@ class _LoginViewState extends State<LoginView> {
                   ],
                 ),
               ),
-              // const SizedBox(
-              //   height: 40,
-              // ),
-              const MainLoginWidget(),
-
-              // const Text(
-              //   StringManger.appSlogan,
-              //   style: TextStyle(
-              //       fontSize: 14,
-              //       fontWeight: FontWeight.w400,
-              //       color: ColorManager.darkGrey),
-              //   textAlign: TextAlign.center,
-              // ),
+              const SizedBox(
+                  width: 450,
+                  child: MainLoginWidget()),
             ],
           ),
         ),

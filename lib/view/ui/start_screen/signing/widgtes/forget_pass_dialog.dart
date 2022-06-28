@@ -17,6 +17,7 @@ class ForgetPassword extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 220,
+      width: 500,
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -454,6 +454,7 @@ class _MainLoginWidgetState extends State<MainLoginWidget> {
   Widget usedButton(Widget child, Function() onPressed) => Container(
         margin: const EdgeInsets.symmetric(horizontal: 30),
         width: double.infinity,
+        height: 50,
         decoration: const BoxDecoration(
           color: ColorManager.mainBlue,
           borderRadius: BorderRadius.all(Radius.circular(25)),
