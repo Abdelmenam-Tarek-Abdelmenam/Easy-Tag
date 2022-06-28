@@ -16,18 +16,20 @@ class Histogram extends StatelessWidget {
           color: ColorManager.whiteColor,
           borderRadius: BorderRadius.circular(20)),
       padding: const EdgeInsets.fromLTRB(20, 25, 20, 0),
-      child: SfCartesianChart(
-        series: <ChartSeries>[
-          HistogramSeries<int, int>(
-              color: ColorManager.mainBlue,
-              dataSource: data,
-              showNormalDistributionCurve: true,
-              curveColor: const Color.fromRGBO(192, 108, 132, 1),
-              binInterval: 1,
-              yValueMapper: (int data, _) => data)
-        ],
-        title: ChartTitle(text: title),
-      ),
+      child: data.isEmpty
+          ? const Center(child: Text("No Student Yet"))
+          : SfCartesianChart(
+              series: <ChartSeries>[
+                HistogramSeries<int, int>(
+                    color: ColorManager.mainBlue,
+                    dataSource: data,
+                    showNormalDistributionCurve: true,
+                    curveColor: const Color.fromRGBO(192, 108, 132, 1),
+                    binInterval: 1,
+                    yValueMapper: (int data, _) => data)
+              ],
+              title: ChartTitle(text: title),
+            ),
     );
   }
 }

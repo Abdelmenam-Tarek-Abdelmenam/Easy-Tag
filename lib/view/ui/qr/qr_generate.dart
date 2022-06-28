@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:auto_id/view/shared/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
@@ -162,7 +161,6 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
 
     String realData = json.encode(registerData);
     final enCodedJson = utf8.encode(realData);
-    final gZipJson = gzip.encode(enCodedJson);
-    qrData = base64.encode(gZipJson);
+    qrData = base64.encode(enCodedJson);
   }
 }
