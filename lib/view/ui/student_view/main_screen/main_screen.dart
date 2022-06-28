@@ -84,7 +84,8 @@ class StudentMainScreen extends StatelessWidget {
                         buildWhen: (_, state) =>
                             state is GetInitialDataState, // check state
                         builder: (context, state) {
-                          if (state.status == StudentDataStatus.loading) {
+                          if (state.status == StudentDataStatus.loading
+                          ) {
                             return Shimmer.fromColors(
                                 baseColor: Colors.grey.withOpacity(0.5),
                                 highlightColor: Colors.white,
@@ -110,17 +111,18 @@ class StudentMainScreen extends StatelessWidget {
                                 ],
                               );
                             }
-                            return ListView.separated(
-                                physics: const BouncingScrollPhysics(),
-                                itemBuilder: (_, index) {
-                                  return CourseCardDesign(
-                                    state.getCourses[index],
-                                  );
-                                },
-                                separatorBuilder: (_, __) => const SizedBox(
-                                      height: 8,
-                                    ),
-                                itemCount: state.courses.length);
+                            return SingleChildScrollView(
+                              physics: const BouncingScrollPhysics(),
+                              child: Wrap(
+                                children: List.generate(
+                                    state.courses.length, (index) =>
+                                    SizedBox(
+                                      width: 500,
+                                      child: CourseCardDesign(
+                                state.getCourses[index],
+                              ),
+                                    )),),
+                            );
                           }
                         }),
                   )

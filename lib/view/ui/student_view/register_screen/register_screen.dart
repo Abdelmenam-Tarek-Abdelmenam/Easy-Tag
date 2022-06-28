@@ -123,9 +123,10 @@ class RegisterScreen extends StatelessWidget {
         appBar: appBar(course.name),
         backgroundColor: ColorManager.whiteColor,
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
+          child: Center(
+            child: SizedBox(
+              width: 500,
+              child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Form(
                   key: formKey,
@@ -148,7 +149,7 @@ class RegisterScreen extends StatelessWidget {
                   ),
                 ),
               ),
-            ],
+            ),
           ),
         ),
       ),
