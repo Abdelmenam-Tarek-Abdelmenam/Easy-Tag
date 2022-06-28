@@ -56,6 +56,7 @@ dependencies:
   qr_flutter: ^4.0.0
   qr_code_scanner: ^1.0.0  # not web supported
   r_scan: ^0.1.6+1 # not web supported
+  mobile_scanner: ^2.0.0
   # for operation
   intl: ^0.17.0
   permission_handler: ^9.2.0 # not web supported

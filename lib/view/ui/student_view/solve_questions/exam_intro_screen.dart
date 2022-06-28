@@ -5,7 +5,6 @@ import 'package:auto_id/view/ui/student_view/solve_questions/user_exam_screen.da
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../shared/functions/navigation_functions.dart';
-import 'package:lottie/lottie.dart';
 
 class IntroExamScreen extends StatefulWidget {
   const IntroExamScreen(this.id, {Key? key}) : super(key: key);
@@ -58,21 +57,19 @@ class _IntroExamScreenState extends State<IntroExamScreen> {
                     ? state.status == StudentExamStatus.loadingUpload
                         ? const Center(child: CircularProgressIndicator())
                         : Center(
-                          child: SizedBox(
-                            width: 300,
-                            height: 300,
-                            child: Container()
+                            child: SizedBox(
+                                width: 300, height: 300, child: Container()
 
-                  //           Lottie.asset(
-                  //               'images/lottie/counter.json',
-                  //               repeat: true,
-                  // width: 300,
-                  // height: 300,
-                  //             ),
-                          ),
-                        )
+                                //           Lottie.asset(
+                                //               'images/lottie/counter.json',
+                                //               repeat: true,
+                                // width: 300,
+                                // height: 300,
+                                //             ),
+                                ),
+                          )
                     : Center(
-                      child: Column(
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Padding(
@@ -114,7 +111,7 @@ class _IntroExamScreenState extends State<IntroExamScreen> {
                             startButton(),
                           ],
                         ),
-                    ),
+                      ),
               );
           }
         },

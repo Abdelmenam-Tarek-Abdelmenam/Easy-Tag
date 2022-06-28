@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:auto_id/bloc/student_bloc/student_data_bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:r_scan/r_scan.dart';
@@ -23,80 +25,104 @@ class _QrReadScreenState extends State<QrReadScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: appBar(
-          "Scan The QR",
-          actions: [
-            TextButton(
-                onPressed: () async {
-                  if (await Permission.camera.request().isGranted) {
-                    XFile? xFile = await ImagePicker()
-                        .pickImage(source: ImageSource.gallery);
-                    if (xFile != null) {
-                      // File file = File(xFile.path);
-                      final result = await RScan.scanImagePath(xFile.path);
-                      String data = result.message ?? "";
-                      if (data.isEmpty) {
-                        showToast("No Data Detected");
-                      } else {
-                        _encodedData(data);
-                      }
+    return kIsWeb
+        ? BlocListener<StudentDataBloc, StudentDataStates>(
+            listenWhen: (_, state) => state is QrReadState,
+            listener: (context, state) {
+              if (state.status == StudentDataStatus.loaded) {
+                Navigator.of(context).pop();
+              }
+            },
+            child: Scaffold(
+              appBar: appBar("Scan The QR"),
+              body: MobileScanner(
+                  allowDuplicates: false,
+                  onDetect: (barcode, args) {
+                    if (barcode.rawValue == null) {
+                      showToast("No Data Detected");
                     } else {
-                      showToast("cannot open gallery");
+                      final String code = barcode.rawValue!;
+                      _encodedData(code);
                     }
-                  }
-                },
-                style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.all(Colors.black)),
-                child: Row(
-                  children: const [
-                    Text('From Files'),
-                    Icon(Icons.upload_file),
-                  ],
-                ))
-          ],
-        ),
-        floatingActionButton: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(
-              width: 20,
+                  }),
             ),
-            FloatingActionButton(
-              heroTag: 'tag1',
-              child: const Icon(Icons.highlight_rounded),
-              backgroundColor: Colors.white,
-              foregroundColor: ColorManager.mainBlue,
-              onPressed: () {
-                controller.toggleFlash();
+          )
+        : Scaffold(
+            appBar: appBar(
+              "Scan The QR",
+              actions: [
+                TextButton(
+                    onPressed: () async {
+                      if (await Permission.camera.request().isGranted) {
+                        XFile? xFile = await ImagePicker()
+                            .pickImage(source: ImageSource.gallery);
+                        if (xFile != null) {
+                          // File file = File(xFile.path);
+                          final result = await RScan.scanImagePath(xFile.path);
+                          String data = result.message ?? "";
+                          if (data.isEmpty) {
+                            showToast("No Data Detected");
+                          } else {
+                            showToast("QR Detected", type: ToastType.info);
+                            _encodedData(data);
+                          }
+                        } else {
+                          showToast("cannot open gallery");
+                        }
+                      }
+                    },
+                    style: ButtonStyle(
+                        foregroundColor:
+                            MaterialStateProperty.all(Colors.black)),
+                    child: Row(
+                      children: const [
+                        Text('From Files'),
+                        Icon(Icons.upload_file),
+                      ],
+                    ))
+              ],
+            ),
+            floatingActionButton: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  width: 20,
+                ),
+                FloatingActionButton(
+                  heroTag: 'tag1',
+                  child: const Icon(Icons.highlight_rounded),
+                  backgroundColor: Colors.white,
+                  foregroundColor: ColorManager.mainBlue,
+                  onPressed: () {
+                    controller.toggleFlash();
+                  },
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                FloatingActionButton(
+                  heroTag: 'tag2',
+                  child: const Icon(Icons.camera_alt_outlined),
+                  backgroundColor: Colors.white,
+                  foregroundColor: ColorManager.mainBlue,
+                  onPressed: () {
+                    controller.flipCamera();
+                  },
+                ),
+              ],
+            ),
+            body: BlocListener<StudentDataBloc, StudentDataStates>(
+              listenWhen: (_, state) => state is QrReadState,
+              listener: (context, state) {
+                if (state.status == StudentDataStatus.loaded) {
+                  Navigator.of(context).pop();
+                }
+                if (state.status == StudentDataStatus.error) {
+                  controller.resumeCamera();
+                }
               },
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            FloatingActionButton(
-              heroTag: 'tag2',
-              child: const Icon(Icons.camera_alt_outlined),
-              backgroundColor: Colors.white,
-              foregroundColor: ColorManager.mainBlue,
-              onPressed: () {
-                controller.flipCamera();
-              },
-            ),
-          ],
-        ),
-        body: BlocListener<StudentDataBloc, StudentDataStates>(
-          listenWhen: (_, state) => state is QrReadState,
-          listener: (context, state) {
-            if (state.status == StudentDataStatus.loaded) {
-              Navigator.of(context).pop();
-            }
-            if (state.status == StudentDataStatus.error) {
-              controller.resumeCamera();
-            }
-          },
-          child: _createScanUi(),
-        ));
+              child: _createScanUi(),
+            ));
   }
 
   Widget _createScanUi() {

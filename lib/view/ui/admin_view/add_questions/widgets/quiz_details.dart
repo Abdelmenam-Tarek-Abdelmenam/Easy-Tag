@@ -1,7 +1,6 @@
 import 'package:auto_id/model/module/exam_question.dart';
 import 'package:auto_id/view/shared/responsive.dart';
 import 'package:auto_id/view/ui/admin_view/add_questions/widgets/duration_buttons.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -14,9 +13,9 @@ class QuizDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding:  EdgeInsets.all( Responsive.isMobile(context)? 10: 40),
+      padding: EdgeInsets.all(Responsive.isMobile(context) ? 10 : 40),
       margin: const EdgeInsets.all(10),
-      decoration:  BoxDecoration(
+      decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
                 color: ColorManager.blackColor.withOpacity(0.4),
