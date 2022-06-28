@@ -57,56 +57,64 @@ class _IntroExamScreenState extends State<IntroExamScreen> {
                 child: startCounter
                     ? state.status == StudentExamStatus.loadingUpload
                         ? const Center(child: CircularProgressIndicator())
-                        : Lottie.asset(
-                            'images/lottie/counter.json',
-                            repeat: false,
-                          )
-                    : Wrap(
-                        spacing: 20,
-                        runSpacing: 20,
-                        runAlignment: WrapAlignment.center,
-                        alignment: WrapAlignment.center,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: Column(
-                              children: [
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                Text(
-                                  state.quiz.title,
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w300),
-                                ),
-                                Text(
-                                  '${state.quiz.questions.length} question in ${state.quiz.timeout.inMinutes} min',
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w300),
-                                ),
-                                const Text(
-                                  'when you are ready click start',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w300),
-                                ),
-                                const Text(
-                                  "Note\nAfter clicking on start you can't attempt the quiz again",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.deepOrange),
-                                ),
-                              ],
-                            ),
+                        : Center(
+                          child: SizedBox(
+                            width: 300,
+                            height: 300,
+                            child: Container()
+
+                  //           Lottie.asset(
+                  //               'images/lottie/counter.json',
+                  //               repeat: true,
+                  // width: 300,
+                  // height: 300,
+                  //             ),
                           ),
-                          startButton(),
-                        ],
-                      ),
+                        )
+                    : Center(
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(15),
+                              child: Column(
+                                children: [
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Text(
+                                    state.quiz.title,
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w300),
+                                  ),
+                                  Text(
+                                    '${state.quiz.questions.length} question in ${state.quiz.timeout.inMinutes} min',
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w300),
+                                  ),
+                                  const Text(
+                                    'when you are ready click start',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w300),
+                                  ),
+                                  const Text(
+                                    "Note\nAfter clicking on start you can't attempt the quiz again",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.deepOrange),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            startButton(),
+                          ],
+                        ),
+                    ),
               );
           }
         },
@@ -136,7 +144,7 @@ class _IntroExamScreenState extends State<IntroExamScreen> {
     setState(() {
       startCounter = true;
     });
-    Timer(const Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 1), () {
       context.read<StudentExamBloc>().publishResults(0);
     });
   }

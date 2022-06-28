@@ -34,16 +34,16 @@ class StudentExamBloc extends Cubit<StudentExamStates> {
   publishResults(int score, {int? duration}) async {
     emit(state.copyWith(status: StudentExamStatus.loadingUpload));
     try {
-      await _fireStoreRepository.setExamSolved(state.id, score);
-      if (duration != null) {
-        await WebServices().saveUserScore(
-            userId: StudentDataBloc.student.id,
-            sheetId: state.id,
-            quizId: state.quiz.title + "/-/" + state.quiz.getRandomText,
-            score: score,
-            time: duration,
-            len: state.quiz.length);
-      }
+      // await _fireStoreRepository.setExamSolved(state.id, score);
+      // if (duration != null) {
+      //   await WebServices().saveUserScore(
+      //       userId: StudentDataBloc.student.id,
+      //       sheetId: state.id,
+      //       quizId: state.quiz.title + "/-/" + state.quiz.getRandomText,
+      //       score: score,
+      //       time: duration,
+      //       len: state.quiz.length);
+      // }
       emit(state.copyWith(status: StudentExamStatus.loadedUpload));
     } catch (err) {
       showToast("sorry,An error happened");
