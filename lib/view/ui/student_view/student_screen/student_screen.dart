@@ -7,9 +7,7 @@ import 'package:auto_id/view/ui/student_view/student_screen/widgets/main_layout.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../shared/widgets/app_bar.dart';
-import '../../admin_view/add_questions/instructor_exam_screen.dart';
 import '../../start_screen/signing/login_screen.dart';
-import '../solve_questions/exam_intro_screen.dart';
 
 class StudentScreen extends StatelessWidget {
   const StudentScreen({Key? key}) : super(key: key);
@@ -84,38 +82,11 @@ class StudentScreen extends StatelessWidget {
               ),
             ),
             const UserScreenLayout(),
-            ...testQuiz(context)
           ],
         ),
       ),
     );
   }
-
-  List<Widget> testQuiz(BuildContext context) => [
-        const SizedBox(
-          height: 20,
-        ),
-        const Text(
-          'Quizes',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        ElevatedButton(
-            onPressed: () {
-              navigateAndPush(
-                  context,
-                  const IntroExamScreen(
-                      "1ar8i-uuFhbRjQrJEXaqJ1N90N14DVZ9R-iCl9NKYAWc"));
-            },
-            child: const Text('Take the stored quiz')),
-        ElevatedButton(
-            onPressed: () {
-              navigateAndPush(
-                  context,
-                  InstructorExamScreen(
-                      "1ar8i-uuFhbRjQrJEXaqJ1N90N14DVZ9R-iCl9NKYAWc")); // edit existing one
-            },
-            child: const Text('Create other quiz')),
-      ];
 
   Widget userPhoto({String? url}) {
     url = url ??

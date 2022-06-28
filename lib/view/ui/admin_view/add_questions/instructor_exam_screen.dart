@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:auto_id/model/module/exam_question.dart';
 import 'package:auto_id/view/resources/color_manager.dart';
+import 'package:auto_id/view/shared/functions/dialogs.dart';
 import 'package:auto_id/view/ui/admin_view/add_questions/widgets/histogram.dart';
 import 'package:auto_id/view/ui/admin_view/add_questions/widgets/quiz_details.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,11 @@ class InstructorExamScreen extends StatelessWidget {
               FloatingActionButton(
                 child: const Icon(Icons.save_outlined),
                 onPressed: () {
-                  context.read<AdminExamBloc>().saveQuiz();
+                  customChoiceDialog(context,
+                      title: "Confirmation",
+                      content: "Are you sure you want to upload the quiz?",
+                      yesFunction: () =>
+                          context.read<AdminExamBloc>().saveQuiz());
                 },
               ),
               FloatingActionButton(

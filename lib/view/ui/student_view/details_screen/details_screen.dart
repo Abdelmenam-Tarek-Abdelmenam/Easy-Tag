@@ -1,14 +1,17 @@
 import 'package:auto_id/bloc/student_bloc/student_data_bloc.dart';
 import 'package:auto_id/view/shared/functions/navigation_functions.dart';
+import 'package:auto_id/view/shared/widgets/toast_helper.dart';
 import 'package:auto_id/view/ui/student_view/details_screen/widgets/details_layout.dart';
 import 'package:auto_id/view/ui/student_view/register_screen/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../model/module/course.dart';
 import '../../../resources/color_manager.dart';
 import '../../../shared/widgets/app_bar.dart';
 import '../../admin_view/edit_course/edit_course_screen.dart';
 import '../../admin_view/user_screen/user_screen.dart';
+import '../solve_questions/exam_intro_screen.dart';
 
 class DetailsScreen extends StatelessWidget {
   final Course course;
@@ -46,21 +49,63 @@ class DetailsScreen extends StatelessWidget {
                           groupIndex: -1));
                 }
               },
-              builder: (_, state) => button(
-                  myCourse ? "Show my data" : "Register",
-                  myCourse
-                      ? () {
-                          context
-                              .read<StudentDataBloc>()
-                              .add(WantUserDataEvent(course.id));
-                        }
-                      : (course.getDate.difference(DateTime.now()).isNegative
+              builder: (_, state) => myCourse
+                  ? SizedBox(
+                      height: 50,
+                      child: Row(
+                        children: [
+                          state.status == StudentDataStatus.loading
+                              ? const Expanded(
+                                  child: Center(
+                                      child: CircularProgressIndicator()))
+                              : Expanded(
+                                  child: ElevatedButton.icon(
+                                    onPressed: () {
+                                      context
+                                          .read<StudentDataBloc>()
+                                          .add(WantUserDataEvent(course.id));
+                                    },
+                                    label: const Text('My Data'),
+                                    icon: const Icon(
+                                      Icons.person,
+                                      size: 30,
+                                    ),
+                                  ),
+                                ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: () {
+                                navigateAndPush(
+                                    context, IntroExamScreen(course.id));
+                              },
+                              label: const Text('Quiz'),
+                              icon: const Icon(
+                                Icons.question_mark,
+                                size: 30,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  : button(
+                      "Register",
+                      (course.getDate.difference(DateTime.now()).isNegative
                           ? null
-                          : () {
-                              navigateAndPush(context,
-                                  RegisterScreen(course, null, null, null));
+                          : () async {
+                              if (course.registrationForm != null) {
+                                if (!await launchUrl(course.form)) {
+                                  showToast('Could not launch');
+                                }
+                              } else {
+                                navigateAndPush(context,
+                                    RegisterScreen(course, null, null, null));
+                              }
                             }),
-                  loading: state.status == StudentDataStatus.loading),
+                      loading: state.status == StudentDataStatus.loading),
             )
           : button("Edit Course",
               () => navigateAndPush(context, EditCourseScreen(course))),

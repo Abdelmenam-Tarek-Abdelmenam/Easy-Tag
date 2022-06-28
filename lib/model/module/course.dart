@@ -6,6 +6,7 @@ const String _onlineLogo =
 class Course {
   late String name;
   late String id;
+  String? registrationForm;
   int? numberOfSessions;
   late int price;
   late String description;
@@ -18,6 +19,7 @@ class Course {
   late List<bool> columns;
 
   DateTime get getDate => DateFormat('dd-MM-yyyy').parse(date);
+  Uri get form => Uri.parse(registrationForm!);
 
   Course.fromJson(json, String cId) {
     id = cId;
@@ -30,12 +32,15 @@ class Course {
     inPlace = json['inPlace'];
     logo = json['logo'] ?? _onlineLogo;
     date = json['startDate'];
+    registrationForm = json['registrationForm'];
     // columns = json['columnNames'].map((e) => e.toString() == "true").toList();
     instructors = List<String>.from(json['instructorsNames']);
     columns = List<bool>.from(json['columnNames']);
   }
   void editCourse(Map<String, dynamic> json) {
     name = json['name'];
+    registrationForm = json['registrationForm'];
+
     numberOfSessions = json['numberOfSessions'];
     price = json['priceController'];
     description = json['description'];
@@ -57,6 +62,7 @@ class Course {
         "inPlace": inPlace,
         "logo": logo,
         "startDate": date,
+        "registrationForm": registrationForm,
         "instructorsNames": instructors,
       };
 }

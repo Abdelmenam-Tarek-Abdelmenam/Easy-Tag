@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../shared/widgets/toast_helper.dart';
 import '../../qr/qr_generate.dart';
+import '../add_questions/instructor_exam_screen.dart';
 
 class GroupScreen extends StatelessWidget {
   final int groupIndex;
@@ -74,6 +75,28 @@ class GroupScreen extends StatelessWidget {
                                 size: 30,
                               ),
                               Text('Detail'),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: InkWell(
+                          onTap: () {
+                            navigateAndPush(
+                                context,
+                                InstructorExamScreen(state.groupList[groupIndex]
+                                    .id)); // edit existing one
+                          },
+                          child: Column(
+                            children: const [
+                              Icon(
+                                Icons.question_mark,
+                                size: 30,
+                                color: Colors.lightBlue,
+                              ),
+                              Text('Quiz'),
                             ],
                           ),
                         ),

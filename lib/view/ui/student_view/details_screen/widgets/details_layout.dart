@@ -28,7 +28,7 @@ class DetailsLayout extends StatelessWidget {
             },
             {'title': 'Start Date', 'val': course.date},
             {
-              'title': 'Number of sessions',
+              'title': 'Course duration',
               'val': course.numberOfSessions.toString()
             },
           ]
@@ -48,8 +48,9 @@ class DetailsLayout extends StatelessWidget {
                                   color: ColorManager.mainBlue,
                                   fontWeight: FontWeight.bold),
                             ),
-                            Text(
+                            SelectableText(
                               e['val']!,
+                              textDirection: TextDirection.rtl,
                               // maxLines: 1,
                               // overflow: TextOverflow.ellipsis,
                               style: const TextStyle(

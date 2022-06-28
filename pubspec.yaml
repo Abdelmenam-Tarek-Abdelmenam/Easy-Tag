@@ -73,6 +73,7 @@ dependencies:
   permission_handler: ^9.2.0 # not web supported
   flutter_windowmanager: ^0.2.0 # not web supported
   file_picker: ^4.6.1
+  url_launcher: ^6.1.4
 
 dev_dependencies:
   flutter_test:

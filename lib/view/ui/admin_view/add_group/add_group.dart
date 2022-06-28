@@ -47,6 +47,7 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
 
   var formKey = GlobalKey<FormState>();
   var sheetName = TextEditingController();
+  var formLink = TextEditingController();
   var numberOfSessions = TextEditingController(text: "1");
   var priceController = TextEditingController(text: "1000");
   TextEditingController description = TextEditingController();
@@ -179,6 +180,13 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
                   fontWeight: FontWeight.bold),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: DefaultFormField(
+                controller: formLink,
+                title: "registration Form if exist",
+                prefix: Icons.link),
+          ),
           chooseColumnName(),
         ],
       );
@@ -206,7 +214,7 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(" Number of sessions",
+              const Text("Course Duration",
                   style: TextStyle(
                     fontSize: 18,
                     color: ColorManager.darkGrey,
@@ -558,6 +566,7 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
       "category": category,
       "inPlace": inPlace,
       "logo": link,
+      "registrationForm": formLink.text,
       "startDate": DateFormat('dd-MM-yyyy').format(startDate),
       "instructorsNames": instructors.map((e) => e.name).toList(),
       "instructorsEmails": instructors.map((e) => e.email).toList(),
