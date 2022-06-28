@@ -13,15 +13,18 @@ class SendConfigScreen extends StatelessWidget {
       bottomNavigationBar: poweredBy(),
       appBar: appBar('Device Configuration'),
       // resizeToAvoidBottomInset: true,
-      backgroundColor: ColorManager.whiteColor,
-      body: ListView(
-        physics: const BouncingScrollPhysics(),
+      backgroundColor: ColorManager.blackColor.withOpacity(0.1),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           topWidget(),
           const SizedBox(
             height: 40,
           ),
-          MainConfigWidget()
+          Center(child: SizedBox(
+              width: 500,
+              child: MainConfigWidget()))
         ],
       ),
     );

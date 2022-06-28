@@ -9,7 +9,9 @@ class HomeAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Padding(
       padding: EdgeInsets.all(8.0),
-      child: SearchBar(),
+      child: SizedBox(
+          width: double.infinity,
+          child: SearchBar()),
     );
   }
 }

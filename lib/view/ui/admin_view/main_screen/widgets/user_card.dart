@@ -208,9 +208,9 @@ class CardBox extends StatelessWidget {
     return Container(
         decoration: BoxDecoration(
             color: Colors.blue[100],
-            //border: Border.all(color: ColorManager.mainBlue),
+            border: Border.all(color: ColorManager.mainBlue),
             borderRadius: BorderRadius.circular(10)),
-        width: double.infinity,
+        width: 500,
         // height: 200,
         child: Column(
           children: [

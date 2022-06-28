@@ -5,7 +5,6 @@ import 'package:auto_id/view/shared/widgets/toast_helper.dart';
 import 'package:auto_id/view/ui/admin_view/add_rfid/widgets/serach_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../bloc/admin_bloc/admin_data_bloc.dart';
 import '../../../shared/widgets/app_bar.dart';
 

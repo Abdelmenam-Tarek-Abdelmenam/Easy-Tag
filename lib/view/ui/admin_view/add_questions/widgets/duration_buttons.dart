@@ -19,12 +19,12 @@ class DurationButton extends StatelessWidget {
       onPressed: onPressed,
       child: Icon(
         icon,
-        size: 40,
+        size: 30,
       ),
       style: ButtonStyle(
           foregroundColor: MaterialStateProperty.all(color),
           backgroundColor: MaterialStateProperty.all(ColorManager.blackColor),
-          fixedSize: MaterialStateProperty.all(const Size.square(50))),
+          fixedSize: MaterialStateProperty.all(const Size.square(80))),
     );
   }
 }

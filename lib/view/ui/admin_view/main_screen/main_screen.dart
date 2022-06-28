@@ -86,33 +86,35 @@ class MainScreen extends StatelessWidget {
                       if (myState && (state.status == AdminDataStatus.error)) {
                         return emptyGroups();
                       } else {
-                        return ListView(
+                        return SingleChildScrollView(
                           physics: const BouncingScrollPhysics(),
-                          children: [
-                            UserCard(
-                                (state).cardStudent,
-                                myState &&
-                                    (state.status == AdminDataStatus.loading)),
-                            const Divider(height: 10),
-                            const HomeAppBar(),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            const Text(
-                              'Groups',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            GroupList(
-                                state.groupList,
-                                myState &&
-                                    (state.status == AdminDataStatus.loading)),
-                          ],
+                          child: Column(
+                            children: [
+                              UserCard(
+                                  (state).cardStudent,
+                                  myState &&
+                                      (state.status == AdminDataStatus.loading)),
+                              const Divider(height: 10),
+                              const HomeAppBar(),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              const Text(
+                                'Groups',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GroupList(
+                                  state.groupList,
+                                  myState &&
+                                      (state.status == AdminDataStatus.loading)),
+                            ],
+                          ),
                         );
                       }
                     })),

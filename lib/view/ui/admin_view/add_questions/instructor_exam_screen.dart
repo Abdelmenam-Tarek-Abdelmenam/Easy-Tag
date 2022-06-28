@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:auto_id/model/module/exam_question.dart';
 import 'package:auto_id/view/resources/color_manager.dart';
 import 'package:auto_id/view/shared/functions/dialogs.dart';
+import 'package:auto_id/view/shared/responsive.dart';
 import 'package:auto_id/view/ui/admin_view/add_questions/widgets/histogram.dart';
 import 'package:auto_id/view/ui/admin_view/add_questions/widgets/quiz_details.dart';
 import 'package:flutter/material.dart';
@@ -35,54 +36,148 @@ class InstructorExamScreen extends StatelessWidget {
           }
         },
         builder: (context, state) => Scaffold(
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
-          floatingActionButton: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              FloatingActionButton(
-                child: const Icon(Icons.file_copy_outlined),
-                onPressed: () {
-                  context.read<AdminExamBloc>().getQuestionFromFile();
-                },
+          bottomNavigationBar: Container(
+            color: ColorManager.darkWhite,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: InkWell(
+                      onTap: () {
+                        context.read<AdminExamBloc>().getQuestionFromFile();
+                      },
+                      child: Column(
+                        children: const [
+                          Icon(
+                            Icons.file_copy_outlined,
+                            color: Colors.cyan,
+                            size: 30,
+                          ),
+                          Text('Open'),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: InkWell(
+                      onTap: () {
+                        customChoiceDialog(context,
+                            title: "Confirmation",
+                            content: "Are you sure you want to upload the quiz?",
+                            yesFunction: () =>
+                                context.read<AdminExamBloc>().saveQuiz());
+                      },
+                      child: Column(
+                        children: const [
+                          Icon(
+                            Icons.save_outlined,
+                            size: 30,
+                            color: Colors.lightBlue,
+                          ),
+                          Text('Save'),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: InkWell(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (_) {
+                              return Dialog(
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(20))),
+                                child: Histogram(state.scores,
+                                    'Scores for ${state.scores.length} students'),
+                                //  contentPadding: const EdgeInsets.all(0.0),
+                              );
+                            });
+                      },
+                      child: Column(
+                        children: const [
+                          Icon(
+                            Icons.remove_red_eye_outlined,
+                            color: Colors.blue,
+                            size: 30,
+                          ),
+                          Text('Show'),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: InkWell(
+                      onTap: () {
+                        customChoiceDialog(context,
+                            title: "Warning",
+                            content: "Are you sure you want to delete the exam",
+                            yesFunction: () {});
+                      },
+                      child: Column(
+                        children: const [
+                          Icon(
+                            Icons.exit_to_app,
+                            size: 30,
+                            color: Colors.green,
+                          ),
+                          Text('Exit'),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 50,
+                    width: 60,
+                    child: InkWell(
+                      onTap: () {
+                        _pageController.previousPage(duration: const Duration(seconds: 1), curve: Curves.ease);
+                      },
+                      child: Column(
+                        children: const [
+                          Icon(
+                            Icons.arrow_back,
+                            size: 30,
+                            color: Colors.red,
+                          ),
+                          Text('Previous'),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: InkWell(
+                      onTap: () {
+                        _pageController.nextPage(duration: const Duration(seconds: 1), curve: Curves.ease);
+                      },
+                      child: Column(
+                        children: const [
+                          Icon(
+                            Icons.arrow_forward,
+                            size: 30,
+                            color: Colors.red,
+                          ),
+                          Text('Next'),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              FloatingActionButton(
-                child: const Icon(Icons.save_outlined),
-                onPressed: () {
-                  customChoiceDialog(context,
-                      title: "Confirmation",
-                      content: "Are you sure you want to upload the quiz?",
-                      yesFunction: () =>
-                          context.read<AdminExamBloc>().saveQuiz());
-                },
-              ),
-              FloatingActionButton(
-                child: const Icon(Icons.remove_red_eye_outlined),
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (_) {
-                        return Dialog(
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20))),
-                          child: Histogram(state.scores,
-                              'Scores for ${state.scores.length} students'),
-                          //  contentPadding: const EdgeInsets.all(0.0),
-                        );
-                      });
-                },
-              ),
-              FloatingActionButton(
-                child: const Icon(Icons.delete_outline_outlined),
-                onPressed: () {
-                  customChoiceDialog(context,
-                      title: "Warning",
-                      content: "Are you sure you want to delete the exam",
-                      yesFunction: () {});
-                },
-              )
-            ],
+            ),
           ),
           appBar: appBar('Add Quiz', actions: [
             Padding(
@@ -119,14 +214,17 @@ class InstructorExamScreen extends StatelessWidget {
                       children: [
                         _getTitle(context, state.activePage, state.quiz.length),
                         Expanded(
-                          child: PageView(
-                            controller: _pageController,
-                            onPageChanged: (index) => cubit.changePage(index),
-                            children: [
-                              QuizDetailsPage(state.quiz),
-                              ...List.generate(state.quiz.length, (i) => i)
-                                  .map((i) => questionDesign(context, cubit, i))
-                            ],
+                          child: Padding(
+                            padding: Responsive.isMobile(context)? const EdgeInsets.symmetric(horizontal: 0) : const EdgeInsets.symmetric(horizontal: 150 ,vertical: 10),
+                            child: PageView(
+                              controller: _pageController,
+                              onPageChanged: (index) => cubit.changePage(index),
+                              children: [
+                                QuizDetailsPage(state.quiz),
+                                ...List.generate(state.quiz.length, (i) => i)
+                                    .map((i) => questionDesign(context, cubit, i))
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -241,17 +339,20 @@ class InstructorExamScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Transform.scale(
-                          scale: 2,
-                          child: Checkbox(
-                            shape: const CircleBorder(),
-                            fillColor: MaterialStateProperty.all(Colors.green),
-                            overlayColor: MaterialStateProperty.all(Colors.red),
-                            value: quiz
-                                .questions[questionIndex].rightAnswer[index],
-                            onChanged: (value) {
-                              cubit.changeAnswerState(index, value ?? false);
-                            },
+                        SizedBox(
+                          width:50,
+                          child: Transform.scale(
+                            scale: 2,
+                            child: Checkbox(
+                              shape: const CircleBorder(),
+                              fillColor: MaterialStateProperty.all(Colors.green),
+                              //overlayColor: MaterialStateProperty.all(Colors.red),
+                              value: quiz
+                                  .questions[questionIndex].rightAnswer[index],
+                              onChanged: (value) {
+                                cubit.changeAnswerState(index, value ?? false);
+                              },
+                            ),
                           ),
                         ),
                       ],

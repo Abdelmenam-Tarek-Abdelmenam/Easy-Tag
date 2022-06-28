@@ -151,12 +151,15 @@ class MainConfigWidget extends StatelessWidget {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: const [
-                                              Text(
-                                                "Send",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 18,
-                                                    color: Colors.white),
+                                              Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  "Send",
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.w600,
+                                                      fontSize: 18,
+                                                      color: Colors.white),
+                                                ),
                                               ),
                                               SizedBox(
                                                 width: 8,
