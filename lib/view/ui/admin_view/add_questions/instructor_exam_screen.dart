@@ -72,6 +72,15 @@ class InstructorExamScreen extends StatelessWidget {
                         );
                       });
                 },
+              ),
+              FloatingActionButton(
+                child: const Icon(Icons.delete_outline_outlined),
+                onPressed: () {
+                  customChoiceDialog(context,
+                      title: "Warning",
+                      content: "Are you sure you want to delete the exam",
+                      yesFunction: () {});
+                },
               )
             ],
           ),

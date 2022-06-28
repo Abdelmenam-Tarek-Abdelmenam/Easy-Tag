@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:auto_id/bloc/student_bloc/student_data_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +9,6 @@ import 'package:r_scan/r_scan.dart';
 import '../../resources/color_manager.dart';
 import '../../shared/widgets/app_bar.dart';
 import '../../shared/widgets/toast_helper.dart';
-
 
 class QrReadScreen extends StatefulWidget {
   const QrReadScreen({Key? key}) : super(key: key);
@@ -98,8 +96,7 @@ class _QrReadScreenState extends State<QrReadScreen> {
             }
           },
           child: _createScanUi(),
-        )
-    );
+        ));
   }
 
   Widget _createScanUi() {
@@ -120,8 +117,7 @@ class _QrReadScreenState extends State<QrReadScreen> {
 
     try {
       final decodeBase64Json = base64.decode(roomsString);
-      final decodeZipJson = gzip.decode(decodeBase64Json);
-      String originalJson = utf8.decode(decodeZipJson);
+      String originalJson = utf8.decode(decodeBase64Json);
       Map<String, dynamic> qrData = json.decode(originalJson);
 
       StudentDataBloc bloc = context.read<StudentDataBloc>();
