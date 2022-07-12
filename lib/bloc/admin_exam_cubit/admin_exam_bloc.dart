@@ -80,6 +80,10 @@ class AdminExamBloc extends Cubit<AdminExamStates> {
     }
   }
 
+  Future<void> deleteExam() async {
+    _fireStoreRepository.deleteExamFor(state.id);
+  }
+
   void removeQuestion() {
     if (state.activePage == -1) {
       showToast("No active question selected");

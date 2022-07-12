@@ -5,8 +5,8 @@ import '../module/students.dart';
 
 const _base = "https://script.google.com/macros/s/";
 
-const _testBase =
-    "AKfycbwIpg5PuOvrUBcKWwXJJ6QqBXRgUzY4DTNRW_j5yEvulQay3-AmYQ4Tsts-Yu55OTU";
+// const _testBase =
+//     "AKfycbwIpg5PuOvrUBcKWwXJJ6QqBXRgUzY4DTNRW_j5yEvulQay3-AmYQ4Tsts-Yu55OTU";
 
 const _stableBase =
     "AKfycbyEazGuwCLyFwut7WXoDQqovSmpNeP_GesKoWXJbiLFxBepDYoPPTZiFQ3YsOaxnkI";
@@ -126,7 +126,6 @@ class WebServices {
   }
 
   Future<dynamic> _doRequest(String url) async {
-    print(url);
     try {
       Response response = await _dio.get(url);
       return response.data;

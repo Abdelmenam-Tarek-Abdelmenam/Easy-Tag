@@ -3,6 +3,7 @@ import 'package:auto_id/model/module/exam_question.dart';
 import 'package:auto_id/view/resources/color_manager.dart';
 import 'package:auto_id/view/shared/functions/dialogs.dart';
 import 'package:auto_id/view/shared/responsive.dart';
+import 'package:auto_id/view/shared/widgets/toast_helper.dart';
 import 'package:auto_id/view/ui/admin_view/add_questions/widgets/histogram.dart';
 import 'package:auto_id/view/ui/admin_view/add_questions/widgets/quiz_details.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +70,8 @@ class InstructorExamScreen extends StatelessWidget {
                       onTap: () {
                         customChoiceDialog(context,
                             title: "Confirmation",
-                            content: "Are you sure you want to upload the quiz?",
+                            content:
+                                "Are you sure you want to upload the quiz?",
                             yesFunction: () =>
                                 context.read<AdminExamBloc>().saveQuiz());
                       },
@@ -96,7 +98,7 @@ class InstructorExamScreen extends StatelessWidget {
                               return Dialog(
                                 shape: const RoundedRectangleBorder(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
+                                        BorderRadius.all(Radius.circular(20))),
                                 child: Histogram(state.scores,
                                     'Scores for ${state.scores.length} students'),
                                 //  contentPadding: const EdgeInsets.all(0.0),
@@ -123,7 +125,14 @@ class InstructorExamScreen extends StatelessWidget {
                         customChoiceDialog(context,
                             title: "Warning",
                             content: "Are you sure you want to delete the exam",
-                            yesFunction: () {});
+                            yesFunction: () async {
+                          try {
+                            await context.read<AdminExamBloc>().deleteExam();
+                            Navigator.of(context).pop();
+                          } catch (err) {
+                            showToast("An error happened");
+                          }
+                        });
                       },
                       child: Column(
                         children: const [
@@ -142,7 +151,9 @@ class InstructorExamScreen extends StatelessWidget {
                     width: 60,
                     child: InkWell(
                       onTap: () {
-                        _pageController.previousPage(duration: const Duration(seconds: 1), curve: Curves.ease);
+                        _pageController.previousPage(
+                            duration: const Duration(seconds: 1),
+                            curve: Curves.ease);
                       },
                       child: Column(
                         children: const [
@@ -161,7 +172,9 @@ class InstructorExamScreen extends StatelessWidget {
                     width: 50,
                     child: InkWell(
                       onTap: () {
-                        _pageController.nextPage(duration: const Duration(seconds: 1), curve: Curves.ease);
+                        _pageController.nextPage(
+                            duration: const Duration(seconds: 1),
+                            curve: Curves.ease);
                       },
                       child: Column(
                         children: const [
@@ -215,14 +228,18 @@ class InstructorExamScreen extends StatelessWidget {
                         _getTitle(context, state.activePage, state.quiz.length),
                         Expanded(
                           child: Padding(
-                            padding: Responsive.isMobile(context)? const EdgeInsets.symmetric(horizontal: 0) : const EdgeInsets.symmetric(horizontal: 150 ,vertical: 10),
+                            padding: Responsive.isMobile(context)
+                                ? const EdgeInsets.symmetric(horizontal: 0)
+                                : const EdgeInsets.symmetric(
+                                    horizontal: 150, vertical: 10),
                             child: PageView(
                               controller: _pageController,
                               onPageChanged: (index) => cubit.changePage(index),
                               children: [
                                 QuizDetailsPage(state.quiz),
                                 ...List.generate(state.quiz.length, (i) => i)
-                                    .map((i) => questionDesign(context, cubit, i))
+                                    .map((i) =>
+                                        questionDesign(context, cubit, i))
                               ],
                             ),
                           ),
@@ -340,12 +357,13 @@ class InstructorExamScreen extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          width:50,
+                          width: 50,
                           child: Transform.scale(
                             scale: 2,
                             child: Checkbox(
                               shape: const CircleBorder(),
-                              fillColor: MaterialStateProperty.all(Colors.green),
+                              fillColor:
+                                  MaterialStateProperty.all(Colors.green),
                               //overlayColor: MaterialStateProperty.all(Colors.red),
                               value: quiz
                                   .questions[questionIndex].rightAnswer[index],

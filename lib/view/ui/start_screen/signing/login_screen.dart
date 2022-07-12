@@ -21,8 +21,11 @@ class _LoginViewState extends State<LoginView> {
         }
       },
       child: Scaffold(
-        bottomNavigationBar: Image.asset('images/eme_logo.png',height: 50,),
-        backgroundColor: ColorManager.blackColor.withOpacity(0.1),
+        bottomNavigationBar: Image.asset(
+          'images/eme_logo.png',
+          height: 50,
+        ),
+        backgroundColor: ColorManager.whiteColor,
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(
@@ -39,19 +42,15 @@ class _LoginViewState extends State<LoginView> {
                           fontWeight: FontWeight.w900,
                           color: ColorManager.mainBlue),
                     ),
-                    Icon(Icons.nfc_rounded,size: 30)
+                    Icon(Icons.nfc_rounded, size: 30)
                   ],
                 ),
               ),
-              const SizedBox(
-                  width: 450,
-                  child: MainLoginWidget()),
+              const SizedBox(width: 450, child: MainLoginWidget()),
             ],
           ),
         ),
       ),
     );
   }
-
-
 }
