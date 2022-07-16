@@ -3,26 +3,30 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class AppAdmin {
-  late String id;
+  String id;
   String? email;
   String? photoUrl;
   String? name;
+  bool isAnonymous;
 
   AppAdmin({
     required this.id,
     this.name,
     this.email,
     this.photoUrl,
+    required this.isAnonymous,
   });
 
-  AppAdmin.fromFirebaseUser(User user) {
-    id = user.uid;
-    email = user.email;
-    photoUrl = user.photoURL;
-    name = user.displayName;
+  factory AppAdmin.fromFirebaseUser(User user, {bool anonymous = false}) {
+    return AppAdmin(
+        id: user.uid,
+        email: user.email,
+        photoUrl: user.photoURL,
+        name: user.displayName,
+        isAnonymous: anonymous);
   }
 
-  static AppAdmin empty = AppAdmin(id: '');
+  static AppAdmin empty = AppAdmin(id: '', isAnonymous: false);
   bool get isEmpty => id == '';
   Future<bool> get isAdmin async {
     bool? isAdmin = PreferenceRepository.getDataFromSharedPreference(

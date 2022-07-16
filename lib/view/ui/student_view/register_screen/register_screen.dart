@@ -351,6 +351,6 @@ class RegisterScreen extends StatelessWidget {
       final enCodedJson = utf8.encode(old);
       return base64.encode(enCodedJson);
     }
-    return old;
+    return old.replaceAll(",", "-");
   }
 }

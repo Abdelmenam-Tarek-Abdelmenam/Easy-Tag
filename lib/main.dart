@@ -2,6 +2,7 @@ import 'package:auto_id/bloc/admin_bloc/admin_data_bloc.dart';
 import 'package:auto_id/bloc/student_bloc/student_data_bloc.dart';
 import 'package:auto_id/bloc/student_exam_bloc/student_exam_bloc.dart';
 import 'package:auto_id/model/fcm/fire_message.dart';
+import 'package:auto_id/model/repository/auth_repository.dart';
 import 'package:auto_id/view/ui/admin_view/main_screen/main_screen.dart';
 import 'package:auto_id/view/ui/start_screen/signing/login_screen.dart';
 import 'package:auto_id/view/ui/student_view/main_screen/main_screen.dart';
@@ -57,8 +58,10 @@ Future<void> main() async {
       AppAdmin tempUser = AppAdmin.empty;
       bool isAdmin = false;
       if (user != null) {
-        tempUser = AppAdmin.fromFirebaseUser(user);
+        tempUser = AppAdmin.fromFirebaseUser(user, anonymous: user.isAnonymous);
         isAdmin = await tempUser.isAdmin;
+      } else {
+        tempUser = await AuthRepository.signInAnonymous();
       }
       runApp(MyApp(tempUser, isAdmin));
     },

@@ -1,10 +1,12 @@
+import 'package:auto_id/model/module/course.dart';
 import 'package:auto_id/view/resources/color_manager.dart';
 import 'package:auto_id/view/resources/string_manager.dart';
 import 'package:auto_id/view/ui/start_screen/signing/widgtes/main_widget.dart';
 import 'package:flutter/material.dart';
 
 class LoginView extends StatefulWidget {
-  const LoginView({Key? key}) : super(key: key);
+  final Course? course;
+  const LoginView({this.course, Key? key}) : super(key: key);
 
   @override
   _LoginViewState createState() => _LoginViewState();
@@ -46,7 +48,7 @@ class _LoginViewState extends State<LoginView> {
                   ],
                 ),
               ),
-              const SizedBox(width: 450, child: MainLoginWidget()),
+              SizedBox(width: 450, child: MainLoginWidget(widget.course)),
             ],
           ),
         ),

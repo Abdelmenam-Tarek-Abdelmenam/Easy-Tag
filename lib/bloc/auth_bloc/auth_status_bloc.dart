@@ -58,8 +58,10 @@ class AuthStatusBloc extends Bloc<AuthStatusEvent, AuthStates> {
     LoginInUsingEmailEvent event,
     Emitter<AuthStates> emit,
   ) async {
-    if ([AuthStatus.submittingEmail, AuthStatus.submittingGoogle]
-        .contains(state.status)) {
+    if ([
+      AuthStatus.submittingEmail,
+      AuthStatus.submittingGoogle,
+    ].contains(state.status)) {
       return;
     }
     emit(state.copyWith(status: AuthStatus.submittingEmail));

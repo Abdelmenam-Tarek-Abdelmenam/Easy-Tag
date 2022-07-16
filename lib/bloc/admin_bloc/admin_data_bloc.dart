@@ -1,4 +1,3 @@
-import 'package:auto_id/model/fcm/dio_helper.dart';
 import 'package:auto_id/model/module/card_student.dart';
 import 'package:auto_id/model/module/group_details.dart';
 import 'package:auto_id/model/repository/auth_repository.dart';
@@ -72,10 +71,10 @@ class AdminDataBloc extends Bloc<AdminDataEvent, AdminDataStates> {
       await _adminDataRepository.createGroup(newGroup);
       state.allGroupList.insert(0, newGroup);
       state.usingIds.insert(0, newGroup.id);
-      NotificationSender sender = NotificationSender();
-      sender.postData(
-          title: "EME IH Announcement",
-          body: 'New ${event.groupData['category']}s is available now');
+      // NotificationSender sender = NotificationSender();
+      // sender.postData(
+      //     title: "EME IH Announcement",
+      //     body: 'New ${event.groupData['category']}s is available now');
       emit(GetInitialDataState.fromOldState(state, AdminDataStatus.loaded));
       emit(CreateGroupState.fromOldState(state, AdminDataStatus.loaded));
     } on DioErrors catch (err) {

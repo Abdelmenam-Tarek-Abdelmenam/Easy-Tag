@@ -89,6 +89,19 @@ class AuthRepository {
     }
   }
 
+  static Future<AppAdmin> signInAnonymous() async {
+    try {
+      final credential = await FirebaseAuth.instance.signInAnonymously();
+      User? user = credential.user;
+      if (user != null) {
+        return AppAdmin.fromFirebaseUser(user, anonymous: true);
+      }
+    } catch (e) {
+      return AppAdmin.empty;
+    }
+    return AppAdmin.empty;
+  }
+
   static Future<void> signOut() async {
     PreferenceRepository.clearAllSharedPreference();
     await FirebaseAuth.instance.signOut();

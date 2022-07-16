@@ -20,7 +20,7 @@ class QrReadScreen extends StatefulWidget {
 }
 
 class _QrReadScreenState extends State<QrReadScreen> {
-  late QRViewController controller;
+  QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
   @override
@@ -36,11 +36,14 @@ class _QrReadScreenState extends State<QrReadScreen> {
             child: Scaffold(
               appBar: appBar("Scan The QR"),
               body: MobileScanner(
+                  controller: MobileScannerController(),
                   allowDuplicates: false,
                   onDetect: (barcode, args) {
                     if (barcode.rawValue == null) {
                       showToast("No Data Detected");
                     } else {
+                      showToast("QR Detected", type: ToastType.info);
+
                       final String code = barcode.rawValue!;
                       _encodedData(code);
                     }
@@ -94,7 +97,7 @@ class _QrReadScreenState extends State<QrReadScreen> {
                   backgroundColor: Colors.white,
                   foregroundColor: ColorManager.mainBlue,
                   onPressed: () {
-                    controller.toggleFlash();
+                    controller?.toggleFlash();
                   },
                 ),
                 const SizedBox(
@@ -106,7 +109,7 @@ class _QrReadScreenState extends State<QrReadScreen> {
                   backgroundColor: Colors.white,
                   foregroundColor: ColorManager.mainBlue,
                   onPressed: () {
-                    controller.flipCamera();
+                    controller?.flipCamera();
                   },
                 ),
               ],
@@ -118,7 +121,7 @@ class _QrReadScreenState extends State<QrReadScreen> {
                   Navigator.of(context).pop();
                 }
                 if (state.status == StudentDataStatus.error) {
-                  controller.resumeCamera();
+                  controller?.resumeCamera();
                 }
               },
               child: _createScanUi(),
@@ -139,7 +142,7 @@ class _QrReadScreenState extends State<QrReadScreen> {
   }
 
   void _encodedData(String roomsString) async {
-    controller.pauseCamera();
+    controller?.pauseCamera();
 
     try {
       final decodeBase64Json = base64.decode(roomsString);
@@ -157,15 +160,15 @@ class _QrReadScreenState extends State<QrReadScreen> {
           bloc.add(QrReadEvent(qrData['id']));
         } else {
           showToast("QR expired");
-          controller.resumeCamera();
+          controller?.resumeCamera();
         }
       } else {
-        controller.resumeCamera();
+        controller?.resumeCamera();
         showToast("You are not registered in this course");
       }
     } catch (err) {
       showToast("invalid Data read,Try again");
-      controller.resumeCamera();
+      controller?.resumeCamera();
       return;
     }
   }
@@ -185,7 +188,7 @@ class _QrReadScreenState extends State<QrReadScreen> {
 
   @override
   void dispose() {
-    controller.dispose();
+    controller?.dispose();
     super.dispose();
   }
 }

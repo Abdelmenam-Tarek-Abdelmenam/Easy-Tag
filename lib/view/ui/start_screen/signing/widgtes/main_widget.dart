@@ -11,15 +11,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../../../../bloc/auth_bloc/auth_status_bloc.dart';
+import '../../../../../model/module/course.dart';
 import '../../../../shared/functions/navigation_functions.dart';
 import '../../../admin_view/main_screen/main_screen.dart';
+import '../../../student_view/details_screen/details_screen.dart';
 import 'clip_pathes.dart';
 import 'forget_pass_dialog.dart';
 import '../../../../shared/widgets/form_field.dart';
 
 // ignore: must_be_immutable
 class MainLoginWidget extends StatefulWidget {
-  const MainLoginWidget({Key? key}) : super(key: key);
+  final Course? course;
+
+  const MainLoginWidget(this.course, {Key? key}) : super(key: key);
 
   @override
   State<MainLoginWidget> createState() => _MainLoginWidgetState();
@@ -94,7 +98,11 @@ class _MainLoginWidgetState extends State<MainLoginWidget> {
                   context
                       .read<StudentDataBloc>()
                       .add(StartStudentOperations(appAdmin));
-                  navigateAndReplace(context, StudentMainScreen());
+                  if (widget.course == null) {
+                    navigateAndReplace(context, StudentMainScreen());
+                  } else {
+                    navigateAndReplace(context, DetailsScreen(widget.course!));
+                  }
                 }
               } else if (state.status == AuthStatus.successSignUp) {
                 setState(() {

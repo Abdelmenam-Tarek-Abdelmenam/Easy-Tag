@@ -196,25 +196,21 @@ class UserScreenLayout extends StatelessWidget {
                               ),
                               leading: Text(
                                 '${index + 1}',
-                                style: const TextStyle(fontSize: 40),
+                                style: const TextStyle(fontSize: 20),
                               ),
                               tileColor: Colors.white,
                               trailing: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: ElevatedButton(
-                                    style: ButtonStyle(
-                                        backgroundColor: MaterialStateProperty.all(
-                                            ColorManager.lightBlue),
-                                        foregroundColor: MaterialStateProperty.all(
-                                            ColorManager.whiteColor),
-                                        elevation: MaterialStateProperty.all(0),
-                                        fixedSize: MaterialStateProperty.all(
-                                            const Size(180, 20))),
-                                    onPressed: () {
-                                      navigateAndPush(
-                                          context, DetailsScreen(courses[index]));
-                                    },
-                                    child: const Text("More details")),
+                                child: IconButton(
+                                  icon: const Icon(
+                                    Icons.remove_red_eye_outlined,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    navigateAndPush(
+                                        context, DetailsScreen(courses[index]));
+                                  },
+                                ),
                               ),
                               subtitle: Text(courses[index].category +
                                   ' - ' +
@@ -223,7 +219,6 @@ class UserScreenLayout extends StatelessWidget {
                               textColor: Colors.white,
                               //onTap: (){ navigateAndPush(context, DetailsScreen(courses[index]));},
                             ),
-
                             index != courses.length - 1
                                 ? const Divider(color: Colors.white)
                                 : Container(),
