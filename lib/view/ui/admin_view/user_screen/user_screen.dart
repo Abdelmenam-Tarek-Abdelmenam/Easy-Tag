@@ -291,9 +291,9 @@ class UserScreen extends StatelessWidget {
       title: "Phone", body: student.phone ?? "", icon: FontAwesomeIcons.phone);
 
   Widget secondPhoneField() => FieldDesign(
-      title: "Second Phone",
+      title: "Country ID",
       body: student.phone2 ?? "",
-      icon: FontAwesomeIcons.phone);
+      icon: FontAwesomeIcons.idCard);
 
   Widget emailField() =>
       FieldDesign(title: "Email", body: student.email ?? "", icon: Icons.email);

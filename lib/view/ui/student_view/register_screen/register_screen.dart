@@ -75,16 +75,14 @@ class RegisterScreen extends StatelessWidget {
           child: student == null
               ? BlocConsumer<StudentDataBloc, StudentDataStates>(
                   listenWhen: (_, state) => state is RegisterUserState,
-                  buildWhen: (_, state) => state is RegisterUserState,
                   listener: (context, state) => {
                     if (state.status == StudentDataStatus.loaded)
-                      Navigator.of(context)
-                        ..pop()
-                        ..pop()
+                      Navigator.of(context)..pop()
                   },
                   builder: (context, state) => ElevatedButton(
                       style: buttonStyle,
-                      child: state.status == StudentDataStatus.loading
+                      child: state.status == StudentDataStatus.loading &&
+                              state is RegisterUserState
                           ? const CircularProgressIndicator()
                           : const Text(
                               "Register",
@@ -244,15 +242,6 @@ class RegisterScreen extends StatelessWidget {
         prefix: FontAwesomeIcons.image,
         keyboardType: TextInputType.url,
         border: true,
-        validator: (val) {
-          if (val!.isEmpty) {
-            return "Image cannot be Empty";
-          } else if (!val.contains("drive")) {
-            return "Invalid drive link";
-          } else {
-            return null;
-          }
-        },
       );
 
   Widget cvField() => DefaultFormField(
@@ -283,12 +272,12 @@ class RegisterScreen extends StatelessWidget {
 
   Widget secondPhoneField() => DefaultFormField(
       controller: fieldsController[7],
-      title: "Second phone number",
+      title: "Country ID (رقم البطاقه)",
       fillHint: AutofillHints.telephoneNumber,
-      keyboardType: TextInputType.phone,
-      prefix: FontAwesomeIcons.squarePhone,
+      keyboardType: TextInputType.number,
+      prefix: FontAwesomeIcons.idCard,
       border: true,
-      validator: (val) => val!.isEmpty ? "Second phone cannot be Empty" : null);
+      validator: (val) => val!.isEmpty ? "Country ID cannot be Empty" : null);
 
   Widget emailField() => DefaultFormField(
       controller: fieldsController[8],
@@ -347,6 +336,7 @@ class RegisterScreen extends StatelessWidget {
     //     fieldsController[9]; //linkedin
     //     fieldsController[5]; // cv
     //     fieldsController[4]; // photo
+    if (i == 5) old = "drive.com";
     if ([4, 5, 9, 10].contains(i - 1)) {
       final enCodedJson = utf8.encode(old);
       return base64.encode(enCodedJson);

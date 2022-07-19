@@ -15,7 +15,7 @@ class DetailsLayout extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         child: Wrap(
-          runAlignment: WrapAlignment.spaceEvenly,
+            runAlignment: WrapAlignment.spaceEvenly,
             alignment: WrapAlignment.spaceEvenly,
             crossAxisAlignment: WrapCrossAlignment.start,
             runSpacing: 20,
@@ -23,64 +23,65 @@ class DetailsLayout extends StatelessWidget {
             children: [
               coursePhoto(context),
               SizedBox(
-            width: Responsive.isMobile(context)? 500 :MediaQuery.of(context).size.width - 600,
-            child: Wrap(
-              children: [...[
-                {'title': 'Course', 'val': course.name},
-                {'title': 'Price', 'val': "${course.price} EGP"},
-                {'title': 'Offer', 'val': course.offer},
-                {'title': 'Description', 'val': course.description},
-                {
-                  'title': 'Category',
-                  'val': "${course.category} - ${course.inPlace} "
-                },
-                {'title': 'Start Date', 'val': course.date},
-                {
-                  'title': 'Course duration',
-                  'val': course.numberOfSessions.toString()
-                },
-              ]
-                  .map((e) => Column(
-                        children: [
-                          SizedBox(
-                            width: double.infinity,
-                            child: Wrap(
-                              alignment: WrapAlignment.start,
+                width: Responsive.isMobile(context)
+                    ? 500
+                    : MediaQuery.of(context).size.width - 600,
+                child: Wrap(
+                  children: [
+                    ...[
+                      {'title': 'Course', 'val': course.name},
+                      {'title': 'Price', 'val': "${course.price} EGP"},
+                      {'title': 'Offer', 'val': course.offer},
+                      {'title': 'Description', 'val': course.description},
+                      {
+                        'title': 'Category',
+                        'val': "${course.category} - ${course.inPlace} "
+                      },
+                      {'title': 'Start Date', 'val': course.date},
+                      {
+                        'title': 'Course duration',
+                        'val': course.numberOfSessions.toString()
+                      },
+                    ]
+                        .map((e) => Column(
                               children: [
-                                Text(
-                                  '${e['title']} : ',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      color: ColorManager.mainBlue,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                SelectableText(
-                                  e['val']!,
-                                  textDirection: TextDirection.rtl,
-                                  // maxLines: 1,
-                                  // overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: Wrap(
+                                    alignment: WrapAlignment.start,
+                                    children: [
+                                      Text(
+                                        '${e['title']} : ',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                            fontSize: 20,
+                                            color: ColorManager.mainBlue,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SelectableText(
+                                        e['val']!,
+                                        // maxLines: 1,
+                                        // overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
+                                const Divider(),
                               ],
-                            ),
-                          ),
-                          const Divider(),
-                        ],
-                      ))
-                  .toList(),
-                Visibility(
-                    visible: course.instructors.isNotEmpty, child: instructorsList()),
-
-              ],
-
-            ),
-          ),
-        ]),
+                            ))
+                        .toList(),
+                    Visibility(
+                        visible: course.instructors.isNotEmpty,
+                        child: instructorsList()),
+                  ],
+                ),
+              ),
+            ]),
       ),
     );
   }
@@ -122,7 +123,7 @@ class DetailsLayout extends StatelessWidget {
       );
 
   Widget coursePhoto(BuildContext context) => Container(
-    width: 500,
+        width: 500,
         decoration: BoxDecoration(
             border: Border.all(color: ColorManager.mainBlue, width: 1),
             borderRadius: BorderRadius.circular(10)),

@@ -47,6 +47,7 @@ class StudentDataBloc extends Bloc<StudentDataEvent, StudentDataStates> {
             web: () async {});
 
         await _readInitialFireData(emit);
+        add(const ChangeFilterTypeEvent("Internship"));
       }
     }
   }
