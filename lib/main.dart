@@ -103,7 +103,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           primaryColor: ColorManager.mainBlue,
         ),
-        home: user.isEmpty
+        home: true  //user.isEmpty
             ? const LoginView()
             : isAdmin
                 ? MainScreen()

@@ -30,26 +30,29 @@ class _LoginViewState extends State<LoginView> {
         backgroundColor: ColorManager.whiteColor,
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(50),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      StringManger.appName,
-                      style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.w900,
-                          color: ColorManager.mainBlue),
-                    ),
-                    Icon(Icons.nfc_rounded, size: 30)
-                  ],
+          child: Container(
+            color: Colors.blue.withOpacity(0.1),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(50),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text(
+                        StringManger.appName,
+                        style: TextStyle(
+                            fontSize: 40,
+                            fontWeight: FontWeight.w900,
+                            color: ColorManager.mainBlue),
+                      ),
+                      Icon(Icons.nfc_rounded, size: 30)
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(width: 450, child: MainLoginWidget(widget.course)),
-            ],
+                SizedBox(width: 450, child: MainLoginWidget(widget.course)),
+              ],
+            ),
           ),
         ),
       ),
