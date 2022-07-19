@@ -80,6 +80,8 @@ class Student {
   String? _cvtImgLink(String? old) {
     if ((old ?? '').contains("=view&id=")) {
       return old;
+    } else if (!(old ?? "").contains("http")) {
+      old = null;
     } else if ((old ?? "").contains("drive.google.com")) {
       try {
         return "https://drive.google.com/uc?export=view&id=" +
@@ -87,8 +89,6 @@ class Student {
       } catch (err) {
         return null;
       }
-    } else if (!(old ?? "").contains("http")) {
-      old = null;
     }
     return old;
   }

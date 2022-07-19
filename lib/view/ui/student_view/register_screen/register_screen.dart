@@ -242,15 +242,6 @@ class RegisterScreen extends StatelessWidget {
         prefix: FontAwesomeIcons.image,
         keyboardType: TextInputType.url,
         border: true,
-        validator: (val) {
-          if (val!.isEmpty) {
-            return "Image cannot be Empty";
-          } else if (!val.contains("drive")) {
-            return "Invalid drive link";
-          } else {
-            return null;
-          }
-        },
       );
 
   Widget cvField() => DefaultFormField(
@@ -345,6 +336,7 @@ class RegisterScreen extends StatelessWidget {
     //     fieldsController[9]; //linkedin
     //     fieldsController[5]; // cv
     //     fieldsController[4]; // photo
+    if (i == 5) old = "drive.com";
     if ([4, 5, 9, 10].contains(i - 1)) {
       final enCodedJson = utf8.encode(old);
       return base64.encode(enCodedJson);

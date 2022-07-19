@@ -93,7 +93,7 @@ class WebServices {
             "&sheetID=$groupId"
             "&userData=$dataToSent";
     String response = await _doRequest(url);
-    return response.trim() == "Done";
+    return response.trim() == "Done,0";
   }
 
   Future<bool> editStudentData(String groupId, Map dataToSent) async {
