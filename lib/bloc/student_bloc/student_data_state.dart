@@ -31,7 +31,7 @@ class GetInitialDataState extends StudentDataStates {
       {StudentDataStatus status = StudentDataStatus.initial,
       List<String> courses = const [],
       List<Course> all = const [],
-      String category = "ALL",
+      String category = "Internship",
       List<String> ids = const []})
       : super(
             allCourses: all,
