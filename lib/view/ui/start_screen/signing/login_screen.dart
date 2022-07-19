@@ -23,9 +23,14 @@ class _LoginViewState extends State<LoginView> {
         }
       },
       child: Scaffold(
-        bottomNavigationBar: Image.asset(
-          'images/eme_logo.png',
-          height: 50,
+        bottomNavigationBar: SizedBox(
+          height: 80,
+          child: Center(
+            child: Image.asset(
+              'images/eme_logo.png',
+              height: 50,
+            ),
+          ),
         ),
         backgroundColor: ColorManager.whiteColor,
         body: SingleChildScrollView(

@@ -6,7 +6,6 @@ import 'package:auto_id/model/repository/auth_repository.dart';
 import 'package:auto_id/view/ui/admin_view/main_screen/main_screen.dart';
 import 'package:auto_id/view/ui/start_screen/signing/login_screen.dart';
 import 'package:auto_id/view/ui/student_view/main_screen/main_screen.dart';
-
 import 'model/local/pref_repository.dart';
 import 'model/module/app_admin.dart';
 import 'package:auto_id/view/resources/color_manager.dart';
@@ -103,7 +102,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           primaryColor: ColorManager.mainBlue,
         ),
-        home: true  //user.isEmpty
+        home: true//user.isEmpty
             ? const LoginView()
             : isAdmin
                 ? MainScreen()
