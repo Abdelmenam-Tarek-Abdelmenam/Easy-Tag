@@ -164,7 +164,17 @@ class RegisterScreen extends StatelessWidget {
         prefix: Icons.person,
         fillHint: AutofillHints.name,
         border: true,
-        validator: (val) => val!.isEmpty ? "Name cannot be empty" : null,
+        validator: (val) {
+          if (val!.isEmpty) {
+            return "Name cannot be empty";
+          }
+          // else if (val.split(" ").length < 3) {
+          //   return "Please enter your triple name";
+          // } else if (("[^\u0600-\u06FF ]".hasMatch(val))) {
+          //   return "please write name in english";
+          // }
+          return null;
+        },
       );
 
   Widget genderField() => StatefulBuilder(
@@ -272,12 +282,12 @@ class RegisterScreen extends StatelessWidget {
 
   Widget secondPhoneField() => DefaultFormField(
       controller: fieldsController[7],
-      title: "Country ID (رقم البطاقه)",
+      title: "national  ID الرقم القومي",
       fillHint: AutofillHints.telephoneNumber,
       keyboardType: TextInputType.number,
       prefix: FontAwesomeIcons.idCard,
       border: true,
-      validator: (val) => val!.isEmpty ? "Country ID cannot be Empty" : null);
+      validator: (val) => val!.isEmpty ? "National ID cannot be Empty" : null);
 
   Widget emailField() => DefaultFormField(
       controller: fieldsController[8],

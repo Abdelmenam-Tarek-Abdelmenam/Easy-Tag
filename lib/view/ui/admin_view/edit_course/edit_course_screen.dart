@@ -71,25 +71,25 @@ class _EditCourseScreenState extends State<EditCourseScreen> {
                     ..pop();
                 }
               },
-              builder: (context, state) =>
-                  state.status == AdminDataStatus.loading
-                      ? const CircularProgressIndicator()
-                      : FloatingActionButton(
-                          backgroundColor: ColorManager.darkGrey,
-                          child: const Icon(
-                            Icons.check,
-                            size: 40,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              Map<String, dynamic> data = createMap();
-                              context
-                                  .read<AdminDataBloc>()
-                                  .add(EditGroupEvent(data, widget.course.id));
-                            }
-                          },
-                        )),
+              builder: (context, state) => (state is CreateGroupState) &&
+                      (state.status == AdminDataStatus.loading)
+                  ? const CircularProgressIndicator()
+                  : FloatingActionButton(
+                      backgroundColor: ColorManager.darkGrey,
+                      child: const Icon(
+                        Icons.check,
+                        size: 40,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          Map<String, dynamic> data = createMap();
+                          context
+                              .read<AdminDataBloc>()
+                              .add(EditGroupEvent(data, widget.course.id));
+                        }
+                      },
+                    )),
           body: Padding(
             padding: const EdgeInsets.all(10),
             child: ListView(
